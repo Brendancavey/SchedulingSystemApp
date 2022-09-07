@@ -1,2 +1,2 @@
 # SchedulingSystemApp
-A fully functional scheduling system with login authorization
+A fully functional scheduling system with login authorization and time zone
