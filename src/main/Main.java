@@ -1,5 +1,6 @@
 package main;
 
+import DAO.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,8 +16,10 @@ public class Main extends Application{
         stage.show();
     }
 
-    public static void Main(String[] args){
+    public static void main(String[] args){
+        DBConnection.openConnection();
         launch(args);
+        DBConnection.closeConnection();
     }
 
 
