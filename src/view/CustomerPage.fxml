@@ -50,11 +50,11 @@
             <VBox prefHeight="483.0" prefWidth="168.0" spacing="17.0">
                <children>
                   <TextField disable="true" promptText="Auto-Gen" />
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <ComboBox prefHeight="25.0" prefWidth="167.0" />
+                  <TextField fx:id="nameText" />
+                  <TextField fx:id="addressText" />
+                  <TextField fx:id="postalCodeText" />
+                  <TextField fx:id="phoneNumberText" />
+                  <ComboBox fx:id="countryBox" prefHeight="25.0" prefWidth="167.0" />
                </children>
             </VBox>
          </children>
@@ -63,7 +63,7 @@
          <children>
             <VBox prefHeight="100.0" prefWidth="87.0" spacing="15.0">
                <children>
-                  <Label text="Devision">
+                  <Label text="Division">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -72,7 +72,7 @@
             </VBox>
             <VBox prefHeight="100.0" prefWidth="155.0">
                <children>
-                  <ComboBox prefHeight="25.0" prefWidth="167.0" />
+                  <ComboBox fx:id="DivisionBox" prefHeight="25.0" prefWidth="167.0" />
                </children>
             </VBox>
          </children>

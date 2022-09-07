@@ -1,5 +1,8 @@
 package controller;
 
+import DAO.DBCountries;
+import DAO.DBCustomers;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -7,6 +10,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import model.Country;
+import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +53,17 @@ public class MainMenu implements Initializable {
             viewAppointments.fire();
         }
         System.out.println("Login page initialized!");
+        /////////////////TESTING//////////////
+        ObservableList<Country> countryList = DBCountries.getAllCountries();
+        for (Country C: countryList){
+            System.out.println(C.getName());
+        }
+        DBCountries.checkDateConversion();
+        ObservableList<Customer> customerslist = DBCustomers.getAllCustomers();
+        for(Customer c: customerslist){
+            System.out.println(c.getName());
+        }
+        ////////////////////////////////////
     }
 
     ///////////////////////BUTTONS//////////////////////////////////////////////

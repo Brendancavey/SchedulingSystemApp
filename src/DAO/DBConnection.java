@@ -37,4 +37,7 @@ public abstract class DBConnection {
             System.out.println("Error:" + e.getMessage());
         }
     }
+    public static Connection getConnection(){
+        return connection;
+    }
 }
