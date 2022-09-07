@@ -17,7 +17,7 @@ public class Helper {
         Parent root = FXMLLoader.load(Helper.class.getResource("/view/MainMenu.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Main Menu");
-        stage.setScene(new Scene(root, 900, 500));
+        stage.setScene(new Scene(root, 1000, 500));
         stage.show();
     }
     public static void goToLogin(ActionEvent actionEvent) throws IOException {
@@ -55,5 +55,13 @@ public class Helper {
         stage.setScene(new Scene(root, 600, 450));
         stage.show();
     }
+    public static void goToReportsPage(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Helper.class.getResource("/view/ReportsPage.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        stage.setTitle("Reports Page");
+        stage.setScene(new Scene(root, 800, 800));
+        stage.show();
+    }
+
 
 }

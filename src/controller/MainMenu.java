@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +32,12 @@ public class MainMenu implements Initializable {
     public TableColumn endDateCol;
     public TableColumn custIdCol;
     public TableColumn userIdCol;
+    public TableView apptTableView;
+    public TableView customerTableView;
+    public RadioButton viewApptAll;
+    public RadioButton viewApptMonth;
+    public RadioButton viewApptWeek;
+    public VBox viewByApptBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,7 +72,8 @@ public class MainMenu implements Initializable {
     public void onDelete(ActionEvent actionEvent) {
     }
 
-    public void onReport(ActionEvent actionEvent) {
+    public void onReport(ActionEvent actionEvent) throws IOException{
+        Helper.goToReportsPage(actionEvent);
     }
 
     public void onLogout(ActionEvent actionEvent) throws IOException{
@@ -77,14 +86,29 @@ public class MainMenu implements Initializable {
         addButton.setText("Add Customer");
         modifyButton.setText("Modify Customer");
         deleteButton.setText("Delete Customer");
+        customerTableView.setOpacity(1);
+        apptTableView.setOpacity(0);
+        viewByApptBox.setOpacity(0);
         Helper.viewAllCustomersToggle = true;
     }
 
-    public void onViewAllAppointments(ActionEvent actionEvent) {
+    public void onViewAppointments(ActionEvent actionEvent) {
         addButton.setText("Add Appointment");
         modifyButton.setText("Modify Appointment");
         deleteButton.setText("Delete Appointment");
+        customerTableView.setOpacity(0);
+        apptTableView.setOpacity(1);
+        viewByApptBox.setOpacity(1);
         Helper.viewAllCustomersToggle = false;
+    }
+
+    public void onViewByWeek(ActionEvent actionEvent) {
+    }
+
+    public void onViewByMonth(ActionEvent actionEvent) {
+    }
+
+    public void onViewAll(ActionEvent actionEvent) {
     }
     //////////////////////////////////////////////////////////////////////
 }

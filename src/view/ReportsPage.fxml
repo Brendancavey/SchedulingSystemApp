@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsPage">
+   <children>
+      <Button layoutX="524.0" layoutY="708.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="150.0" text="Back" />
+      <TableView layoutX="14.0" layoutY="192.0" prefHeight="493.0" prefWidth="772.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <ComboBox layoutX="302.0" layoutY="155.0" prefWidth="150.0" />
+      <Label layoutX="224.0" layoutY="8.0" prefHeight="76.0" prefWidth="306.0" text="Reports Page">
+         <font>
+            <Font name="Arial Black" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="234.0" layoutY="159.0" prefHeight="17.0" prefWidth="68.0" text="Contact" />
+      <HBox layoutY="91.0" prefHeight="48.0" prefWidth="800.0" spacing="20.0">
+         <children>
+            <RadioButton alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="20.0" prefWidth="137.0" text="Total Customers">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="20.0" prefWidth="137.0" text="Total Customers">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="20.0" prefWidth="137.0" text="Total Customers">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="20.0" prefWidth="137.0" text="Total Customers">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </RadioButton>
+         </children>
+         <padding>
+            <Insets left="100.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>
