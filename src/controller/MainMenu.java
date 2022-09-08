@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.Country;
 import model.Customer;
@@ -19,16 +20,17 @@ import java.util.ResourceBundle;
 
 public class MainMenu implements Initializable {
 
-
+    /////////////////////BUTTONS/////////////////////////////
     public Button addButton;
     public Button modifyButton;
     public Button deleteButton;
     public Button logoutButton;
     public Button reportsButton;
-    public RadioButton viewCustomers;
-    public RadioButton viewAppointments;
+    ///////////////////////////////////////////////////////
+    //////////////////APPOINTMENTS TABLIEVIEW///////////////
+    public TableView apptTableView;
     public TableColumn apptIdCol;
-    public TableColumn nameCol;
+    public TableColumn titleCol;
     public TableColumn descriptionCol;
     public TableColumn locationCol;
     public TableColumn contactCol;
@@ -37,12 +39,29 @@ public class MainMenu implements Initializable {
     public TableColumn endDateCol;
     public TableColumn custIdCol;
     public TableColumn userIdCol;
-    public TableView apptTableView;
+    //////////////////////////////////////////////////////////
+    ///////////////CUSTOMERS TABLEVIEW/////////////////////////
     public TableView customerTableView;
+    public TableColumn custId;
+    public TableColumn custName;
+    public TableColumn custAddress;
+    public TableColumn custPostalCode;
+    public TableColumn custPhoneNumber;
+    public TableColumn custCreateDate;
+    public TableColumn custCreateBy;
+    public TableColumn custLastUpdate;
+    public TableColumn custLastUpdateBy;
+    public TableColumn custProvinceId;
+    //////////////////////////////////////////////////////////
+    //////////////VIEWBY RADIO BUTTONS///////////////////////
+    public RadioButton viewCustomers;
+    public RadioButton viewAppointments;
     public RadioButton viewApptAll;
     public RadioButton viewApptMonth;
     public RadioButton viewApptWeek;
     public VBox viewByApptBox;
+    /////////////////////////////////////////////////////
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,6 +71,7 @@ public class MainMenu implements Initializable {
         else{
             viewAppointments.fire();
         }
+
         System.out.println("Login page initialized!");
         /////////////////TESTING//////////////
         ObservableList<Country> countryList = DBCountries.getAllCountries();
@@ -61,9 +81,15 @@ public class MainMenu implements Initializable {
         DBCountries.checkDateConversion();
         ObservableList<Customer> customerslist = DBCustomers.getAllCustomers();
         for(Customer c: customerslist){
-            System.out.println(c.getName());
+            System.out.println(c.getName() + " " + c.getProvinceId());
         }
         ////////////////////////////////////
+        customerTableView.setItems(DBCustomers.getAllCustomers());
+        //custId.setCellFactory(new PropertyValueFactory<>("Id"));
+        //custName.setCellFactory(new PropertyValueFactory<>("name"));
+        //custAddress.setCellFactory(new PropertyValueFactory<>("address"));
+        //custPostalCode.setCellFactory(new PropertyValueFactory<>("postalCode"));
+        //custProvinceId.setCellFactory(new PropertyValueFactory<>("provinceId"));
     }
 
     ///////////////////////BUTTONS//////////////////////////////////////////////

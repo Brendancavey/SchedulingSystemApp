@@ -1,6 +1,7 @@
 package main;
 
 import DAO.DBConnection;
+import DAO.DBCustomers;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +19,11 @@ public class Main extends Application{
 
     public static void main(String[] args){
         DBConnection.openConnection();
+        /*int rowsAffected = DBCustomers.insertCustomer("Bear", 5);
+        System.out.println(rowsAffected);
+        int rowsaffected = DBCustomers.updateCustomer(1, "Woobert");
+        System.out.println(rowsaffected);*/
+        int rowsaffected1 = DBCustomers.deleteCustomer(5);
         launch(args);
         DBConnection.closeConnection();
     }

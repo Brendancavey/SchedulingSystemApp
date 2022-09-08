@@ -75,22 +75,22 @@
       </VBox>
       <TableView fx:id="customerTableView" layoutX="144.0" layoutY="114.0" opacity="0.0" prefHeight="349.0" prefWidth="852.0">
         <columns>
-          <TableColumn prefWidth="79.0" text="Customer ID" />
-          <TableColumn prefWidth="70.0" text="Name" />
-            <TableColumn prefWidth="67.0" text="Address" />
-            <TableColumn prefWidth="79.0" text="Postal Code" />
-            <TableColumn prefWidth="91.0" text="Phone Number" />
-            <TableColumn prefWidth="96.0" text="Created Date" />
-            <TableColumn prefWidth="84.0" text="Created By" />
-            <TableColumn minWidth="3.0" prefWidth="79.0" text="Last Update" />
-            <TableColumn prefWidth="113.0" text="Last Updated By" />
-            <TableColumn prefWidth="93.0" text="State/Province" />
+          <TableColumn fx:id="custId" prefWidth="79.0" text="Customer ID" />
+          <TableColumn fx:id="custName" prefWidth="70.0" text="Name" />
+            <TableColumn fx:id="custAddress" prefWidth="67.0" text="Address" />
+            <TableColumn fx:id="custPostalCode" prefWidth="79.0" text="Postal Code" />
+            <TableColumn fx:id="custPhoneNumber" prefWidth="91.0" text="Phone Number" />
+            <TableColumn fx:id="custCreateDate" prefWidth="96.0" text="Created Date" />
+            <TableColumn fx:id="custCreateBy" prefWidth="84.0" text="Created By" />
+            <TableColumn fx:id="custLastUpdate" minWidth="3.0" prefWidth="79.0" text="Last Update" />
+            <TableColumn fx:id="custLastUpdateBy" prefWidth="113.0" text="Last Updated By" />
+            <TableColumn fx:id="custProvinceId" prefWidth="93.0" text="State/Province" />
         </columns>
       </TableView>
       <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="852.0">
         <columns>
           <TableColumn fx:id="apptIdCol" prefWidth="75.0" text="Appt ID" />
-          <TableColumn fx:id="nameCol" prefWidth="75.0" text="Title" />
+          <TableColumn fx:id="titleCol" prefWidth="75.0" text="Title" />
             <TableColumn fx:id="descriptionCol" prefWidth="75.0" text="Description" />
             <TableColumn fx:id="locationCol" prefWidth="75.0" text="Location" />
             <TableColumn fx:id="contactCol" prefWidth="75.0" text="Contact" />

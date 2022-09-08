@@ -35,7 +35,48 @@ public class DBCustomers {
         return customersList;
     }
 
-    public static void checkDateConversion(){
+    public static int insertCustomer(String customerName, int provinceId){
+        int rowsAffected = 0;
+        try {
+            String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Division_Id) Values(?, ?)";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setString(1, customerName);
+            preparedStatement.setInt(2, provinceId);
+            rowsAffected = preparedStatement.executeUpdate();
+
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return rowsAffected;
+    }
+    public static int updateCustomer(int custId, String custName){
+        int rowsAffected = 0;
+        try {
+            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ? WHERE Customer_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setString(1, custName);
+            preparedStatement.setInt(2, custId);
+            rowsAffected = preparedStatement.executeUpdate();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return rowsAffected;
+    }
+    public static int deleteCustomer(int custId){
+        int rowsAffected = 0;
+        try {
+            String sqlQuery = "DELETE FROM CUSTOMERS WHERE Customer_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, custId);
+            rowsAffected = preparedStatement.executeUpdate();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return rowsAffected;
+
+    }
+
+    /*public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
         try{
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery); //prepare data from database
@@ -47,5 +88,5 @@ public class DBCustomers {
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }
-    }
+    }*/
 }
