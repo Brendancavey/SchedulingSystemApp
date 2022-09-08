@@ -23,7 +23,8 @@ public class Main extends Application{
         System.out.println(rowsAffected);
         int rowsaffected = DBCustomers.updateCustomer(1, "Woobert");
         System.out.println(rowsaffected);*/
-        int rowsaffected1 = DBCustomers.deleteCustomer(5);
+        //int rowsaffected1 = DBCustomers.deleteCustomer();
+        DBCustomers.selectCustomer(103);
         launch(args);
         DBConnection.closeConnection();
     }

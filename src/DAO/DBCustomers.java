@@ -75,6 +75,37 @@ public class DBCustomers {
         return rowsAffected;
 
     }
+    public static void selectCustomer(){
+        try {
+            String sqlQuery = "SELECT * FROM CUSTOMERS";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                int customerId = resultSet.getInt("Customer_ID");
+                String customerName = resultSet.getString("Customer_Name");
+                System.out.println(customerId + " | " + customerName);
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+    public static void selectCustomer(int divisionId){
+        try {
+            String sqlQuery = "SELECT * FROM CUSTOMERS WHERE DIVISION_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, divisionId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int customerId = resultSet.getInt("Customer_ID");
+                String customerName = resultSet.getString("Customer_Name");
+                int divisionIdFK = resultSet.getInt("Division_ID");
+                System.out.println(customerId + " | " + customerName + " | " + divisionIdFK);
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
 
     /*public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
