@@ -2,6 +2,7 @@ package controller;
 
 import DAO.DBCountries;
 import DAO.DBCustomers;
+import DAO.DBProvinces;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.Country;
 import model.Customer;
+import model.Province;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,6 +84,10 @@ public class MainMenu implements Initializable {
         ObservableList<Customer> customerslist = DBCustomers.getAllCustomers();
         for(Customer c: customerslist){
             System.out.println(c.getName() + " " + c.getProvinceId());
+        }
+        ObservableList<Province> provinceList = DBProvinces.getAllProvinces();
+        for(Province p: provinceList){
+            System.out.println(p.getName());
         }
         ////////////////////////////////////
         customerTableView.setItems(DBCustomers.getAllCustomers());

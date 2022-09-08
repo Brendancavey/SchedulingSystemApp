@@ -72,6 +72,8 @@ public class Main extends Application{
         ZoneId utcZoneId = ZoneId.of("UTC");
         ZonedDateTime utcZDT = ZonedDateTime.ofInstant(zonedDateTime.toInstant(), utcZoneId);
         System.out.println("User time to UTC time: " + utcZDT);
+        zonedDateTime = ZonedDateTime.ofInstant(utcZDT.toInstant(), zoneId);
+        System.out.println("UTC Time to user local time: " + zonedDateTime);
         ////////////////////////////////////////////////////////////////////////
         launch(args);
         DBConnection.closeConnection();

@@ -9,6 +9,9 @@ public class Country {
         this.id = id;
         this.name = name;
     }
+    public String toString(){
+        return String.valueOf(this.id) + " | " + this.name;
+    }
     //////////GETTERS AND SETTERS//////////
     public int getId() {
         return id;

@@ -5,20 +5,23 @@ import java.sql.Timestamp;
 public class Province {
     private int provinceId;
     private String name;
-    private Timestamp createDate;
-    private String createdBy;
-    private Timestamp lastUpdate;
-    private String lastUpdatedBy;
+    //private Timestamp createDate;
+    //private String createdBy;
+    //private Timestamp lastUpdate;
+    //private String lastUpdatedBy;
     private int countryId;
 
-    public Province(int provinceId, String name, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
+    public Province(int provinceId, String name, int countryId) {
         this.provinceId = provinceId;
         this.name = name;
-        this.createDate = createDate;
+        /*this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
+        this.lastUpdatedBy = lastUpdatedBy;*/
         this.countryId = countryId;
+    }
+    public String toString(){
+        return this.name;
     }
     public int getProvinceId() {
         return provinceId;
@@ -36,7 +39,7 @@ public class Province {
         this.name = name;
     }
 
-    public Timestamp getCreateDate() {
+    /*public Timestamp getCreateDate() {
         return createDate;
     }
 
@@ -66,7 +69,7 @@ public class Province {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
-    }
+    }*/
 
     public int getCountryId() {
         return countryId;
