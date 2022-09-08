@@ -89,22 +89,24 @@ public class DBProvinces {
             throwables.printStackTrace();
         }
     }
-    public static void selectCustomer(int divisionId){
+    public static ObservableList<Province> selectProvince(int countryId){
+        ObservableList<Province> provinceList = FXCollections.observableArrayList();
         try {
-            String sqlQuery = "SELECT * FROM CUSTOMERS WHERE DIVISION_ID = ?";
+            String sqlQuery = "SELECT * FROM first_level_divisions WHERE country_id = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            preparedStatement.setInt(1, divisionId);
+            preparedStatement.setInt(1, countryId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-                int customerId = resultSet.getInt("Customer_ID");
-                String customerName = resultSet.getString("Customer_Name");
-                int divisionIdFK = resultSet.getInt("Division_ID");
-                System.out.println(customerId + " | " + customerName + " | " + divisionIdFK);
+                int provinceId = resultSet.getInt("Division_ID");
+                String provinceName = resultSet.getString("Division");
+                int countryIdFk = resultSet.getInt("Country_ID");
+                provinceList.add(new Province(provinceId, provinceName, countryIdFk));
             }
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
+        return provinceList;
     }
 
     /*public static void checkDateConversion(){

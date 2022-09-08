@@ -9,6 +9,7 @@ public class Country {
         this.id = id;
         this.name = name;
     }
+    @Override
     public String toString(){
         return String.valueOf(this.id) + " | " + this.name;
     }

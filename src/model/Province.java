@@ -20,6 +20,7 @@ public class Province {
         this.lastUpdatedBy = lastUpdatedBy;*/
         this.countryId = countryId;
     }
+    @Override
     public String toString(){
         return this.name;
     }

@@ -54,7 +54,7 @@
                   <TextField fx:id="addressText" />
                   <TextField fx:id="postalCodeText" />
                   <TextField fx:id="phoneNumberText" />
-                  <ComboBox fx:id="countryBox" prefHeight="25.0" prefWidth="167.0" />
+                  <ComboBox fx:id="countryBox" onAction="#onCountrySelection" prefHeight="25.0" prefWidth="167.0" promptText="Select a Country" />
                </children>
             </VBox>
          </children>
@@ -72,7 +72,7 @@
             </VBox>
             <VBox prefHeight="100.0" prefWidth="155.0">
                <children>
-                  <ComboBox fx:id="divisionBox" onAction="#onProvinceSelection" prefHeight="25.0" prefWidth="167.0" />
+                  <ComboBox fx:id="divisionBox" onAction="#onProvinceSelection" prefHeight="25.0" prefWidth="167.0" promptText="Select a Province" />
                </children>
             </VBox>
          </children>

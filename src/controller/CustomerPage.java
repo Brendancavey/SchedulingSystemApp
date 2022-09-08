@@ -26,7 +26,7 @@ public class CustomerPage implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         countryBox.setItems(DBCountries.getAllCountries());
-        divisionBox.setItems((DBProvinces.getAllProvinces()));
+       // divisionBox.setItems((DBProvinces.getAllProvinces()));
         System.out.println("Login page initialized!");
     }
 
@@ -40,12 +40,19 @@ public class CustomerPage implements Initializable {
     }
 
     public void onProvinceSelection(ActionEvent actionEvent) {
-        /*Country selectedCountry = (Country)countryBox.getSelectionModel().getSelectedItem();
-        if(selectedCountry.getId() == 1){
-            DivisionBox.setItems(DBProvinces.getAllProvinces());
+            //divisionBox.setItems(DBProvinces.getAllProvinces());
+    }
+
+    public void onCountrySelection(ActionEvent actionEvent) {
+        //Country selectedCountry = countryBox.getSelectionModel().getSelectedItem();
+        if (countryBox.getValue().getId() == 1) {
+            divisionBox.setItems(DBProvinces.selectProvince(1));
         }
-        else{
-            DivisionBox.setItems(null);
-        }*/
+        else if(countryBox.getValue().getId() == 2 ){
+            divisionBox.setItems(DBProvinces.selectProvince(2));
+        }
+        else if(countryBox.getValue().getId() == 3 ){
+            divisionBox.setItems(DBProvinces.selectProvince(3));
+        }
     }
 }

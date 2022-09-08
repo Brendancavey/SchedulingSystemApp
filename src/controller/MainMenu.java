@@ -40,17 +40,17 @@ public class MainMenu implements Initializable {
     public TableColumn userIdCol;
     //////////////////////////////////////////////////////////
     ///////////////CUSTOMERS TABLEVIEW/////////////////////////
-    public TableView customerTableView;
-    public TableColumn custId;
-    public TableColumn custName;
-    public TableColumn custAddress;
-    public TableColumn custPostalCode;
-    public TableColumn custPhoneNumber;
-    public TableColumn custCreateDate;
-    public TableColumn custCreateBy;
-    public TableColumn custLastUpdate;
-    public TableColumn custLastUpdateBy;
-    public TableColumn custProvinceId;
+    public TableView<Customer> customerTableView;
+    public TableColumn<Customer, Integer> custId;
+    public TableColumn<Customer, String> custName;
+    public TableColumn<Customer, String> custAddress;
+    public TableColumn<Customer, String> custPostalCode;
+    public TableColumn<Customer, String> custPhoneNumber;
+    public TableColumn<Customer, String> custCreateDate;
+    public TableColumn<Customer, String> custCreateBy;
+    public TableColumn<Customer, String> custLastUpdate;
+    public TableColumn<Customer, String> custLastUpdateBy;
+    public TableColumn<Customer, Integer> custProvinceId;
     //////////////////////////////////////////////////////////
     //////////////VIEWBY RADIO BUTTONS///////////////////////
     public RadioButton viewCustomers;
@@ -91,11 +91,11 @@ public class MainMenu implements Initializable {
         }
         ////////////////////////////////////
         customerTableView.setItems(DBCustomers.getAllCustomers());
-        //custId.setCellFactory(new PropertyValueFactory<>("Id"));
-        //custName.setCellFactory(new PropertyValueFactory<>("name"));
-        //custAddress.setCellFactory(new PropertyValueFactory<>("address"));
-        //custPostalCode.setCellFactory(new PropertyValueFactory<>("postalCode"));
-        //custProvinceId.setCellFactory(new PropertyValueFactory<>("provinceId"));
+        custId.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        custName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        custAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        custPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        custProvinceId.setCellValueFactory(new PropertyValueFactory<>("provinceId"));
     }
 
     ///////////////////////BUTTONS//////////////////////////////////////////////
@@ -134,6 +134,8 @@ public class MainMenu implements Initializable {
         modifyButton.setText("Modify Customer");
         deleteButton.setText("Delete Customer");
         customerTableView.setOpacity(1);
+        customerTableView.setDisable(false);
+        apptTableView.setDisable(true);
         apptTableView.setOpacity(0);
         viewByApptBox.setOpacity(0);
         Helper.viewAllCustomersToggle = true;
@@ -143,6 +145,8 @@ public class MainMenu implements Initializable {
         modifyButton.setText("Modify Appointment");
         deleteButton.setText("Delete Appointment");
         customerTableView.setOpacity(0);
+        customerTableView.setDisable(true);
+        apptTableView.setDisable(false);
         apptTableView.setOpacity(1);
         viewByApptBox.setOpacity(1);
         Helper.viewAllCustomersToggle = false;

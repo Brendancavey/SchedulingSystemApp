@@ -79,6 +79,7 @@
                   <ComboBox prefHeight="25.0" prefWidth="167.0" />
                   <ComboBox prefHeight="25.0" prefWidth="167.0" />
                   <DatePicker />
+                  <ComboBox fx:id="startTimeComboBox" layoutX="10.0" layoutY="304.0" prefHeight="25.0" prefWidth="167.0" promptText="Pick a start time" />
                </children>
             </VBox>
          </children>
@@ -99,9 +100,10 @@
                   </Label>
                </children>
             </VBox>
-            <VBox prefHeight="100.0" prefWidth="155.0">
+            <VBox prefHeight="100.0" prefWidth="155.0" spacing="15.0">
                <children>
                   <DatePicker prefHeight="25.0" prefWidth="147.0" />
+                  <ComboBox fx:id="endTimeComboBox" prefWidth="150.0" promptText="Pick an end time" />
                </children>
             </VBox>
          </children>
