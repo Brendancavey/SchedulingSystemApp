@@ -5,10 +5,7 @@ import DAO.DBCustomers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.Country;
@@ -61,6 +58,9 @@ public class MainMenu implements Initializable {
     public RadioButton viewApptWeek;
     public VBox viewByApptBox;
     /////////////////////////////////////////////////////
+    /////////////OTHER//////////////////////////////////
+    public Label timezoneText;
+    ////////////////////////////////////////////////////
 
 
     @Override
@@ -71,7 +71,7 @@ public class MainMenu implements Initializable {
         else{
             viewAppointments.fire();
         }
-
+        timezoneText.setText(Helper.getTimeZone());
         System.out.println("Login page initialized!");
         /////////////////TESTING//////////////
         ObservableList<Country> countryList = DBCountries.getAllCountries();
@@ -123,7 +123,6 @@ public class MainMenu implements Initializable {
     }
     //////////////////////////////////////////////////////////////////////////
     /////////////////////////RADIO BUTTONS///////////////////////////////////
-
     public void onViewAllCustomers(ActionEvent actionEvent) {
         addButton.setText("Add Customer");
         modifyButton.setText("Modify Customer");
@@ -133,7 +132,6 @@ public class MainMenu implements Initializable {
         viewByApptBox.setOpacity(0);
         Helper.viewAllCustomersToggle = true;
     }
-
     public void onViewAppointments(ActionEvent actionEvent) {
         addButton.setText("Add Appointment");
         modifyButton.setText("Modify Appointment");

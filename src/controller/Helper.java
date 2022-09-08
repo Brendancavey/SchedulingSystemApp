@@ -8,11 +8,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.ZoneId;
 
+///////////HELPER METHODS////////////////////
 public class Helper {
     public static boolean viewAllCustomersToggle = false;
 
-    ///////////HELPER METHODS////////////////////
+
+    //////////////SWITCHING BETWEEN SCENES/////////////////////////////
     public static void goToMainMenu(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Helper.class.getResource("/view/MainMenu.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -61,6 +64,12 @@ public class Helper {
         stage.setTitle("Reports Page");
         stage.setScene(new Scene(root, 800, 800));
         stage.show();
+    }
+    /////////////////////////////////////////////////////////////////////////
+    ////////////////////DISPLAYING TIMEZONE////////////////////////////////
+    public static String getTimeZone(){
+        String timeZone = String.valueOf(ZoneId.systemDefault());
+        return timeZone;
     }
 
 

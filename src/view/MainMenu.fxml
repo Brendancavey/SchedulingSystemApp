@@ -102,6 +102,6 @@
         </columns>
       </TableView>
       <Label layoutX="690.0" layoutY="469.0" text="Your Time Zone:" />
-      <Label layoutX="785.0" layoutY="469.0" prefHeight="17.0" prefWidth="110.0" text="America" />
+      <Label fx:id="timezoneText" layoutX="785.0" layoutY="469.0" prefHeight="17.0" prefWidth="206.0" text="America" />
    </children>
 </AnchorPane>

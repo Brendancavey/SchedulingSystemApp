@@ -42,7 +42,7 @@
    <bottom>
       <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" spacing="15.0" BorderPane.alignment="BOTTOM_RIGHT">
          <children>
-            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="64.0" prefWidth="105.0" spacing="10.0">
                <children>
                   <Label prefHeight="29.0" prefWidth="90.0" text="Language" textAlignment="RIGHT">
                      <font>
@@ -56,15 +56,18 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="104.0" prefWidth="160.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" prefHeight="104.0" prefWidth="160.0" spacing="12.0">
                <children>
                   <ComboBox fx:id="languageChoice" prefWidth="150.0" />
                   <Label fx:id="timezoneText" text="Label">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
                </children>
+               <HBox.margin>
+                  <Insets top="4.0" />
+               </HBox.margin>
             </VBox>
          </children>
          <BorderPane.margin>
