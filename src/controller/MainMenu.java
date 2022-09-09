@@ -108,6 +108,11 @@ public class MainMenu implements Initializable {
     public void onModify(ActionEvent actionEvent) throws IOException {
         if(Helper.viewAllCustomersToggle) {
             Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+            //Since Country is not an object imported from the SQL database, need to set Country of the selected customer manually
+            //by matching the foreign keys to the corresponding Ids.
+            int selectedCustomerProvinceId = selectedCustomer.getProvince().getProvinceId(); //getting selection province id
+            int selectedCustomerCountryId = DBProvinces.selectCountryIdByProvinceId(selectedCustomerProvinceId); //using province id to get country id
+            selectedCustomer.setCountry(DBCountries.selectCountryById(selectedCustomerCountryId)); //setting country of selected customer to the matching country id
             System.out.println(selectedCustomer.getName());
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainMenu.class.getResource("/view/CustomerPage.fxml"));

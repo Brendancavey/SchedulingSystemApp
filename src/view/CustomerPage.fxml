@@ -49,7 +49,7 @@
             </VBox>
             <VBox prefHeight="483.0" prefWidth="168.0" spacing="17.0">
                <children>
-                  <TextField disable="true" promptText="Auto-Gen" />
+                  <TextField fx:id="idText" disable="true" promptText="Auto-Gen" />
                   <TextField fx:id="nameText" />
                   <TextField fx:id="addressText" />
                   <TextField fx:id="postalCodeText" />

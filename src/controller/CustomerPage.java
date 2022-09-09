@@ -17,13 +17,14 @@ import java.util.ResourceBundle;
 
 public class CustomerPage implements Initializable {
 
-
+    public TextField idText;
     public TextField nameText;
     public TextField addressText;
     public TextField postalCodeText;
     public TextField phoneNumberText;
     public ComboBox<Country> countryBox;
     public ComboBox<Province> divisionBox;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -38,10 +39,10 @@ public class CustomerPage implements Initializable {
         String address = addressText.getText();
         String postalCode = postalCodeText.getText();
         String phoneNumber = phoneNumberText.getText();
-        Country country = countryBox.getValue();
+        //Country country = countryBox.getValue();
         Province province = divisionBox.getValue();
         int provinceId = province.getProvinceId();
-        DBCustomers.insertCustomer(name, address, postalCode, phoneNumber, provinceId);
+        DBCustomers.insertCustomer(name, address, postalCode, phoneNumber, provinceId); //inserting customer into database
 
         Helper.goToMainMenu(actionEvent);
     }
@@ -69,10 +70,12 @@ public class CustomerPage implements Initializable {
     ///////////////////////////////////////////////////////////////
     ////////////////////HELPER METHODS FOR CUSTOMER PAGE///////////
     public void sendCustomerInformation(Customer customer){
+        idText.setText(String.valueOf(customer.getId()));
         nameText.setText(customer.getName());
         addressText.setText(customer.getAddress());
         postalCodeText.setText(customer.getPostalCode());
         phoneNumberText.setText(customer.getPhoneNumber());
-
+        countryBox.getSelectionModel().select(customer.getCountry());
+        divisionBox.getSelectionModel().select(customer.getProvince());
     }
 }

@@ -29,7 +29,23 @@ public class DBCountries {
         }
         return countriesList;
     }
-
+    public static Country selectCountryById(int countryId){
+        Country country = null;
+        try {
+            String sqlQuery = "SELECT * FROM Countries WHERE Country_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, countryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                int id = resultSet.getInt("Country_ID");
+                String countryeName = resultSet.getString("Country");
+                country = new Country(id, countryeName);
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return country;
+    }
     public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
         try{

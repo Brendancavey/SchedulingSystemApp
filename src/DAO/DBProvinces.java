@@ -126,6 +126,22 @@ public class DBProvinces {
         }
         return province;
     }
+    public static int selectCountryIdByProvinceId(int provinceId){
+        int countryIdFk = 0;
+        try {
+            String sqlQuery = "SELECT Country_ID FROM first_level_divisions WHERE Division_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, provinceId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                countryIdFk = resultSet.getInt("Country_ID");
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return countryIdFk;
+    }
+
 
     /*public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
