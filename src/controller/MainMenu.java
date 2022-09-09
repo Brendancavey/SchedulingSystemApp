@@ -50,7 +50,7 @@ public class MainMenu implements Initializable {
     public TableColumn<Customer, String> custCreateBy;
     public TableColumn<Customer, String> custLastUpdate;
     public TableColumn<Customer, String> custLastUpdateBy;
-    public TableColumn<Customer, Integer> custProvinceId;
+    public TableColumn<Customer, Integer> custProvince;
     //////////////////////////////////////////////////////////
     //////////////VIEWBY RADIO BUTTONS///////////////////////
     public RadioButton viewCustomers;
@@ -83,7 +83,7 @@ public class MainMenu implements Initializable {
         DBCountries.checkDateConversion();
         ObservableList<Customer> customerslist = DBCustomers.getAllCustomers();
         for(Customer c: customerslist){
-            System.out.println(c.getName() + " " + c.getProvinceId());
+            System.out.println(c.getName());
         }
         ObservableList<Province> provinceList = DBProvinces.getAllProvinces();
         for(Province p: provinceList){
@@ -95,7 +95,7 @@ public class MainMenu implements Initializable {
         custName.setCellValueFactory(new PropertyValueFactory<>("name"));
         custAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         custPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        custProvinceId.setCellValueFactory(new PropertyValueFactory<>("provinceId"));
+        custProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
     }
 
     ///////////////////////BUTTONS//////////////////////////////////////////////

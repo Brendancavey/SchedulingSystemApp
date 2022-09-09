@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
 import model.Customer;
+import model.Province;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +27,8 @@ public class DBCustomers {
                 int provinceId = resultSet.getInt("Division_ID");
 
 
-                Customer newCustomer = new Customer(customerId, customerName, address, postalCode, phoneNumber, provinceId);
+                Province customerProvince = DBProvinces.selectProvinceById(provinceId);
+                Customer newCustomer = new Customer(customerId, customerName, address, postalCode, phoneNumber, customerProvince);
                 customersList.add(newCustomer);
             }
         }catch (SQLException throwables){

@@ -108,6 +108,24 @@ public class DBProvinces {
         }
         return provinceList;
     }
+    public static Province selectProvinceById(int provinceId){
+        Province province = null;
+        try {
+            String sqlQuery = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, provinceId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                int id = resultSet.getInt("Division_ID");
+                String provinceName = resultSet.getString("Division");
+                int countryIdFk = resultSet.getInt("Country_ID");
+                province = new Province(provinceId, provinceName, countryIdFk);
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return province;
+    }
 
     /*public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query

@@ -32,6 +32,10 @@ public class CustomerPage implements Initializable {
 
 
     public void onSave(ActionEvent actionEvent) throws IOException {
+        String name = nameText.getText();
+        String address = addressText.getText();
+        String postalCode = postalCodeText.getText();
+        String phoneNumber = phoneNumberText.getText();
         Helper.goToMainMenu(actionEvent);
     }
 

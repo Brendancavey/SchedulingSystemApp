@@ -84,7 +84,7 @@
             <TableColumn fx:id="custCreateBy" prefWidth="72.0" text="Created By" />
             <TableColumn fx:id="custLastUpdate" minWidth="3.0" text="Last Update" />
             <TableColumn fx:id="custLastUpdateBy" prefWidth="100.0" text="Last Updated By" />
-            <TableColumn fx:id="custProvinceId" prefWidth="67.0" text="ProvinceID" />
+            <TableColumn fx:id="custProvince" prefWidth="67.0" text="Province" />
         </columns>
       </TableView>
       <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="852.0">
