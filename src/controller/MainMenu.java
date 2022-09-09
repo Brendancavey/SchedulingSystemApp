@@ -97,6 +97,7 @@ public class MainMenu implements Initializable {
     ///////////////////////BUTTONS//////////////////////////////////////////////
     public void onAdd(ActionEvent actionEvent) throws IOException {
         if (Helper.viewAllCustomersToggle) {
+            Helper.userClickedAddCustomer = true; //determining which button user clicked since customer page is the same for add and modify.
             Helper.goToAddCustomer(actionEvent);
         }
         else{
@@ -107,25 +108,28 @@ public class MainMenu implements Initializable {
 
     public void onModify(ActionEvent actionEvent) throws IOException {
         if(Helper.viewAllCustomersToggle) {
+            ///////////////////PREPARING SELECTED CUSTOMER INFORMATION///////////////////////
             Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
             //Since Country is not an object imported from the SQL database, need to set Country of the selected customer manually
             //by matching the foreign keys to the corresponding Ids.
             int selectedCustomerProvinceId = selectedCustomer.getProvince().getProvinceId(); //getting selection province id
             int selectedCustomerCountryId = DBProvinces.selectCountryIdByProvinceId(selectedCustomerProvinceId); //using province id to get country id
             selectedCustomer.setCountry(DBCountries.selectCountryById(selectedCustomerCountryId)); //setting country of selected customer to the matching country id
-            System.out.println(selectedCustomer.getName());
+            ////////////////////////////////////////////////////////////////////////////////////
+            ///////////////GETTING CustomerPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE///////
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainMenu.class.getResource("/view/CustomerPage.fxml"));
             loader.load();
             CustomerPage customerPageController = loader.getController();
             customerPageController.sendCustomerInformation(selectedCustomer);
-            //Helper.goToModifyCustomer(actionEvent);
-            //Go to modify customer page
+            ////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////SETTING SCENE TO MODIFY CUSTOMER PAGE////////////////////////////
             Parent root = loader.getRoot();
             Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             stage.setTitle("Modify Customer");
             stage.setScene(new Scene(root, 600, 450));
             stage.show();
+            ///////////////////////////////////////////////////////////////////////////////
         }
         else{
             Helper.goToModifyAppointment(actionEvent);

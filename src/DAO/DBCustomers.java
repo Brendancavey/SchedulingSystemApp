@@ -54,13 +54,17 @@ public class DBCustomers {
         }
         return rowsAffected;
     }
-    public static int updateCustomer(int custId, String custName){
+    public static int updateCustomer(int custId, String custName, String address, String postalCode, String phoneNumber, int provinceID){
         int rowsAffected = 0;
         try {
-            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ? WHERE Customer_ID = ?";
+            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setString(1, custName);
-            preparedStatement.setInt(2, custId);
+            preparedStatement.setString(2, address);
+            preparedStatement.setString(3, postalCode);
+            preparedStatement.setString(4, phoneNumber);
+            preparedStatement.setInt(5, provinceID);
+            preparedStatement.setInt(6, custId);
             rowsAffected = preparedStatement.executeUpdate();
         }catch (SQLException throwables){
             throwables.printStackTrace();

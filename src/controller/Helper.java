@@ -17,6 +17,7 @@ import java.util.Locale;
 public class Helper {
     //////////////////STATIC VARIABLES/////////////////////
     public static boolean viewAllCustomersToggle = false;
+    public static boolean userClickedAddCustomer = false;
     public static Locale french = new Locale("fr", "FR");
     public static Locale english = new Locale("en", "US");
     public static Locale language = english;
