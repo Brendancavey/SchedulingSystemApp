@@ -27,7 +27,7 @@ public class DBCustomers {
                 int provinceId = resultSet.getInt("Division_ID");
 
 
-                Province customerProvince = DBProvinces.selectProvinceById(provinceId);
+                Province customerProvince = DBProvinces.selectProvinceById(provinceId); //getting province from province id
                 Customer newCustomer = new Customer(customerId, customerName, address, postalCode, phoneNumber, customerProvince);
                 customersList.add(newCustomer);
             }

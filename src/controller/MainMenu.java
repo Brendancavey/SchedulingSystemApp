@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.DBAppointments;
 import DAO.DBCountries;
 import DAO.DBCustomers;
 import DAO.DBProvinces;
@@ -92,6 +93,25 @@ public class MainMenu implements Initializable {
         custPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         custProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
         /////////////////////////////////////////////////////////////////////////////
+        ///////////SETTING UP APPOINTMENT TABLEVIEW///////////////////////////////
+        apptTableView.setItems(DBAppointments.getAllAppointments());
+        apptIdCol.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        custIdCol.setCellValueFactory(new PropertyValueFactory<>("custId"));
+        userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        /////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
     }
 
     ///////////////////////BUTTONS//////////////////////////////////////////////

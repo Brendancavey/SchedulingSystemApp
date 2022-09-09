@@ -89,16 +89,16 @@
       </TableView>
       <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="852.0">
         <columns>
-          <TableColumn fx:id="apptIdCol" prefWidth="75.0" text="Appt ID" />
-          <TableColumn fx:id="titleCol" prefWidth="75.0" text="Title" />
-            <TableColumn fx:id="descriptionCol" prefWidth="88.0" text="Description" />
-            <TableColumn fx:id="locationCol" prefWidth="62.0" text="Location" />
-            <TableColumn fx:id="contactCol" prefWidth="75.0" text="Contact" />
-            <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
-            <TableColumn fx:id="startDateCol" prefWidth="75.0" text="Start" />
-            <TableColumn fx:id="endDateCol" prefWidth="75.0" text="End" />
-            <TableColumn fx:id="custIdCol" prefWidth="75.0" text="Customer ID" />
-            <TableColumn fx:id="userIdCol" prefWidth="75.0" text="User ID" />
+          <TableColumn fx:id="apptIdCol" prefWidth="52.0" text="Appt ID" />
+          <TableColumn fx:id="titleCol" prefWidth="66.0" text="Title" />
+            <TableColumn fx:id="descriptionCol" prefWidth="73.0" text="Description" />
+            <TableColumn fx:id="locationCol" prefWidth="60.0" text="Location" />
+            <TableColumn fx:id="contactCol" prefWidth="97.0" text="Contact" />
+            <TableColumn fx:id="typeCol" prefWidth="103.0" text="Type" />
+            <TableColumn fx:id="startDateCol" prefWidth="118.0" text="Start" />
+            <TableColumn fx:id="endDateCol" prefWidth="132.0" text="End" />
+            <TableColumn fx:id="custIdCol" minWidth="0.0" text="Customer ID" />
+            <TableColumn fx:id="userIdCol" prefWidth="66.0" text="User ID" />
         </columns>
       </TableView>
       <Label layoutX="690.0" layoutY="469.0" text="Your Time Zone:" />
