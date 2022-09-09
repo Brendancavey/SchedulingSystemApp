@@ -5,10 +5,15 @@ import DAO.DBCustomers;
 import DAO.DBProvinces;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.Country;
 import model.Customer;
 import model.Province;
@@ -67,57 +72,70 @@ public class MainMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ////////////////CHECKING FOR TOGGLE VIEW///////////////
         if (Helper.viewAllCustomersToggle){
             viewCustomers.fire();
         }
         else{
             viewAppointments.fire();
         }
+        /////////////////////////////////////////////////////
+        //////////////DISPLAYING TIMEZONE////////////////
         timezoneText.setText(Helper.getTimeZone());
-        System.out.println("Login page initialized!");
-        /////////////////TESTING//////////////
-        ObservableList<Country> countryList = DBCountries.getAllCountries();
-        for (Country C: countryList){
-            System.out.println(C.getName());
-        }
-        DBCountries.checkDateConversion();
-        ObservableList<Customer> customerslist = DBCustomers.getAllCustomers();
-        for(Customer c: customerslist){
-            System.out.println(c.getName());
-        }
-        ObservableList<Province> provinceList = DBProvinces.getAllProvinces();
-        for(Province p: provinceList){
-            System.out.println(p.getName());
-        }
-        ////////////////////////////////////
+        ////////////////////////////////////////////////
+        /////////////////SETTING UP CUSTOMER TABLEVIEW///////////////////////////
         customerTableView.setItems(DBCustomers.getAllCustomers());
         custId.setCellValueFactory(new PropertyValueFactory<>("Id"));
         custName.setCellValueFactory(new PropertyValueFactory<>("name"));
         custAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         custPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        custPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         custProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
+        /////////////////////////////////////////////////////////////////////////////
     }
 
     ///////////////////////BUTTONS//////////////////////////////////////////////
     public void onAdd(ActionEvent actionEvent) throws IOException {
-        if (!Helper.viewAllCustomersToggle) {
-            Helper.goToAddAppointment(actionEvent);
+        if (Helper.viewAllCustomersToggle) {
+            Helper.goToAddCustomer(actionEvent);
         }
         else{
-            Helper.goToAddCustomer(actionEvent);
+
+            Helper.goToAddAppointment(actionEvent);
         }
     }
 
     public void onModify(ActionEvent actionEvent) throws IOException {
-        if(!Helper.viewAllCustomersToggle) {
-            Helper.goToModifyAppointment(actionEvent);
+        if(Helper.viewAllCustomersToggle) {
+            Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+            System.out.println(selectedCustomer.getName());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainMenu.class.getResource("/view/CustomerPage.fxml"));
+            loader.load();
+            CustomerPage customerPageController = loader.getController();
+            customerPageController.sendCustomerInformation(selectedCustomer);
+            //Helper.goToModifyCustomer(actionEvent);
+            //Go to modify customer page
+            Parent root = loader.getRoot();
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            stage.setTitle("Modify Customer");
+            stage.setScene(new Scene(root, 600, 450));
+            stage.show();
         }
         else{
-            Helper.goToModifyCustomer(actionEvent);
+            Helper.goToModifyAppointment(actionEvent);
         }
     }
 
     public void onDelete(ActionEvent actionEvent) {
+        if(Helper.viewAllCustomersToggle){
+            Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem(); //getting selected customer from tableview
+            DBCustomers.deleteCustomer((selectedCustomer.getId())); //deleting customer from the database
+            customerTableView.setItems(DBCustomers.getAllCustomers()); //updating the table view
+        }
+        else if(!Helper.viewAllCustomersToggle){ //if the toggle is set to view all appointments, then the delete button deletes from appointment view table
+            System.out.println("No appointment to delete");
+        }
     }
 
     public void onReport(ActionEvent actionEvent) throws IOException{

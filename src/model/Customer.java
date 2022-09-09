@@ -6,6 +6,7 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phoneNumber;
+    private Country country;
     private Province province;
 
     public Customer(int id, String name, String address, String postalCode, String phoneNumber, Province province){
@@ -57,6 +58,13 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
     public Province getProvince() {
         return province;
     }

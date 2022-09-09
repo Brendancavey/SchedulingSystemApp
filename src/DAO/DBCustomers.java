@@ -37,13 +37,16 @@ public class DBCustomers {
         return customersList;
     }
 
-    public static int insertCustomer(String customerName, int provinceId){
+    public static int insertCustomer(String customerName, String address, String postalCode, String phoneNumber, int provinceId){
         int rowsAffected = 0;
         try {
-            String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Division_Id) Values(?, ?)";
+            String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_Id) Values(?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setString(1, customerName);
-            preparedStatement.setInt(2, provinceId);
+            preparedStatement.setString(2, address);
+            preparedStatement.setString(3, postalCode);
+            preparedStatement.setString(4, phoneNumber);
+            preparedStatement.setInt(5, provinceId);
             rowsAffected = preparedStatement.executeUpdate();
 
         }catch (SQLException throwables){

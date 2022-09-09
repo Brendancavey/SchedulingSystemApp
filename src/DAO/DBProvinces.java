@@ -89,7 +89,7 @@ public class DBProvinces {
             throwables.printStackTrace();
         }
     }
-    public static ObservableList<Province> selectProvince(int countryId){
+    public static ObservableList<Province> selectProvinceByCountryId(int countryId){
         ObservableList<Province> provinceList = FXCollections.observableArrayList();
         try {
             String sqlQuery = "SELECT * FROM first_level_divisions WHERE country_id = ?";

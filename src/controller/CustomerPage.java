@@ -1,12 +1,14 @@
 package controller;
 
 import DAO.DBCountries;
+import DAO.DBCustomers;
 import DAO.DBProvinces;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.Country;
+import model.Customer;
 import model.Province;
 
 import java.io.IOException;
@@ -36,6 +38,11 @@ public class CustomerPage implements Initializable {
         String address = addressText.getText();
         String postalCode = postalCodeText.getText();
         String phoneNumber = phoneNumberText.getText();
+        Country country = countryBox.getValue();
+        Province province = divisionBox.getValue();
+        int provinceId = province.getProvinceId();
+        DBCustomers.insertCustomer(name, address, postalCode, phoneNumber, provinceId);
+
         Helper.goToMainMenu(actionEvent);
     }
 
@@ -48,15 +55,24 @@ public class CustomerPage implements Initializable {
     }
 
     public void onCountrySelection(ActionEvent actionEvent) {
-        //Country selectedCountry = countryBox.getSelectionModel().getSelectedItem();
+        //showing only provinces within their region
         if (countryBox.getValue().getId() == 1) {
-            divisionBox.setItems(DBProvinces.selectProvince(1));
+            divisionBox.setItems(DBProvinces.selectProvinceByCountryId(1));
         }
         else if(countryBox.getValue().getId() == 2 ){
-            divisionBox.setItems(DBProvinces.selectProvince(2));
+            divisionBox.setItems(DBProvinces.selectProvinceByCountryId(2));
         }
         else if(countryBox.getValue().getId() == 3 ){
-            divisionBox.setItems(DBProvinces.selectProvince(3));
+            divisionBox.setItems(DBProvinces.selectProvinceByCountryId(3));
         }
+    }
+    ///////////////////////////////////////////////////////////////
+    ////////////////////HELPER METHODS FOR CUSTOMER PAGE///////////
+    public void sendCustomerInformation(Customer customer){
+        nameText.setText(customer.getName());
+        addressText.setText(customer.getAddress());
+        postalCodeText.setText(customer.getPostalCode());
+        phoneNumberText.setText(customer.getPhoneNumber());
+
     }
 }

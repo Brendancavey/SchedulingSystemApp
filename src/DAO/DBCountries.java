@@ -3,6 +3,7 @@ package DAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
+import model.Province;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
