@@ -2,6 +2,7 @@ package main;
 
 import DAO.DBConnection;
 import DAO.DBCustomers;
+import controller.Helper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +26,10 @@ public class Main extends Application{
 
     public static void main(String[] args){
         DBConnection.openConnection();
+        ///////////////ADDING SUPPORTED LANGUAGES TO LANGUAGE LIST//////////////////
+        Helper.languageList.add(Helper.english);
+        Helper.languageList.add(Helper.french);
+        //////////////////////////////////////////////////////////////////////////////
         /*int rowsAffected = DBCustomers.insertCustomer("Bear", 5);
         System.out.println(rowsAffected);
         int rowsaffected = DBCustomers.updateCustomer(1, "Woobert");

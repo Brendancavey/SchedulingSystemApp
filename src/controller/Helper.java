@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,10 +11,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.Locale;
 
 ///////////HELPER METHODS////////////////////
 public class Helper {
+    //////////////////STATIC VARIABLES/////////////////////
     public static boolean viewAllCustomersToggle = false;
+    public static Locale french = new Locale("fr", "FR");
+    public static Locale english = new Locale("en", "US");
+    public static Locale language = english;
+    public static ObservableList<Locale> languageList = FXCollections.observableArrayList();
+    ////////////////////////////////////////////////////////
 
 
     //////////////SWITCHING BETWEEN SCENES/////////////////////////////
