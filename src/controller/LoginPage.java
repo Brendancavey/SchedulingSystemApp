@@ -1,10 +1,12 @@
 package controller;
 
+import DAO.DBUsers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,10 +49,26 @@ public class LoginPage implements Initializable {
     }
 
     public void onReset(ActionEvent actionEvent) {
+        usernameTextfield.clear();
+        passwordTextfield.clear();
     }
 
     public void onLogin(ActionEvent actionEvent) throws IOException {
-        Helper.goToMainMenu(actionEvent);
+        ObservableList<User> usersList = DBUsers.getAllUsers();
+        boolean loginSuccessful = false;
+        //iterate through entire users list to see if user exist
+        for(User users : usersList){
+            //if the name and password text field matches what is contained in the user object, then login successful
+            if (usernameTextfield.getText().equals(users.getUserName()) && passwordTextfield.getText().equals(users.getPassword())){
+                System.out.println("Login successful");
+                loginSuccessful = true;
+                Helper.goToMainMenu(actionEvent);
+                break;
+            }
+        }
+        if(loginSuccessful == false){
+            System.out.println("Login unsuccessful.");
+        }
     }
 
 

@@ -45,9 +45,9 @@ public class CustomerPage implements Initializable {
         if (Helper.userClickedAddCustomer) { //if user clicked on add Customer from the main menu page, then insert customer into data base
             DBCustomers.insertCustomer(name, address, postalCode, phoneNumber, provinceId); //inserting customer into database
         }
-        else if (!Helper.userClickedAddCustomer){ //else the user must have clicked on modify customer, therefore userClickedAddCustomer is false
+        else{ //else the user must have clicked on modify customer, therefore userClickedAddCustomer is false
             int customerId = Integer.valueOf(idText.getText());
-            DBCustomers.updateCustomer(customerId, name, address, postalCode, phoneNumber, provinceId);
+            DBCustomers.updateCustomer(customerId, name, address, postalCode, phoneNumber, provinceId); //updating customer
         }
         //whatever the result of userClickedAddCustomer, set value back to false (default)
         Helper.userClickedAddCustomer = false;
@@ -66,7 +66,6 @@ public class CustomerPage implements Initializable {
         //on country selection, make sure to selectFirst. Since the control flow statement
         //comes after selectFirst, then selectingFirst is empty. Using clear() was not working
         divisionBox.getSelectionModel().selectFirst();
-        System.out.println("HEllo?");
         //showing only provinces within their region
         if (countryBox.getValue().getId() == 1) {
             divisionBox.setItems(DBProvinces.selectProvinceByCountryId(1));

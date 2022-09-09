@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 ///////////HELPER METHODS////////////////////
 public class Helper {
@@ -22,6 +24,7 @@ public class Helper {
     public static Locale english = new Locale("en", "US");
     public static Locale language = english;
     public static ObservableList<Locale> languageList = FXCollections.observableArrayList();
+
     ////////////////////////////////////////////////////////
 
 
