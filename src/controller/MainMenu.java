@@ -4,6 +4,7 @@ import DAO.DBAppointments;
 import DAO.DBCountries;
 import DAO.DBCustomers;
 import DAO.DBProvinces;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,12 +16,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Appointment;
 import model.Country;
 import model.Customer;
 import model.Province;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ResourceBundle;
 
 public class MainMenu implements Initializable {
@@ -58,13 +63,14 @@ public class MainMenu implements Initializable {
     public TableColumn<Customer, String> custLastUpdateBy;
     public TableColumn<Customer, Integer> custProvince;
     //////////////////////////////////////////////////////////
-    //////////////VIEWBY RADIO BUTTONS///////////////////////
+    //////////////VIEWBY OPTIONS///////////////////////
     public RadioButton viewCustomers;
     public RadioButton viewAppointments;
     public RadioButton viewApptAll;
     public RadioButton viewApptMonth;
     public RadioButton viewApptWeek;
     public VBox viewByApptBox;
+    public DatePicker displayByCalendarPicker;
     /////////////////////////////////////////////////////
     /////////////OTHER//////////////////////////////////
     public Label timezoneText;
@@ -193,12 +199,52 @@ public class MainMenu implements Initializable {
     }
 
     public void onViewByWeek(ActionEvent actionEvent) {
+        displayByCalendarPicker.setValue(LocalDate.now()); //setting value of calendar picker to current day
+        displayByCalendarPicker.setOpacity(1); //making widget visible
+        displayByCalendarPicker.setDisable(false); //making widget usable
+        int currentDateWeek = (LocalDate.now().getDayOfMonth())/7; //divide day of month by 7 to get week of month
+        System.out.println(currentDateWeek);
     }
 
     public void onViewByMonth(ActionEvent actionEvent) {
+        displayByCalendarPicker.setValue(LocalDate.now()); //setting value of calendar picker to current day
+        displayByCalendarPicker.setOpacity(1); //making widget visible
+        displayByCalendarPicker.setDisable(false); //making widget usable
+
+        apptTableView.setItems(filterApptByMonth()); //set appt table view to the filtered list
     }
 
     public void onViewAll(ActionEvent actionEvent) {
+        displayByCalendarPicker.setOpacity(0); //making widget invisible
+        displayByCalendarPicker.setDisable(true); //making widget unusable
+        apptTableView.setItems(DBAppointments.getAllAppointments()); //set appt table view to all appointments
+    }
+
+    public void onSelectViewByDate(ActionEvent actionEvent) {
+        if(viewApptMonth.isSelected()){ //if view by month, then filter by month
+            apptTableView.setItems(filterApptByMonth()); //set appt table view to the selected month
+        }
+        else if (viewApptWeek.isSelected()){//else if view by week, filter by week
+
+        }
+        else{ //else the toggle must be set to view all
+
+        }
     }
     //////////////////////////////////////////////////////////////////////
+    ///////////////////HELPER METHODS///////////////////////////////////
+    public ObservableList<Appointment> filterApptByMonth(){
+        //this method is used twice within onSelectViewByDate, and onViewByMonth.
+        //Placed into method to reduce redundancy.
+        Month selectedDateMonth = displayByCalendarPicker.getValue().getMonth(); //getting selected month
+        ObservableList<Appointment> appointmentList = DBAppointments.getAllAppointments(); //getting all appointments
+        ObservableList<Appointment> filteredAppointmentList = FXCollections.observableArrayList(); //initializing filtered appointment list
+        //iterate through all appointments and add to filtered appointment list the appointment where the start date month matches the selected month
+        for (Appointment appointment: appointmentList){
+            if(appointment.getStartDate().getMonth() == selectedDateMonth){
+                filteredAppointmentList.add(appointment);
+            }
+        }
+        return filteredAppointmentList;
+    }
 }

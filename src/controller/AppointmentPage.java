@@ -95,5 +95,6 @@ public class AppointmentPage implements Initializable {
     }
 
     public void onStartDateSelection(ActionEvent actionEvent) {
+        endDatePicker.setValue(startDatePicker.getValue());
     }
 }

@@ -69,4 +69,38 @@ public class DBAppointments {
             throwables.printStackTrace();
         }
     }
+    public static ObservableList<Appointment> selectAppointmentByThisMonth(LocalDateTime dateTime){
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        Timestamp dateTimeStamp = Timestamp.valueOf(dateTime);
+        try {
+            String sqlQuery = "SELECT * FROM APPOINTMENTS WHERE START = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setTimestamp(1, dateTimeStamp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int appointmentId = resultSet.getInt("Appointment_ID");
+                String title = resultSet.getString("Title");
+                String description = resultSet.getString("Description");
+                String location = resultSet.getString("Location");
+                String type = resultSet.getString("Type");
+                Timestamp startDate = resultSet.getTimestamp("Start"); //getting timestamp from database
+                LocalDateTime startDateLdt = startDate.toLocalDateTime(); //converting timestamp to local datetime
+                Timestamp endDate = resultSet.getTimestamp("End"); //getting timestamp from database
+                LocalDateTime endDateLdt = endDate.toLocalDateTime(); //converting timestamp to local datetime
+                int customerId = resultSet.getInt("Customer_ID");
+                int userId = resultSet.getInt("User_ID");
+                int contactId = resultSet.getInt("Contact_ID");
+
+
+                Contact contact = DBContacts.selectContactById(contactId); //getting contact from contact id
+                Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, startDateLdt, endDateLdt, customerId, userId, contact);
+                appointmentList.add(newAppointment);
+            }
+
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return appointmentList;
+    }
 }

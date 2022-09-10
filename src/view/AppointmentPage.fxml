@@ -102,8 +102,8 @@
             </VBox>
             <VBox prefHeight="100.0" prefWidth="155.0" spacing="15.0">
                <children>
-                  <DatePicker fx:id="endDatePicker" prefHeight="25.0" prefWidth="147.0" />
-                  <ComboBox fx:id="endTimeComboBox" prefWidth="150.0" promptText="Pick an end time" />
+                  <DatePicker fx:id="endDatePicker" disable="true" prefHeight="25.0" prefWidth="147.0" promptText="Auto-Select" />
+                  <ComboBox fx:id="endTimeComboBox" disable="true" prefWidth="150.0" promptText="Auto-Select" />
                </children>
             </VBox>
          </children>
