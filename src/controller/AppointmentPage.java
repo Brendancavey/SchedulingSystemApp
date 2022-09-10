@@ -34,7 +34,9 @@ public class AppointmentPage implements Initializable {
     public ComboBox<LocalTime> endTimeComboBox;
     public LocalTime start;
 
-
+    /** LOGICAL ERROR: When initializing the start time options, start time could equal the end time. Since you
+     * can't make an appointment at closing of an establishment, I corrected this by making a condition where
+     * the start time increments get added if the start time does not equal the end time, within 30 min intervals.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Appointment Page initialized!");
@@ -85,7 +87,10 @@ public class AppointmentPage implements Initializable {
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Helper.goToMainMenu(actionEvent);
     }
-
+    /** LOGICAL ERROR: When selecting a start time, the user could still select an end time that occurs previous
+     * to the start time. To correct this, I verified that the end time must be 30 mins after the start time by
+     * only adding that option. I solidified this condition by disabling the end time drop down menu so that the user
+     * cannot change it.*/
     public void onStartTimeSelection(ActionEvent actionEvent) {
         //appointments are 30 minute intervals. End time is chosen automatically after start time box is chosen.
         endTimeComboBox.getItems().clear(); //clear choice selection

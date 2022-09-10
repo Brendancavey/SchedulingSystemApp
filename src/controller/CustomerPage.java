@@ -61,7 +61,9 @@ public class CustomerPage implements Initializable {
     public void onProvinceSelection(ActionEvent actionEvent) {
         //divisionBox.setItems(DBProvinces.getAllProvinces());
     }
-
+    /** LOGICAL ERROR: When selecting a country, all provinces were still showing in the province drop down menu. To
+     * correct this, I made a control flow statement to check for which provinces belonged to the selected country,
+     * and set the drop down menu to only display those provinces.*/
     public void onCountrySelection(ActionEvent actionEvent) {
         //on country selection, make sure to selectFirst. Since the control flow statement
         //comes after selectFirst, then selectingFirst is empty. Using clear() was not working

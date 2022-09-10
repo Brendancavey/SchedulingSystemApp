@@ -26,6 +26,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Year;
 import java.util.ResourceBundle;
 
 public class MainMenu implements Initializable {
@@ -233,15 +234,20 @@ public class MainMenu implements Initializable {
     }
     //////////////////////////////////////////////////////////////////////
     ///////////////////HELPER METHODS///////////////////////////////////
+    /** LOIGCAL ERROR: When adding to the filtered list, appointments with the same month but different year were being
+     * added to the filtered list. To correct this, I made another comparator to the selected year to verify the month selected year matches with
+     * the appointment year and month*/
     public ObservableList<Appointment> filterApptByMonth(){
         //this method is used twice within onSelectViewByDate, and onViewByMonth.
         //Placed into method to reduce redundancy.
+        int selectedDateYear = displayByCalendarPicker.getValue().getYear(); //getting selected year
         Month selectedDateMonth = displayByCalendarPicker.getValue().getMonth(); //getting selected month
         ObservableList<Appointment> appointmentList = DBAppointments.getAllAppointments(); //getting all appointments
         ObservableList<Appointment> filteredAppointmentList = FXCollections.observableArrayList(); //initializing filtered appointment list
         //iterate through all appointments and add to filtered appointment list the appointment where the start date month matches the selected month
+        //and the start date year matches the selected year
         for (Appointment appointment: appointmentList){
-            if(appointment.getStartDate().getMonth() == selectedDateMonth){
+            if(appointment.getStartDate().getMonth() == selectedDateMonth && appointment.getStartDate().getYear() == selectedDateYear){
                 filteredAppointmentList.add(appointment);
             }
         }
