@@ -106,14 +106,7 @@ public class MainMenu implements Initializable {
         custIdCol.setCellValueFactory(new PropertyValueFactory<>("custId"));
         userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         /////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
     }
-
     ///////////////////////BUTTONS//////////////////////////////////////////////
     public void onAdd(ActionEvent actionEvent) throws IOException {
         if (Helper.viewAllCustomersToggle) {
@@ -121,7 +114,7 @@ public class MainMenu implements Initializable {
             Helper.goToAddCustomer(actionEvent);
         }
         else{
-
+            Helper.userClickedAddAppointment= true; //determining which button user clicked since appointment page is the same for add and modify
             Helper.goToAddAppointment(actionEvent);
         }
     }

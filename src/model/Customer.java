@@ -17,7 +17,10 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.province = province;
     }
-
+    @Override
+    public String toString(){
+        return String.valueOf(this.id) + " | " + this.name;
+    }
     public int getId() {
         return id;
     }

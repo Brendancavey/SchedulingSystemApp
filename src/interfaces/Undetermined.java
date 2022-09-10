@@ -3,6 +3,6 @@ package interfaces;
 import java.time.LocalTime;
 
 @FunctionalInterface
-public interface DetermineAmPm {
+public interface Undetermined {
     public String determineAmPm(LocalTime time);
 }

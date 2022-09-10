@@ -62,6 +62,7 @@ public class LoginPage implements Initializable {
             if (usernameTextfield.getText().equals(users.getUserName()) && passwordTextfield.getText().equals(users.getPassword())){
                 System.out.println("Login successful");
                 loginSuccessful = true;
+                Helper.userWhoLoggedIn = users; //capturing the user who logged in to be used to determine who made modifications to database if any
                 Helper.goToMainMenu(actionEvent);
                 break;
             }

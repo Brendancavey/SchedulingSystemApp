@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.User;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -20,6 +21,8 @@ public class Helper {
     //////////////////STATIC VARIABLES/////////////////////
     public static boolean viewAllCustomersToggle = false;
     public static boolean userClickedAddCustomer = false;
+    public static boolean userClickedAddAppointment = false;
+    public static User userWhoLoggedIn = null;
     public static Locale french = new Locale("fr", "FR");
     public static Locale english = new Locale("en", "US");
     public static Locale language = english;
@@ -84,6 +87,8 @@ public class Helper {
         String timeZone = String.valueOf(ZoneId.systemDefault());
         return timeZone;
     }
+    /////////////////////////////////////////////////////////////////////////
+
 
 
 }

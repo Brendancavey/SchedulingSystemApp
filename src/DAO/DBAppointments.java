@@ -1,5 +1,6 @@
 package DAO;
 
+import controller.Helper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -44,5 +45,28 @@ public class DBAppointments {
             throwables.printStackTrace();
         }
         return appointmentList;
+    }
+    public static void insertAppointment(String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime endDate, int custId, int userId, int contactId){
+        try{
+            String sqlQuery = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, description);
+            preparedStatement.setString(3, location);
+            preparedStatement.setString(4, type);
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(startDate));
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(endDate));
+            preparedStatement.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now())); //setting create date
+            preparedStatement.setString(8, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName());
+            preparedStatement.setTimestamp(9,  Timestamp.valueOf(LocalDateTime.now())); //setting last updated datetime
+            preparedStatement.setString(10, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this appointment
+            preparedStatement.setInt(11, custId);
+            preparedStatement.setInt(12, userId);
+            preparedStatement.setInt(13, contactId);
+
+            preparedStatement.executeUpdate();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
     }
 }

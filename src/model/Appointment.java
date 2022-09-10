@@ -13,6 +13,7 @@ public class Appointment {
     private String type;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private LocalDateTime lastUpdated;
 
     private int custId;
     private int userId;
@@ -117,5 +118,13 @@ public class Appointment {
     public String getEndDateReadableFormat(){
         DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd h:mm a");
         return formatDateTime.format(endDate);
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

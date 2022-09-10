@@ -41,17 +41,17 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Contact ID">
+                  <Label text="Contact">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Customer ID">
+                  <Label text="Customer">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="User ID">
+                  <Label text="User">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -70,16 +70,16 @@
             </VBox>
             <VBox prefHeight="483.0" prefWidth="168.0" spacing="17.0">
                <children>
-                  <TextField disable="true" promptText="Auto-Gen" />
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <ComboBox prefHeight="25.0" prefWidth="167.0" />
-                  <ComboBox prefHeight="25.0" prefWidth="167.0" />
-                  <ComboBox prefHeight="25.0" prefWidth="167.0" />
-                  <DatePicker />
-                  <ComboBox fx:id="startTimeComboBox" layoutX="10.0" layoutY="304.0" prefHeight="25.0" prefWidth="167.0" promptText="Pick a start time" />
+                  <TextField fx:id="apptIdText" disable="true" promptText="Auto-Gen" />
+                  <TextField fx:id="titleText" />
+                  <TextField fx:id="descText" />
+                  <TextField fx:id="locationText" />
+                  <TextField fx:id="typeText" />
+                  <ComboBox fx:id="contactBox" prefHeight="25.0" prefWidth="167.0" />
+                  <ComboBox fx:id="customerBox" prefHeight="25.0" prefWidth="167.0" />
+                  <ComboBox fx:id="userBox" prefHeight="25.0" prefWidth="167.0" />
+                  <DatePicker fx:id="startDatePicker" onAction="#onStartDateSelection" />
+                  <ComboBox fx:id="startTimeComboBox" layoutX="10.0" layoutY="304.0" onAction="#onStartTimeSelection" prefHeight="25.0" prefWidth="167.0" promptText="Pick a start time" />
                </children>
             </VBox>
          </children>
@@ -102,7 +102,7 @@
             </VBox>
             <VBox prefHeight="100.0" prefWidth="155.0" spacing="15.0">
                <children>
-                  <DatePicker prefHeight="25.0" prefWidth="147.0" />
+                  <DatePicker fx:id="endDatePicker" prefHeight="25.0" prefWidth="147.0" />
                   <ComboBox fx:id="endTimeComboBox" prefWidth="150.0" promptText="Pick an end time" />
                </children>
             </VBox>
