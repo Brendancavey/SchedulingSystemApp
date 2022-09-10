@@ -33,7 +33,7 @@ public class Helper {
         Parent root = FXMLLoader.load(Helper.class.getResource("/view/MainMenu.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Main Menu");
-        stage.setScene(new Scene(root, 1000, 500));
+        stage.setScene(new Scene(root, 1100, 500));
         stage.show();
     }
     public static void goToLogin(ActionEvent actionEvent) throws IOException {

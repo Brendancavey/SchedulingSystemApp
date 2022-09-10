@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenu">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="111.0" prefWidth="1000.0" spacing="20.0">
          <children>
@@ -73,32 +73,32 @@
             <Button fx:id="logoutButton" layoutX="18.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLogout" prefHeight="30.0" prefWidth="129.0" text="Logout" />
          </children>
       </VBox>
-      <TableView fx:id="customerTableView" layoutX="144.0" layoutY="114.0" opacity="0.0" prefHeight="349.0" prefWidth="852.0">
+      <TableView fx:id="customerTableView" layoutX="144.0" layoutY="114.0" opacity="0.0" prefHeight="349.0" prefWidth="957.0">
         <columns>
           <TableColumn fx:id="custId" prefWidth="77.0" text="Customer ID" />
-          <TableColumn fx:id="custName" prefWidth="94.0" text="Name" />
-            <TableColumn fx:id="custAddress" prefWidth="103.0" text="Address" />
-            <TableColumn fx:id="custPostalCode" prefWidth="85.0" text="Postal Code" />
-            <TableColumn fx:id="custPhoneNumber" prefWidth="92.0" text="Phone Number" />
-            <TableColumn fx:id="custCreateDate" prefWidth="81.0" text="Created Date" />
-            <TableColumn fx:id="custCreateBy" prefWidth="72.0" text="Created By" />
-            <TableColumn fx:id="custLastUpdate" minWidth="3.0" text="Last Update" />
-            <TableColumn fx:id="custLastUpdateBy" prefWidth="100.0" text="Last Updated By" />
-            <TableColumn fx:id="custProvince" prefWidth="67.0" text="Province" />
+          <TableColumn fx:id="custName" prefWidth="111.0" text="Name" />
+            <TableColumn fx:id="custAddress" prefWidth="102.0" text="Address" />
+            <TableColumn fx:id="custPostalCode" text="Postal Code" />
+            <TableColumn fx:id="custPhoneNumber" prefWidth="95.0" text="Phone Number" />
+            <TableColumn fx:id="custCreateDate" prefWidth="89.0" text="Created Date" />
+            <TableColumn fx:id="custCreateBy" prefWidth="119.0" text="Created By" />
+            <TableColumn fx:id="custLastUpdate" minWidth="3.0" prefWidth="96.0" text="Last Update" />
+            <TableColumn fx:id="custLastUpdateBy" prefWidth="96.0" text="Last Updated By" />
+            <TableColumn fx:id="custProvince" prefWidth="89.0" text="Province" />
         </columns>
       </TableView>
-      <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="852.0">
+      <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="957.0">
         <columns>
           <TableColumn fx:id="apptIdCol" prefWidth="52.0" text="Appt ID" />
           <TableColumn fx:id="titleCol" prefWidth="66.0" text="Title" />
-            <TableColumn fx:id="descriptionCol" prefWidth="73.0" text="Description" />
-            <TableColumn fx:id="locationCol" prefWidth="60.0" text="Location" />
-            <TableColumn fx:id="contactCol" prefWidth="97.0" text="Contact" />
-            <TableColumn fx:id="typeCol" prefWidth="103.0" text="Type" />
-            <TableColumn fx:id="startDateCol" prefWidth="118.0" text="Start" />
-            <TableColumn fx:id="endDateCol" prefWidth="132.0" text="End" />
-            <TableColumn fx:id="custIdCol" minWidth="0.0" text="Customer ID" />
-            <TableColumn fx:id="userIdCol" prefWidth="66.0" text="User ID" />
+            <TableColumn fx:id="descriptionCol" prefWidth="102.0" text="Description" />
+            <TableColumn fx:id="locationCol" prefWidth="108.0" text="Location" />
+            <TableColumn fx:id="contactCol" prefWidth="81.0" text="Contact" />
+            <TableColumn fx:id="typeCol" prefWidth="107.0" text="Type" />
+            <TableColumn fx:id="startDateCol" prefWidth="167.0" text="Start" />
+            <TableColumn fx:id="endDateCol" prefWidth="138.0" text="End" />
+            <TableColumn fx:id="custIdCol" minWidth="0.0" prefWidth="82.0" text="Customer ID" />
+            <TableColumn fx:id="userIdCol" minWidth="5.0" prefWidth="53.0" text="User ID" />
         </columns>
       </TableView>
       <Label layoutX="690.0" layoutY="469.0" text="Your Time Zone:" />

@@ -1,7 +1,9 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
     private int apptId;
@@ -9,14 +11,14 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private String startDate;
-    private String endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     private int custId;
     private int userId;
     private Contact contact;
 
-    public Appointment(int apptId, String title, String description, String location, String type, String startDate, String endDate, int custId, int userId, Contact contact) {
+    public Appointment(int apptId, String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime endDate, int custId, int userId, Contact contact) {
         this.apptId = apptId;
         this.title = title;
         this.description = description;
@@ -69,22 +71,6 @@ public class Appointment {
         this.type = type;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
     public int getCustId() {
         return custId;
     }
@@ -107,5 +93,29 @@ public class Appointment {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+    public String getStartDateReadableFormat(){
+        DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd h:mm a");
+        return formatDateTime.format(startDate);
+    }
+    public String getEndDateReadableFormat(){
+        DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd h:mm a");
+        return formatDateTime.format(endDate);
     }
 }

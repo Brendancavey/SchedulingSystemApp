@@ -101,8 +101,8 @@ public class MainMenu implements Initializable {
         locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDateReadableFormat"));
+        endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDateReadableFormat"));
         custIdCol.setCellValueFactory(new PropertyValueFactory<>("custId"));
         userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         /////////////////////////////////////////////////////////////////////////////////
