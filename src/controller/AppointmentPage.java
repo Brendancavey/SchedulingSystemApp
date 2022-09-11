@@ -42,7 +42,7 @@ public class AppointmentPage implements Initializable {
         System.out.println("Appointment Page initialized!");
 
         disablePreviousStartDates();//disabling all previous dates from current day
-
+        ////////INITIALIZING COMBO BOXES/////////
         contactBox.setItems(DBContacts.getAllContacts());
         customerBox.setItems(DBCustomers.getAllCustomers());
         userBox.setItems(DBUsers.getAllUsers());
@@ -79,7 +79,10 @@ public class AppointmentPage implements Initializable {
     }
     /** LOGICAL ERROR: When selecting a start time, the user could still select an end time that occurs previous
      * to the start time. To correct this, I verified that all times added to the end time box occurs 30 mins after
-     * the selected start time.*/
+     * the selected start time.
+     * RUNTIME ERROR: When selecting start time, the end time needed to be within 30 min intervals after the start time and
+     * not from the current time. Using current time would exceed the 60 min hour window and cause a runtime error. To correct
+     * this, I created a control flow statement to check if the selected time is at 30 mins or on the hour.*/
     public void onStartTimeSelection(ActionEvent actionEvent) {
         endTimeComboBox.setDisable(false); //make end time combo box picker usable
         endTimeComboBox.setPromptText("Select End Time");
@@ -89,7 +92,13 @@ public class AppointmentPage implements Initializable {
             endTimeComboBox.getItems().removeAll(); //remove all end time choices
             //endTimeComboBox.getItems().add(startTimeComboBox.getSelectionModel().getSelectedItem().plusMinutes(30)); //add an option for end time 30 minutes after start time
             endTimeComboBox.getSelectionModel().selectFirst(); //select the added time. 30 min appointments are most appropriate, but for sake of project requirements, any time can be selected.
-            start = LocalTime.of(startTimeComboBox.getValue().getHour(), startTimeComboBox.getValue().getMinute() + 30);
+            if (LocalTime.of(startTimeComboBox.getValue().getHour(), startTimeComboBox.getValue().getMinute()).getMinute() == 30){ //check to see if the start time selection minute is 30. If so, then set the start to 30 min after for 30 min appointment intervals.
+                start = LocalTime.of(startTimeComboBox.getValue().getHour() + 1, 0);
+            }
+            else{
+                start = LocalTime.of(startTimeComboBox.getValue().getHour(), 30); //check to see if the start time selection minute is on the hour. If so, then set the start to 30 min after for 30 min appointment intervals
+            }
+
             while (start.isBefore(end)){ //add all of the time intervals between start and end times
                 endTimeComboBox.getItems().add(start);
                 start = start.plusMinutes(30);
