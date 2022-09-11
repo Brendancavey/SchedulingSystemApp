@@ -23,10 +23,10 @@ import model.Province;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
+import java.time.*;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainMenu implements Initializable {
@@ -177,59 +177,36 @@ public class MainMenu implements Initializable {
     //////////////////////////////////////////////////////////////////////////
     /////////////////////////RADIO BUTTONS///////////////////////////////////
     public void onViewAllCustomers(ActionEvent actionEvent) {
-        addButton.setText("Add Customer");
-        modifyButton.setText("Modify Customer");
-        deleteButton.setText("Delete Customer");
-        customerTableView.setOpacity(1);
-        customerTableView.setDisable(false);
-        apptTableView.setDisable(true);
-        apptTableView.setOpacity(0);
-        viewByApptBox.setOpacity(0);
-        Helper.viewAllCustomersToggle = true;
+        toggleWidgets(); //control flow statement within toggle widget method
     }
     public void onViewAppointments(ActionEvent actionEvent) {
-        addButton.setText("Add Appointment");
-        modifyButton.setText("Modify Appointment");
-        deleteButton.setText("Delete Appointment");
-        customerTableView.setOpacity(0);
-        customerTableView.setDisable(true);
-        apptTableView.setDisable(false);
-        apptTableView.setOpacity(1);
-        viewByApptBox.setOpacity(1);
-        Helper.viewAllCustomersToggle = false;
+        toggleWidgets(); //control flow statement within toggle widget method
     }
-
     public void onViewByWeek(ActionEvent actionEvent) {
-        displayByCalendarPicker.setValue(LocalDate.now()); //setting value of calendar picker to current day
-        displayByCalendarPicker.setOpacity(1); //making widget visible
-        displayByCalendarPicker.setDisable(false); //making widget usable
-        int currentDateWeek = (LocalDate.now().getDayOfMonth())/7; //divide day of month by 7 to get week of month
-        System.out.println(currentDateWeek);
+        //Source used: Stackoverflow, and Oracle to find week number, temporal field object, and weekfields
+        toggleWidgets(); //control flow statement within toggle widget method
+        apptTableView.setItems(filterApptByWeek()); //set appt table view to the filtered list
     }
 
     public void onViewByMonth(ActionEvent actionEvent) {
-        displayByCalendarPicker.setValue(LocalDate.now()); //setting value of calendar picker to current day
-        displayByCalendarPicker.setOpacity(1); //making widget visible
-        displayByCalendarPicker.setDisable(false); //making widget usable
-
+        toggleWidgets(); //control flow statement within toggle widget method
         apptTableView.setItems(filterApptByMonth()); //set appt table view to the filtered list
     }
 
     public void onViewAll(ActionEvent actionEvent) {
-        displayByCalendarPicker.setOpacity(0); //making widget invisible
-        displayByCalendarPicker.setDisable(true); //making widget unusable
-        apptTableView.setItems(DBAppointments.getAllAppointments()); //set appt table view to all appointments
+        toggleWidgets(); //control flow statement within toggle widget method
+        apptTableView.setItems(DBAppointments.getAllAppointments()); //set appt table view to all appointments*/
     }
 
     public void onSelectViewByDate(ActionEvent actionEvent) {
         if(viewApptMonth.isSelected()){ //if view by month, then filter by month
-            apptTableView.setItems(filterApptByMonth()); //set appt table view to the selected month
+            apptTableView.setItems(filterApptByMonth()); //set appt table view to the selected date and filter by month
         }
         else if (viewApptWeek.isSelected()){//else if view by week, filter by week
-
+            apptTableView.setItems(filterApptByWeek()); //set appt table view to the selected date and filter by week
         }
         else{ //else the toggle must be set to view all
-
+            apptTableView.setItems(DBAppointments.getAllAppointments()); //set appt table view to all appointments
         }
     }
     //////////////////////////////////////////////////////////////////////
@@ -252,5 +229,59 @@ public class MainMenu implements Initializable {
             }
         }
         return filteredAppointmentList;
+    }
+    public ObservableList<Appointment> filterApptByWeek(){
+        //this method is used twice within onSelectViewByDate, and onViewByWeek. Placed into method to reduce redundancy
+        TemporalField tf = WeekFields.of(Locale.getDefault()).weekOfMonth(); //getting week of month and placing into temporal field object
+        int weekNumber = displayByCalendarPicker.getValue().get(tf); //getting week number by using temporal field object as a parameter within LocalDate.now.get()
+
+        int selectedDateYear = displayByCalendarPicker.getValue().getYear(); //getting selected year
+        Month selectedDateMonth = displayByCalendarPicker.getValue().getMonth(); //getting selected month
+        ObservableList<Appointment> appointmentList = DBAppointments.getAllAppointments(); //getting all appointments
+        ObservableList<Appointment> filteredAppointmentList = FXCollections.observableArrayList(); //initializing filtered appointment list
+        //iterate through all appointments and add to filtered appointment list the appointment where the start date month matches the selected month
+        //the start date year matches the selected year, and the start date week matches with the selected date week
+        for (Appointment appointment: appointmentList){
+            if(appointment.getStartDate().getMonth() == selectedDateMonth && appointment.getStartDate().getYear() == selectedDateYear
+                    && appointment.getStartDate().get(tf) == weekNumber){
+                filteredAppointmentList.add(appointment);
+            }
+        }
+        return filteredAppointmentList;
+    }
+    public void toggleWidgets(){
+        //to reduce redundancy, made a helper toggle method to turn widgets on and off depending on
+        //radio button selection within control flow statements.
+        if(viewCustomers.isSelected()){
+            addButton.setText("Add Customer");
+            modifyButton.setText("Modify Customer");
+            deleteButton.setText("Delete Customer");
+            customerTableView.setOpacity(1); //making customer table visible
+            customerTableView.setDisable(false); //making customer table usable
+            apptTableView.setDisable(true); //making appointment table unusable
+            apptTableView.setOpacity(0); //making appointment table invisible
+            viewByApptBox.setOpacity(0); //making container containing radio buttons invisible
+            Helper.viewAllCustomersToggle = true;
+        }
+        else if(viewAppointments.isSelected()){
+            addButton.setText("Add Appointment");
+            modifyButton.setText("Modify Appointment");
+            deleteButton.setText("Delete Appointment");
+            customerTableView.setOpacity(0); //making customer table invisible
+            customerTableView.setDisable(true); //making customer table unusable
+            apptTableView.setDisable(false); //making appointment table usable
+            apptTableView.setOpacity(1); //making appointment table visible
+            viewByApptBox.setOpacity(1); //making container containing radio buttons visible
+            Helper.viewAllCustomersToggle = false;
+        }
+        if (viewApptAll.isSelected() || viewCustomers.isSelected()) { //turn off calendar widget if these options are selected
+            displayByCalendarPicker.setOpacity(0); //making widget invisible
+            displayByCalendarPicker.setDisable(true); //making widget unusable
+        }
+        else{ //all else conditions then calendar widget is on
+            displayByCalendarPicker.setValue(LocalDate.now()); //setting value of calendar picker to current day
+            displayByCalendarPicker.setOpacity(1); //making widget visible
+            displayByCalendarPicker.setDisable(false); //making widget usable
+        }
     }
 }
