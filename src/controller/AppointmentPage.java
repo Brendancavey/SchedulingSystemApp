@@ -41,6 +41,7 @@ public class AppointmentPage implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Appointment Page initialized!");
 
+        disablePreviousStartDates();//disabling all previous dates from current day
 
         contactBox.setItems(DBContacts.getAllContacts());
         customerBox.setItems(DBCustomers.getAllCustomers());
@@ -77,16 +78,22 @@ public class AppointmentPage implements Initializable {
         Helper.goToMainMenu(actionEvent);
     }
     /** LOGICAL ERROR: When selecting a start time, the user could still select an end time that occurs previous
-     * to the start time. To correct this, I verified that the end time must be 30 mins after the start time by
-     * only adding that option. I solidified this condition by disabling the end time drop down menu so that the user
-     * cannot change it.*/
+     * to the start time. To correct this, I verified that all times added to the end time box occurs 30 mins after
+     * the selected start time.*/
     public void onStartTimeSelection(ActionEvent actionEvent) {
+        endTimeComboBox.setDisable(false); //make end time combo box picker usable
+        endTimeComboBox.setPromptText("Select End Time");
         try {
             //appointments are 30 minute intervals. End time is chosen automatically after start time box is chosen.
             endTimeComboBox.getItems().clear(); //clear choice selection
             endTimeComboBox.getItems().removeAll(); //remove all end time choices
-            endTimeComboBox.getItems().add(startTimeComboBox.getSelectionModel().getSelectedItem().plusMinutes(30)); //add an option for end time 30 minutes after start time
-            endTimeComboBox.getSelectionModel().selectFirst(); //select the added time
+            //endTimeComboBox.getItems().add(startTimeComboBox.getSelectionModel().getSelectedItem().plusMinutes(30)); //add an option for end time 30 minutes after start time
+            endTimeComboBox.getSelectionModel().selectFirst(); //select the added time. 30 min appointments are most appropriate, but for sake of project requirements, any time can be selected.
+            start = LocalTime.of(startTimeComboBox.getValue().getHour(), startTimeComboBox.getValue().getMinute() + 30);
+            while (start.isBefore(end)){ //add all of the time intervals between start and end times
+                endTimeComboBox.getItems().add(start);
+                start = start.plusMinutes(30);
+            }
         }catch(NullPointerException e ){
             System.out.println("Do nothing because end time combobox selection was cleared");
         }
@@ -94,11 +101,21 @@ public class AppointmentPage implements Initializable {
     /** LOGICAL ERROR: When initializing the start time options, start time could equal the end time. Since you
      * can't make an appointment at closing of an establishment, I corrected this by making a condition where
      * the start time increments get added if the start time does not equal the end time, within 30 min intervals.
-     * Additionally, start times on dates that haven't occurred should still be able to pick any time between opening
-     * and closing of the establishment. To correct this, I created another control flow statement to check for this condition.*/
+     * Furthermore, if the user selected the current day for an appointment, then start times could be chosen that were previous
+     * to the current local time. To correct this, I placed control flow statements for this condition.
+     * Additionally, start times on dates that haven't occurred should still be able to be picked at any time between opening
+     * and closing of the establishment. To correct this, I created another control flow statement to check for this condition.
+     * Also, the user could select end dates that were previous from the start date. To correct this, I disabled previous dates
+     * from the selected start date.
+     * */
     public void onStartDateSelection(ActionEvent actionEvent) {
+        startTimeComboBox.setDisable(false); //make start time combo box selection usable
+        startTimeComboBox.setPromptText("Select Start Time");
+        endDatePicker.setDisable(false); //make end date picker usable
+        endDatePicker.setPromptText("Select End Date");
         try {
-            endDatePicker.setValue(startDatePicker.getValue()); // setting end date to be the same as the start date since day long appointments are most likely unacceptable
+            endDatePicker.setValue(startDatePicker.getValue()); // setting end date to be the same as the start date since day long appointments are most likely unacceptable. But the user can still pick any date for sake of project requirements.
+            disablePreviousEndDates(); //disabling previous end dates so that user cannot have end date that is previous from the start date
             startTimeComboBox.getItems().clear(); //clear selection within start time box every time user selects new date
             startTimeComboBox.getItems().removeAll(); //remove all selections within start time box every time user selects on new date
             if (startDatePicker.getValue().equals(LocalDate.now())) {
@@ -109,14 +126,13 @@ public class AppointmentPage implements Initializable {
                     start = LocalTime.of((LocalTime.now().getHour()) + 1, 0);
 
                 }
-
-                while (start.isBefore(end)) {
+                while (start.isBefore(end)) { //add all of the time intervals between start and end times
                     startTimeComboBox.getItems().add(start);
                     start = start.plusMinutes(30);
                 }
             } else { //else if the date selected is after the current date, then any time between 8AM and 10PM - the operating times of the establishment - can be selected
                 start = LocalTime.of(8, 0);
-                while (start.isBefore(end)) {
+                while (start.isBefore(end)) { //add all of the time intervals between start and end times
                     startTimeComboBox.getItems().add(start);
                     start = start.plusMinutes(30);
                 }
@@ -125,4 +141,29 @@ public class AppointmentPage implements Initializable {
             System.out.println("Do nothing because the start time combo box selection was cleared.");
         }
     }
+    ////////////////////////////////////////////////////////////////
+    /////////////////HELPER METHODS/////////////////////////////////
+    public void disablePreviousStartDates() {
+        //used to allow for more readable code
+        //Source: stack overflow. Setting date picker so that previous dates from current day cannot be chosen for an appointment
+        startDatePicker.setDayCellFactory(datePicker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate currentDate = LocalDate.now();
+                setDisable(empty || date.compareTo(currentDate) < 0);
+            }
+        });
+    }
+    public void disablePreviousEndDates(){
+        //used to allow for more readable code
+        //Source: stack overflow. Setting date picker so that previous dates from current day cannot be chosen for an appointment
+        endDatePicker.setDayCellFactory(datePicker -> new DateCell(){
+            public void updateItem(LocalDate date, boolean empty){
+                super.updateItem(date, empty);
+                LocalDate selectedDate = startDatePicker.getValue();
+                setDisable(empty || date.compareTo(selectedDate) < 0);
+            }
+        });
+    }
+    //////////////////////////////////////////////////////////////
 }

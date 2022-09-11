@@ -75,11 +75,11 @@
                   <TextField fx:id="descText" />
                   <TextField fx:id="locationText" />
                   <TextField fx:id="typeText" />
-                  <ComboBox fx:id="contactBox" prefHeight="25.0" prefWidth="167.0" />
-                  <ComboBox fx:id="customerBox" prefHeight="25.0" prefWidth="167.0" />
-                  <ComboBox fx:id="userBox" prefHeight="25.0" prefWidth="167.0" />
-                  <DatePicker fx:id="startDatePicker" onAction="#onStartDateSelection" />
-                  <ComboBox fx:id="startTimeComboBox" layoutX="10.0" layoutY="304.0" onAction="#onStartTimeSelection" prefHeight="25.0" prefWidth="167.0" promptText="Pick a start time" />
+                  <ComboBox fx:id="contactBox" prefHeight="25.0" prefWidth="167.0" promptText="Select Contact" />
+                  <ComboBox fx:id="customerBox" prefHeight="25.0" prefWidth="167.0" promptText="Select Customer" />
+                  <ComboBox fx:id="userBox" prefHeight="25.0" prefWidth="167.0" promptText="Select User" />
+                  <DatePicker fx:id="startDatePicker" onAction="#onStartDateSelection" promptText="Select Start Date" />
+                  <ComboBox fx:id="startTimeComboBox" disable="true" layoutX="10.0" layoutY="304.0" onAction="#onStartTimeSelection" prefHeight="25.0" prefWidth="167.0" promptText="Pick Start Date First" />
                </children>
             </VBox>
          </children>
@@ -102,8 +102,8 @@
             </VBox>
             <VBox prefHeight="100.0" prefWidth="155.0" spacing="15.0">
                <children>
-                  <DatePicker fx:id="endDatePicker" disable="true" prefHeight="25.0" prefWidth="147.0" promptText="Auto-Select" />
-                  <ComboBox fx:id="endTimeComboBox" disable="true" prefWidth="150.0" promptText="Auto-Select" />
+                  <DatePicker fx:id="endDatePicker" disable="true" prefHeight="25.0" prefWidth="147.0" promptText="Pick Start Date First" />
+                  <ComboBox fx:id="endTimeComboBox" disable="true" prefWidth="150.0" promptText="Pick Start Time First" />
                </children>
             </VBox>
          </children>
