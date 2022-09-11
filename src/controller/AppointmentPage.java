@@ -67,7 +67,8 @@ public class AppointmentPage implements Initializable {
             DBAppointments.insertAppointment(title, description, location, type, start, end, customer.getId(), user.getUserId(), contact.getContactId());
         }
         else{ //else the user must have clicked on modify appointment, therefore userClickedAddAppointment is false
-
+            int appointmentId = Integer.valueOf(apptIdText.getText());
+            DBAppointments.updateAppointment(appointmentId, title, description, location, type, start, end, customer.getId(), user.getUserId(), contact.getContactId());
         }
         //whatever the result of userClickedAddAppointment, set value back to false (default)
         Helper.userClickedAddAppointment = false;
