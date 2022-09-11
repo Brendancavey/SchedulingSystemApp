@@ -1,5 +1,7 @@
 package model;
 
+import DAO.DBUsers;
+
 public class User {
     private int userId;
     private String userName;
@@ -37,4 +39,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

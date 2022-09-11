@@ -39,17 +39,17 @@ public class MainMenu implements Initializable {
     public Button reportsButton;
     ///////////////////////////////////////////////////////
     //////////////////APPOINTMENTS TABLIEVIEW///////////////
-    public TableView apptTableView;
-    public TableColumn apptIdCol;
-    public TableColumn titleCol;
-    public TableColumn descriptionCol;
-    public TableColumn locationCol;
-    public TableColumn contactCol;
-    public TableColumn typeCol;
-    public TableColumn startDateCol;
-    public TableColumn endDateCol;
-    public TableColumn custIdCol;
-    public TableColumn userIdCol;
+    public TableView<Appointment> apptTableView;
+    public TableColumn<Appointment, Integer> apptIdCol;
+    public TableColumn<Appointment, String> titleCol;
+    public TableColumn<Appointment, String> descriptionCol;
+    public TableColumn<Appointment, String> locationCol;
+    public TableColumn<Appointment, String> contactCol;
+    public TableColumn<Appointment, String> typeCol;
+    public TableColumn<Appointment, LocalDateTime> startDateCol;
+    public TableColumn<Appointment, LocalDateTime> endDateCol;
+    public TableColumn<Appointment, Integer> custIdCol;
+    public TableColumn<Appointment, Integer> userIdCol;
     //////////////////////////////////////////////////////////
     ///////////////CUSTOMERS TABLEVIEW/////////////////////////
     public TableView<Customer> customerTableView;
@@ -125,7 +125,6 @@ public class MainMenu implements Initializable {
             Helper.goToAddAppointment(actionEvent);
         }
     }
-
     public void onModify(ActionEvent actionEvent) throws IOException {
         if(Helper.viewAllCustomersToggle) {
             ///////////////////PREPARING SELECTED CUSTOMER INFORMATION///////////////////////
@@ -152,7 +151,21 @@ public class MainMenu implements Initializable {
             ///////////////////////////////////////////////////////////////////////////////
         }
         else{
-            Helper.goToModifyAppointment(actionEvent);
+            ///////////////////////PREPARING SELECTED APPOINTMENT INFORMATION//////////////
+            Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem();
+            //////////////////////////////////////////////////////////////////////////////////////////
+            ///////////GETTING AppointmentPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE/////////////
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainMenu.class.getResource("/view/AppointmentPage.fxml"));
+            loader.load();
+            AppointmentPage appointmentPageController = loader.getController();
+            appointmentPageController.sendAppointmentInformation(selectedAppointment);
+            /////////////////////////SETTING SCENE TO MODIFY APPOINTMENT PAGE//////////////////////////
+            Parent root = loader.getRoot();
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            stage.setTitle("Modify Appointment");
+            stage.setScene(new Scene(root, 600, 600));
+            stage.show();
         }
     }
 
@@ -284,4 +297,5 @@ public class MainMenu implements Initializable {
             displayByCalendarPicker.setDisable(false); //making widget usable
         }
     }
+    /////////////////////////////////////////////////////////////////
 }

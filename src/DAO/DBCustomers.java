@@ -84,21 +84,8 @@ public class DBCustomers {
         return rowsAffected;
 
     }
-    public static void selectCustomer(){
-        try {
-            String sqlQuery = "SELECT * FROM CUSTOMERS";
-            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                int customerId = resultSet.getInt("Customer_ID");
-                String customerName = resultSet.getString("Customer_Name");
-                System.out.println(customerId + " | " + customerName);
-            }
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-    }
-    public static void selectCustomer(int divisionId){
+    public static Customer selectCustomerByProvinceId(int divisionId){
+        Customer selectedCustomer = null;
         try {
             String sqlQuery = "SELECT * FROM CUSTOMERS WHERE DIVISION_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
@@ -114,6 +101,31 @@ public class DBCustomers {
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
+        return selectedCustomer;
+    }
+    public static Customer selectCustomerById(int custId){
+        Customer newCustomer = null;
+        try {
+            String sqlQuery = "SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, custId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int customerId = resultSet.getInt("Customer_ID");
+                String customerName = resultSet.getString("Customer_Name");
+                String address = resultSet.getString("Address");
+                String postalCode = resultSet.getString("Postal_Code");
+                String phoneNumber = resultSet.getString("Phone");
+                int provinceId = resultSet.getInt("Division_ID");
+
+                Province customerProvince = DBProvinces.selectProvinceById(provinceId); //getting province from province id
+                newCustomer = new Customer(customerId, customerName, address, postalCode, phoneNumber, customerProvince);
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return newCustomer;
     }
 
     /*public static void checkDateConversion(){

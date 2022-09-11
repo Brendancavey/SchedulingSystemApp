@@ -31,23 +31,25 @@ public class DBUsers {
         }
         return usersList;
     }
-    /*public static Country selectCountryById(int countryId){
-        Country country = null;
+    public static User selectUserById(int userId){
+        User user = null;
         try {
-            String sqlQuery = "SELECT * FROM Countries WHERE Country_ID = ?";
+            String sqlQuery = "SELECT * FROM Users WHERE User_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            preparedStatement.setInt(1, countryId);
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
-                int id = resultSet.getInt("Country_ID");
-                String countryeName = resultSet.getString("Country");
-                country = new Country(id, countryeName);
+                int id = resultSet.getInt("User_ID");
+                String userName = resultSet.getString("User_Name");
+                String userPassword = resultSet.getString("Password");
+                user = new User(id, userName, userPassword);
             }
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-        return country;
+        return user;
     }
+    /*
     public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
         try{

@@ -2,7 +2,6 @@ package main;
 
 import DAO.DBConnection;
 import DAO.DBCustomers;
-import DAO.DBProvinces;
 import controller.Helper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +10,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.time.*;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.Scanner;
 
 public class Main extends Application{
     @Override
@@ -39,7 +34,7 @@ public class Main extends Application{
         int rowsaffected = DBCustomers.updateCustomer(1, "Woobert");
         System.out.println(rowsaffected);*/
         //int rowsaffected1 = DBCustomers.deleteCustomer();
-        DBCustomers.selectCustomer(103);
+        DBCustomers.selectCustomerByProvinceId(103);
 
         ////////////////////////////////////////////////////////////
         //////////////////////TESTING TIMEZONE/////////////////////

@@ -1,8 +1,9 @@
 package model;
 
-import java.time.LocalDate;
+import DAO.DBCustomers;
+import DAO.DBUsers;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Appointment {
@@ -126,5 +127,11 @@ public class Appointment {
 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+    public Customer getCustomer(){
+        return DBCustomers.selectCustomerById(this.custId);
+    }
+    public User getUser(){
+        return DBUsers.selectUserById(this.userId);
     }
 }

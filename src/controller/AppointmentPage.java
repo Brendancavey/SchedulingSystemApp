@@ -7,6 +7,7 @@ import DAO.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
@@ -99,7 +100,7 @@ public class AppointmentPage implements Initializable {
                 start = LocalTime.of(startTimeComboBox.getValue().getHour(), 30); //check to see if the start time selection minute is on the hour. If so, then set the start to 30 min after for 30 min appointment intervals
             }
 
-            while (start.isBefore(end)){ //add all of the time intervals between start and end times
+            while (start.isBefore(end.plusSeconds(1))){ //add all of the time intervals between start and end times
                 endTimeComboBox.getItems().add(start);
                 start = start.plusMinutes(30);
             }
@@ -173,6 +174,20 @@ public class AppointmentPage implements Initializable {
                 setDisable(empty || date.compareTo(selectedDate) < 0);
             }
         });
+    }
+    public void sendAppointmentInformation(Appointment appointment){
+        apptIdText.setText(String.valueOf(appointment.getApptId()));
+        titleText.setText(appointment.getTitle());
+        descText.setText(appointment.getDescription());
+        locationText.setText(appointment.getLocation());
+        typeText.setText(appointment.getType());
+        contactBox.setValue(appointment.getContact());
+        customerBox.setValue(appointment.getCustomer());
+        userBox.setValue(appointment.getUser());
+        startDatePicker.setValue(appointment.getStartDate().toLocalDate());
+        endDatePicker.setValue(appointment.getEndDate().toLocalDate());
+        startTimeComboBox.setValue(appointment.getStartDate().toLocalTime());
+        endTimeComboBox.setValue(appointment.getEndDate().toLocalTime());
     }
     //////////////////////////////////////////////////////////////
 }
