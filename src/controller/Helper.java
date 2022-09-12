@@ -96,8 +96,8 @@ public class Helper {
         ZonedDateTime utcZDT = ZonedDateTime.ofInstant(myZonedDateTime.toInstant(), utcZoneId);
         return utcZDT;
     }
-    ///////////////////CONVERTING TO LOCAL TIME//////////////////////
-    public static ZonedDateTime convertToLocal(LocalDateTime dateTime){
+    ///////////////////CONVERTING UTC TO LOCAL TIME//////////////////////
+    public static ZonedDateTime convertFromUtcToLocal(LocalDateTime dateTime){
         ZoneId myZoneId = ZoneId.systemDefault();
         ZoneId utcZoneId = ZoneId.of("UTC");
 
@@ -105,6 +105,24 @@ public class Helper {
         ZonedDateTime myZonedDateTime = ZonedDateTime.ofInstant(utcZDT.toInstant(), myZoneId);
         System.out.println(myZonedDateTime);
         return myZonedDateTime;
+    }
+    /////////////////CONVERTING LOCAL TO EST///////////////////////////////
+    public static ZonedDateTime convertToEst(LocalDateTime dateTime){
+        ZoneId estZoneId = ZoneId.of("US/Eastern"); //eastern time zone
+        ZoneId myZoneId = ZoneId.systemDefault();
+
+        ZonedDateTime myZonedDateTime = ZonedDateTime.of(dateTime, myZoneId);
+        ZonedDateTime estZDT = ZonedDateTime.ofInstant(myZonedDateTime.toInstant(), estZoneId);
+        return estZDT;
+    }
+    //////////////////////CONVERTING EST TO LOCAL///////////////////////////
+    public static ZonedDateTime convertFromEstToLocal(LocalDateTime dateTime){
+        ZoneId estZoneId = ZoneId.of("US/Eastern"); //eastern time zone
+        ZoneId myZoneId = ZoneId.systemDefault();
+
+        ZonedDateTime estZDT = ZonedDateTime.of(dateTime, estZoneId);
+        ZonedDateTime myZDT = ZonedDateTime.ofInstant(estZDT.toInstant(), myZoneId);
+        return myZDT;
     }
 
 

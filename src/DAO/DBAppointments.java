@@ -5,14 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.Contact;
-import model.Customer;
-import model.Province;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DBAppointments {
@@ -29,9 +26,9 @@ public class DBAppointments {
                 String location = resultSet.getString("Location");
                 String type = resultSet.getString("Type");
                 Timestamp startDate = resultSet.getTimestamp("Start"); //getting timestamp from database
-                LocalDateTime startDateLdt = Helper.convertToLocal(startDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
+                LocalDateTime startDateLdt = Helper.convertFromUtcToLocal(startDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
                 Timestamp endDate = resultSet.getTimestamp("End"); //getting timestamp from database
-                LocalDateTime endDateLdt = Helper.convertToLocal(endDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
+                LocalDateTime endDateLdt = Helper.convertFromUtcToLocal(endDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
                 int customerId = resultSet.getInt("Customer_ID");
                 int userId = resultSet.getInt("User_ID");
                 int contactId = resultSet.getInt("Contact_ID");

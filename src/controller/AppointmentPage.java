@@ -36,8 +36,10 @@ public class AppointmentPage implements Initializable {
     public DatePicker endDatePicker;
     public ComboBox<LocalTime> startTimeComboBox;
     public ComboBox<LocalTime> endTimeComboBox;
-    public LocalTime start;
-    public LocalTime end = LocalTime.of(20, 0); //requirements for when office is closed is at 10PM EST so no more appointments after that.
+    public LocalDateTime start;
+    public LocalDateTime localToEstStartHour;
+    public LocalDateTime localToEstEndHour;
+    public LocalDateTime end;
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
 
@@ -120,15 +122,16 @@ public class AppointmentPage implements Initializable {
             endTimeComboBox.getItems().removeAll(); //remove all end time choices
             //endTimeComboBox.getItems().add(startTimeComboBox.getSelectionModel().getSelectedItem().plusMinutes(30)); //add an option for end time 30 minutes after start time
             endTimeComboBox.getSelectionModel().selectFirst(); //select the added time. 30 min appointments are most appropriate, but for sake of project requirements, any time can be selected.
+            int startTimeFromComboBox = Helper.convertFromEstToLocal(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), startTimeComboBox.getValue().getHour(), 0)).toLocalDateTime().getHour();
             if (LocalTime.of(startTimeComboBox.getValue().getHour(), startTimeComboBox.getValue().getMinute()).getMinute() == 30){ //check to see if the start time selection minute is 30. If so, then set the start to 30 min after for 30 min appointment intervals.
-                start = LocalTime.of(startTimeComboBox.getValue().getHour() + 1, 0);
+                start = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), startTimeFromComboBox + 1, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
             }
             else{
-                start = LocalTime.of(startTimeComboBox.getValue().getHour(), 30); //check to see if the start time selection minute is on the hour. If so, then set the start to 30 min after for 30 min appointment intervals
+                 //check to see if the start time selection minute is on the hour. If so, then set the start to 30 min after for 30 min appointment intervals
+                start = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), startTimeFromComboBox, 30)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
             }
-
             while (start.isBefore(end.plusSeconds(1))){ //add all of the time intervals between start and end times to the combo box
-                endTimeComboBox.getItems().add(start);
+                endTimeComboBox.getItems().add(start.toLocalTime());
                 start = start.plusMinutes(30);
             }
         }catch(NullPointerException e ){
@@ -150,27 +153,27 @@ public class AppointmentPage implements Initializable {
         startTimeComboBox.setPromptText("Select Start Time");
         endDatePicker.setDisable(false); //make end date picker usable
         endDatePicker.setPromptText("Select End Date");
+        end = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
         try {
             endDatePicker.setValue(startDatePicker.getValue()); // setting end date to be the same as the start date since day long appointments are most likely unacceptable. But the user can still pick any date for sake of project requirements.
             disablePreviousEndDates(); //disabling previous end dates so that user cannot have end date that is previous from the start date
             startTimeComboBox.getItems().clear(); //clear selection within start time box every time user selects new date
             startTimeComboBox.getItems().removeAll(); //remove all selections within start time box every time user selects on new date
-            if (startDatePicker.getValue().equals(LocalDate.now())) {
+            if(startDatePicker.getValue().equals(LocalDate.now())) {
                 //if the date for the appointment is the current date, then the selection times must be times after the current time, but before closing time
                 if (LocalTime.now().getMinute() < 30) { //if the local time is before 30 minutes, then set the start time interval at 30 minutes
-                    start = LocalTime.of(LocalTime.now().getHour(), 30);
-                } else { //else if the local time is after 30 minutes, then set the start time interval to the next hour at 0 minutes.
-                    start = LocalTime.of((LocalTime.now().getHour()) + 1, 0);
-
+                    start = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), LocalTime.now().getHour(), 30)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
+                }else { //else if the local time is after 30 minutes, then set the start time interval to the next hour at 0 minutes.
+                    start = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), LocalTime.now().getHour() + 1, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
                 }
                 while (start.isBefore(end)) { //add all of the time intervals between start and end times
-                    startTimeComboBox.getItems().add(start);
+                    startTimeComboBox.getItems().add(start.toLocalTime());
                     start = start.plusMinutes(30);
                 }
-            } else { //else if the date selected is after the current date, then any time between 8AM and 10PM - the operating times of the establishment - can be selected
-                start = LocalTime.of(8, 0);
+            } else { //else if the date selected is after the current date, then any time between 8AM and 10PM EST - the operating times of the establishment - can be selected
+                start = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
                 while (start.isBefore(end)) { //add all of the time intervals between start and end times
-                    startTimeComboBox.getItems().add(start);
+                    startTimeComboBox.getItems().add(start.toLocalTime());
                     start = start.plusMinutes(30);
                 }
             }
