@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import model.User;
 
 import java.io.IOException;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -27,7 +27,6 @@ public class Helper {
     public static Locale english = new Locale("en", "US");
     public static Locale language = english;
     public static ObservableList<Locale> languageList = FXCollections.observableArrayList();
-
     ////////////////////////////////////////////////////////
 
 
@@ -88,6 +87,25 @@ public class Helper {
         return timeZone;
     }
     /////////////////////////////////////////////////////////////////////////
+    //////////////////CONVERTING LOCAL TIME TO UTC///////////////////////////
+    public static ZonedDateTime convertToUtc(LocalDateTime dateTime){
+        ZoneId utcZoneId = ZoneId.of("UTC");
+        ZoneId myZoneId = ZoneId.systemDefault();
+
+        ZonedDateTime myZonedDateTime = ZonedDateTime.of(dateTime, myZoneId);
+        ZonedDateTime utcZDT = ZonedDateTime.ofInstant(myZonedDateTime.toInstant(), utcZoneId);
+        return utcZDT;
+    }
+    ///////////////////CONVERTING TO LOCAL TIME//////////////////////
+    public static ZonedDateTime convertToLocal(LocalDateTime dateTime){
+        ZoneId myZoneId = ZoneId.systemDefault();
+        ZoneId utcZoneId = ZoneId.of("UTC");
+
+        ZonedDateTime utcZDT = ZonedDateTime.of(dateTime, utcZoneId);
+        ZonedDateTime myZonedDateTime = ZonedDateTime.ofInstant(utcZDT.toInstant(), myZoneId);
+        System.out.println(myZonedDateTime);
+        return myZonedDateTime;
+    }
 
 
 

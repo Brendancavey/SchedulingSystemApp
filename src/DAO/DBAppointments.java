@@ -29,9 +29,9 @@ public class DBAppointments {
                 String location = resultSet.getString("Location");
                 String type = resultSet.getString("Type");
                 Timestamp startDate = resultSet.getTimestamp("Start"); //getting timestamp from database
-                LocalDateTime startDateLdt = startDate.toLocalDateTime(); //converting timestamp to local datetime
+                LocalDateTime startDateLdt = Helper.convertToLocal(startDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
                 Timestamp endDate = resultSet.getTimestamp("End"); //getting timestamp from database
-                LocalDateTime endDateLdt = endDate.toLocalDateTime(); //converting timestamp to local datetime
+                LocalDateTime endDateLdt = Helper.convertToLocal(endDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
                 int customerId = resultSet.getInt("Customer_ID");
                 int userId = resultSet.getInt("User_ID");
                 int contactId = resultSet.getInt("Contact_ID");
@@ -54,11 +54,11 @@ public class DBAppointments {
             preparedStatement.setString(2, description);
             preparedStatement.setString(3, location);
             preparedStatement.setString(4, type);
-            preparedStatement.setTimestamp(5, Timestamp.valueOf(startDate));
-            preparedStatement.setTimestamp(6, Timestamp.valueOf(endDate));
-            preparedStatement.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now())); //setting create date
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(Helper.convertToUtc(startDate).toLocalDateTime())); //converting local date time to UTC for database storage requirements
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(Helper.convertToUtc(endDate).toLocalDateTime())); //converting local date time to UTC for database storage requirements
+            preparedStatement.setTimestamp(7, Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting create date and converting to UTC for database storage requirements
             preparedStatement.setString(8, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName());
-            preparedStatement.setTimestamp(9,  Timestamp.valueOf(LocalDateTime.now())); //setting last updated datetime
+            preparedStatement.setTimestamp(9,  Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting last updated datetime and converting to UTC for database storage requirements
             preparedStatement.setString(10, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this appointment
             preparedStatement.setInt(11, custId);
             preparedStatement.setInt(12, userId);

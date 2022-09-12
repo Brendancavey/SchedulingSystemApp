@@ -41,8 +41,6 @@ public class AppointmentPage implements Initializable {
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Appointment Page initialized!");
@@ -78,7 +76,6 @@ public class AppointmentPage implements Initializable {
             LocalDateTime aStart = a.getStartDate();
             LocalDateTime aEnd = a.getEndDate();
             int aCustomer = a.getCustId();
-            System.out.println(aCustomer + " = " + customer);
             if ((aCustomer == customer.getId()) &&                                                  //found customer that is a match
                     (start.isEqual(aStart)) ||                                                      //start times cannot be the same
                     (start.isAfter(aStart) && start.isBefore(aEnd)) ||                              //start cannot start between start and end time
@@ -130,7 +127,7 @@ public class AppointmentPage implements Initializable {
                 start = LocalTime.of(startTimeComboBox.getValue().getHour(), 30); //check to see if the start time selection minute is on the hour. If so, then set the start to 30 min after for 30 min appointment intervals
             }
 
-            while (start.isBefore(end.plusSeconds(1))){ //add all of the time intervals between start and end times
+            while (start.isBefore(end.plusSeconds(1))){ //add all of the time intervals between start and end times to the combo box
                 endTimeComboBox.getItems().add(start);
                 start = start.plusMinutes(30);
             }
