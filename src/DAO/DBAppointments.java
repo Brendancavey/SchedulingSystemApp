@@ -93,6 +93,19 @@ public class DBAppointments {
             throwables.printStackTrace();
         }
     }
+    public static int deleteAppointment(int apptId){
+        int rowsAffected = 0;
+        try {
+            String sqlQuery = "DELETE FROM APPOINTMENTS WHERE Appointment_ID = ?";
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, apptId);
+            rowsAffected = preparedStatement.executeUpdate();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return rowsAffected;
+
+    }
     public static ObservableList<Appointment> selectAppointmentByThisMonth(LocalDateTime dateTime){
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         Timestamp dateTimeStamp = Timestamp.valueOf(dateTime);

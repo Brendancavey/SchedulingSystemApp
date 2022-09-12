@@ -4,6 +4,8 @@ import DAO.DBAppointments;
 import DAO.DBContacts;
 import DAO.DBCustomers;
 import DAO.DBUsers;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,6 +19,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AppointmentPage implements Initializable {
@@ -35,6 +38,8 @@ public class AppointmentPage implements Initializable {
     public ComboBox<LocalTime> endTimeComboBox;
     public LocalTime start;
     public LocalTime end = LocalTime.of(20, 0); //requirements for when office is closed is at 10PM EST so no more appointments after that.
+    public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+
 
 
 
@@ -48,7 +53,12 @@ public class AppointmentPage implements Initializable {
         customerBox.setItems(DBCustomers.getAllCustomers());
         userBox.setItems(DBUsers.getAllUsers());
     }
+    /** LOGICAL ERROR: Found logical error when making appointment times overlap one another with the same customer. Fixed this
+     * issue by creating a control flow statement with multiple and/or statements to check for these conditions.*/
     public void onSave(ActionEvent actionEvent) throws IOException {
+        boolean conflictExists = false;
+        allAppointments = DBAppointments.getAllAppointments();
+        //////////////////////GETTING FIELD INPUTS//////////////////////////
         String title = titleText.getText();
         String description = descText.getText();
         String location = locationText.getText();
@@ -62,20 +72,39 @@ public class AppointmentPage implements Initializable {
         LocalTime endTime = endTimeComboBox.getValue();
         LocalDateTime start = LocalDateTime.of(startDate, startTime); //converting start date and start time into local date time for appointment object
         LocalDateTime end = LocalDateTime.of(endDate, endTime); //converting end date and end time into local date time for appointment object
-
-        if (Helper.userClickedAddAppointment){ //if user clicked on add appointment from the main menu page, then insert appointment into data base
-            DBAppointments.insertAppointment(title, description, location, type, start, end, customer.getId(), user.getUserId(), contact.getContactId());
+        ////////////////////////////////////////////////////////////////////
+        /////////////////CHECKING FOR TIME OVERLAP CONFLICT//////////////////
+        for (Appointment a : allAppointments){
+            LocalDateTime aStart = a.getStartDate();
+            LocalDateTime aEnd = a.getEndDate();
+            int aCustomer = a.getCustId();
+            System.out.println(aCustomer + " = " + customer);
+            if ((aCustomer == customer.getId()) &&                                                  //found customer that is a match
+                    (start.isEqual(aStart)) ||                                                      //start times cannot be the same
+                    (start.isAfter(aStart) && start.isBefore(aEnd)) ||                              //start cannot start between start and end time
+                    (start.isBefore(aStart)) && (end.isAfter(aStart) && end.isBefore(aEnd)) ||      //end cannot end between start and end time
+                    (start.isBefore(aStart)) && (end.isAfter(aEnd))                                 //start cannot be before start AND have end be after end
+            ){
+                System.out.println("CONFLICT WITH " + aCustomer);
+                conflictExists = true;
+            }
         }
-        else{ //else the user must have clicked on modify appointment, therefore userClickedAddAppointment is false
-            int appointmentId = Integer.valueOf(apptIdText.getText());
-            DBAppointments.updateAppointment(appointmentId, title, description, location, type, start, end, customer.getId(), user.getUserId(), contact.getContactId());
+        ////////////////////////////////////////////////////////////////////////
+        ///////////////////ADDING/UPDATING APPOINTMENT////////////////////////////
+        //if no time conflicts exist, then add/update appointment
+        if(!conflictExists) {
+            if (Helper.userClickedAddAppointment) { //if user clicked on add appointment from the main menu page, then insert appointment into data base
+                DBAppointments.insertAppointment(title, description, location, type, start, end, customer.getId(), user.getUserId(), contact.getContactId());
+            } else { //else the user must have clicked on modify appointment, therefore userClickedAddAppointment is false
+                int appointmentId = Integer.valueOf(apptIdText.getText());
+                DBAppointments.updateAppointment(appointmentId, title, description, location, type, start, end, customer.getId(), user.getUserId(), contact.getContactId());
+            }
+            //whatever the result of userClickedAddAppointment, set value back to false (default)
+            Helper.userClickedAddAppointment = false;
+            Helper.goToMainMenu(actionEvent);
         }
-        //whatever the result of userClickedAddAppointment, set value back to false (default)
-        Helper.userClickedAddAppointment = false;
-        Helper.goToMainMenu(actionEvent);
-
+        /////////////////////////////////////////////////////////////////////////
     }
-
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Helper.goToMainMenu(actionEvent);
     }

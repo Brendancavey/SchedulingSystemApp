@@ -24,6 +24,7 @@ import model.Province;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
@@ -80,6 +81,17 @@ public class MainMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /////////////CHECKING TO SEE IF ANY APPOINTMENTS ARE COMING UP//////////
+        LocalTime startTime = LocalTime.of(8, 45);
+        LocalTime currentTime = LocalTime.now();
+        long timeDifference = ChronoUnit.MINUTES.between(currentTime, startTime);
+        System.out.println((timeDifference));
+        if(timeDifference > 0 && timeDifference <= 15){
+            System.out.println("You have an event approximately in " + timeDifference + " minute(s)!");
+        }
+        else if (timeDifference <= 0){
+            System.out.println("Event started approximately " + timeDifference * -1 + " minute(s) ago.");
+        }
         ////////////////CHECKING FOR TOGGLE VIEW///////////////
         if (Helper.viewAllCustomersToggle){
             viewCustomers.fire();
@@ -174,9 +186,22 @@ public class MainMenu implements Initializable {
             Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem(); //getting selected customer from tableview
             DBCustomers.deleteCustomer((selectedCustomer.getId())); //deleting customer from the database
             customerTableView.setItems(DBCustomers.getAllCustomers()); //updating the table view
+            //selecting the next item in the list for easier deletion of multiple customers so that user does not have
+            //to select - delete for each deletion.
+            if(customerTableView.getSelectionModel().isEmpty()){
+                customerTableView.getSelectionModel().selectFirst();
+            }
+
         }
         else if(!Helper.viewAllCustomersToggle){ //if the toggle is set to view all appointments, then the delete button deletes from appointment view table
-            System.out.println("No appointment to delete");
+            Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem(); //getting selected appointment from tableview
+            DBAppointments.deleteAppointment(selectedAppointment.getApptId()); //deleting appointment from database
+            apptTableView.setItems(DBAppointments.getAllAppointments()); //updating table view
+            //selecting the next item in the list for easier deletion of multiple appointments so that user does not have
+            //to select - delete for each deletion.
+            if(apptTableView.getSelectionModel().isEmpty()){
+                apptTableView.getSelectionModel().selectFirst();
+            }
         }
     }
 
