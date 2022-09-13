@@ -14,6 +14,7 @@ import model.User;
 
 import java.io.IOException;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +32,9 @@ public class Helper {
     public static Locale english = new Locale("en", "US");
     public static Locale language = english;
     public static ObservableList<Locale> languageList = FXCollections.observableArrayList();
+    public static HashMap<String, LocalDateTime> timeDictionaryStart = new HashMap<>();
+    public static HashMap<String, LocalDateTime> timeDictionaryEnd = new HashMap<>();
+
     ////////////////////////////////////////////////////////
 
 
@@ -135,6 +139,13 @@ public class Helper {
         alert.setTitle("Information Message");
         alert.showAndWait();
         //Optional<ButtonType> buttonClicked = alert.showAndWait();
+    }
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////CONVERT LOCAL TIME INTO READABLE FORMAT////////
+    public static String toReadableTime(LocalTime time){
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("h:mm a"));
+        //DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd h:mm a");
+        return formattedTime;
     }
 
 

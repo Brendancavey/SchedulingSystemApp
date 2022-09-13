@@ -37,6 +37,7 @@ public class DBAppointments {
                 Contact contact = DBContacts.selectContactById(contactId); //getting contact from contact id
                 Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, startDateLdt, endDateLdt, customerId, userId, contact);
                 appointmentList.add(newAppointment);
+
             }
         }catch (SQLException throwables){
             throwables.printStackTrace();
