@@ -44,6 +44,37 @@ public class DBAppointments {
         }
         return appointmentList;
     }
+    public static ObservableList<Appointment> getAppointmentsByContactId(int contactId){
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        try{
+            String sqlQuery = "SELECT * from appointments WHERE Contact_ID = ?"; //sql query
+            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery); //prepare data from database
+            preparedStatement.setInt(1, contactId);
+            ResultSet resultSet = preparedStatement.executeQuery(); //execute query and place results into resultSet
+            while (resultSet.next()){//for each result that came up from the query, create a Country Object and add to countryList
+                int appointmentId = resultSet.getInt("Appointment_ID");
+                String title = resultSet.getString("Title");
+                String description = resultSet.getString("Description");
+                String location = resultSet.getString("Location");
+                String type = resultSet.getString("Type");
+                Timestamp startDate = resultSet.getTimestamp("Start"); //getting timestamp from database
+                LocalDateTime startDateLdt = Helper.convertFromUtcToLocal(startDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
+                Timestamp endDate = resultSet.getTimestamp("End"); //getting timestamp from database
+                LocalDateTime endDateLdt = Helper.convertFromUtcToLocal(endDate.toLocalDateTime()).toLocalDateTime(); //converting timestamp to local datetime and converting from UTC to local date time to display in local date time
+                int customerId = resultSet.getInt("Customer_ID");
+                int userId = resultSet.getInt("User_ID");
+
+
+                Contact contact = DBContacts.selectContactById(contactId); //getting contact from contact id
+                Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, startDateLdt, endDateLdt, customerId, userId, contact);
+                appointmentList.add(newAppointment);
+
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        return appointmentList;
+    }
     public static void insertAppointment(String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime endDate, int custId, int userId, int contactId){
         try{
             String sqlQuery = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
