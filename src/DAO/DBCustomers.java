@@ -37,6 +37,7 @@ public class DBCustomers {
         return customersList;
     }
 
+
     public static int insertCustomer(String customerName, String address, String postalCode, String phoneNumber, int provinceId){
         int rowsAffected = 0;
         try {
