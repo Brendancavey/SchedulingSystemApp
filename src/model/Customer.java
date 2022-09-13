@@ -1,5 +1,8 @@
 package model;
 
+import DAO.DBCountries;
+import DAO.DBProvinces;
+
 public class Customer {
     private int id;
     private String name;
@@ -16,6 +19,7 @@ public class Customer {
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
         this.province = province;
+        this.country = DBCountries.selectCountryById(DBProvinces.selectCountryIdByProvinceId(this.province.getProvinceId()));
     }
     @Override
     public String toString(){

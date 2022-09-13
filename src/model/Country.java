@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Country {
     private int id;
     private String name;
@@ -13,6 +15,8 @@ public class Country {
     public String toString(){
         return String.valueOf(this.id) + " | " + this.name;
     }
+
+
     //////////GETTERS AND SETTERS//////////
     public int getId() {
         return id;

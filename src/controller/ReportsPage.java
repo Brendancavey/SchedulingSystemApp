@@ -1,8 +1,6 @@
 package controller;
 
-import DAO.DBAppointments;
-import DAO.DBContacts;
-import DAO.DBCustomers;
+import DAO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,9 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import model.Appointment;
-import model.Contact;
-import model.Customer;
+import model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -115,6 +111,7 @@ public class ReportsPage implements Initializable {
         }
         else{
             viewLabel.setText("Custom");
+            fillByCountry(); //filling combo box by country
         }
         totalCount.setText("Total Customers: ");
     }
@@ -138,12 +135,13 @@ public class ReportsPage implements Initializable {
         fillByMonth(); //filling combo box by month
     }
     public void onViewByCustom(ActionEvent actionEvent) {
-        customerTableView.getItems().clear();
-        customerTableView.getItems().removeAll();
+        //customerTableView.getItems().clear();
+        //customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
-        viewLabel.setText("Custom");
+        viewLabel.setText("Countries");
         yearLabel.setOpacity(0);
+        fillByCountry();//filling combo box by country
         //////////////////////////////////////////////////////////////
 
     }
@@ -176,18 +174,33 @@ public class ReportsPage implements Initializable {
             else if(custViewByMonth.isSelected()){
                 Month selectedMonth = (Month)(optionsComboBox.getSelectionModel().getSelectedItem());
                 ObservableList<Appointment> listOfAppointments = DBAppointments.getAllAppointments();
-                ObservableList<Customer> listByMonthByCustId = FXCollections.observableArrayList();
+                ObservableList<Customer> listOfCustomerById = FXCollections.observableArrayList();
                 for (Appointment appointments : listOfAppointments){
                     if(appointments.getStartDate().getMonth().equals(selectedMonth) && appointments.getStartDate().getYear() == LocalDate.now().getYear()){
                         Customer customerToAdd = DBCustomers.selectCustomerById(appointments.getCustId());
-                        listByMonthByCustId.add(customerToAdd);
+                        listOfCustomerById.add(customerToAdd);
                     }
                 }
-                customerTableView.setItems(listByMonthByCustId);
-                totalCount.setText("Total Customers: " + listByMonthByCustId.size());
+                customerTableView.setItems(listOfCustomerById);
+                totalCount.setText("Total Customers: " + listOfCustomerById.size());
             }
             //////////////////////////////////////////////////////////////////////////////////////
             else if (custViewByCustom.isSelected()){
+                System.out.println("HELLo?");
+                Country selectedCountry = (Country)(optionsComboBox.getSelectionModel().getSelectedItem());
+                ObservableList<Appointment> listOfAppointments = DBAppointments.getAllAppointments();
+                ObservableList<Customer> listOfCustomersByCountry = FXCollections.observableArrayList();
+                for (Appointment appointments : listOfAppointments){
+                    Customer customerToAdd = DBCustomers.selectCustomerById(appointments.getCustId());
+                    Country customerCountry = customerToAdd.getCountry();
+
+                    if(customerCountry.getId() == (selectedCountry.getId())){
+                        listOfCustomersByCountry.add(customerToAdd);
+                    }
+                }
+                System.out.println(listOfCustomersByCountry);
+                customerTableView.setItems(listOfCustomersByCountry);
+                totalCount.setText("Total Customers: " + listOfCustomersByCountry.size());
             }
         }
     }
@@ -208,6 +221,13 @@ public class ReportsPage implements Initializable {
     public void fillByMonth(){
         for (Month months : Month.values()){
             optionsComboBox.getItems().add(months);
+        }
+    }
+    public void fillByCountry(){
+        for (Country countries : DBCountries.getAllCountries()){
+            if(!optionsComboBox.getItems().contains(countries)){
+                optionsComboBox.getItems().add(countries);
+            }
         }
     }
 }
