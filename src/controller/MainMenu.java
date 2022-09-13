@@ -27,6 +27,8 @@ import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -81,17 +83,6 @@ public class MainMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /////////////CHECKING TO SEE IF ANY APPOINTMENTS ARE COMING UP//////////
-        LocalTime startTime = LocalTime.of(8, 45);
-        LocalTime currentTime = LocalTime.now();
-        long timeDifference = ChronoUnit.MINUTES.between(currentTime, startTime);
-        System.out.println((timeDifference));
-        if(timeDifference > 0 && timeDifference <= 15){
-            System.out.println("You have an event approximately in " + timeDifference + " minute(s)!");
-        }
-        else if (timeDifference <= 0){
-            System.out.println("Event started approximately " + timeDifference * -1 + " minute(s) ago.");
-        }
         ////////////////CHECKING FOR TOGGLE VIEW///////////////
         if (Helper.viewAllCustomersToggle){
             viewCustomers.fire();
@@ -138,70 +129,89 @@ public class MainMenu implements Initializable {
         }
     }
     public void onModify(ActionEvent actionEvent) throws IOException {
-        if(Helper.viewAllCustomersToggle) {
-            ///////////////////PREPARING SELECTED CUSTOMER INFORMATION///////////////////////
-            Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
-            //Since Country is not an object imported from the SQL database, need to set Country of the selected customer manually
-            //by matching the foreign keys to the corresponding Ids.
-            int selectedCustomerProvinceId = selectedCustomer.getProvince().getProvinceId(); //getting selection province id
-            int selectedCustomerCountryId = DBProvinces.selectCountryIdByProvinceId(selectedCustomerProvinceId); //using province id to get country id
-            selectedCustomer.setCountry(DBCountries.selectCountryById(selectedCustomerCountryId)); //setting country of selected customer to the matching country id
-            ////////////////////////////////////////////////////////////////////////////////////
-            ///////////////GETTING CustomerPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE///////
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainMenu.class.getResource("/view/CustomerPage.fxml"));
-            loader.load();
-            CustomerPage customerPageController = loader.getController();
-            customerPageController.sendCustomerInformation(selectedCustomer);
-            ////////////////////////////////////////////////////////////////////////////////////
-            ///////////////////SETTING SCENE TO MODIFY CUSTOMER PAGE////////////////////////////
-            Parent root = loader.getRoot();
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            stage.setTitle("Modify Customer");
-            stage.setScene(new Scene(root, 600, 450));
-            stage.show();
-            ///////////////////////////////////////////////////////////////////////////////
-        }
-        else{
-            ///////////////////////PREPARING SELECTED APPOINTMENT INFORMATION//////////////
-            Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem();
-            //////////////////////////////////////////////////////////////////////////////////////////
-            ///////////GETTING AppointmentPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE/////////////
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainMenu.class.getResource("/view/AppointmentPage.fxml"));
-            loader.load();
-            AppointmentPage appointmentPageController = loader.getController();
-            appointmentPageController.sendAppointmentInformation(selectedAppointment);
-            /////////////////////////SETTING SCENE TO MODIFY APPOINTMENT PAGE//////////////////////////
-            Parent root = loader.getRoot();
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            stage.setTitle("Modify Appointment");
-            stage.setScene(new Scene(root, 600, 600));
-            stage.show();
+        try {
+            if (Helper.viewAllCustomersToggle) {
+                ///////////////////PREPARING SELECTED CUSTOMER INFORMATION///////////////////////
+                Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+                //Since Country is not an object imported from the SQL database, need to set Country of the selected customer manually
+                //by matching the foreign keys to the corresponding Ids.
+                int selectedCustomerProvinceId = selectedCustomer.getProvince().getProvinceId(); //getting selection province id
+                int selectedCustomerCountryId = DBProvinces.selectCountryIdByProvinceId(selectedCustomerProvinceId); //using province id to get country id
+                selectedCustomer.setCountry(DBCountries.selectCountryById(selectedCustomerCountryId)); //setting country of selected customer to the matching country id
+                ////////////////////////////////////////////////////////////////////////////////////
+                ///////////////GETTING CustomerPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE///////
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainMenu.class.getResource("/view/CustomerPage.fxml"));
+                loader.load();
+                CustomerPage customerPageController = loader.getController();
+                customerPageController.sendCustomerInformation(selectedCustomer);
+                ////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////SETTING SCENE TO MODIFY CUSTOMER PAGE////////////////////////////
+                Parent root = loader.getRoot();
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.setTitle("Modify Customer");
+                stage.setScene(new Scene(root, 600, 450));
+                stage.show();
+                ///////////////////////////////////////////////////////////////////////////////
+            } else {
+                ///////////////////////PREPARING SELECTED APPOINTMENT INFORMATION//////////////
+                Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem();
+                //////////////////////////////////////////////////////////////////////////////////////////
+                ///////////GETTING AppointmentPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE/////////////
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainMenu.class.getResource("/view/AppointmentPage.fxml"));
+                loader.load();
+                AppointmentPage appointmentPageController = loader.getController();
+                appointmentPageController.sendAppointmentInformation(selectedAppointment);
+                /////////////////////////SETTING SCENE TO MODIFY APPOINTMENT PAGE//////////////////////////
+                Parent root = loader.getRoot();
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.setTitle("Modify Appointment");
+                stage.setScene(new Scene(root, 600, 600));
+                stage.show();
+            }
+        }catch(NullPointerException e){
+            Helper.displayMessage("Make a selection to modify.");
         }
     }
 
     public void onDelete(ActionEvent actionEvent) {
-        if(Helper.viewAllCustomersToggle){
-            Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem(); //getting selected customer from tableview
-            DBCustomers.deleteCustomer((selectedCustomer.getId())); //deleting customer from the database
-            customerTableView.setItems(DBCustomers.getAllCustomers()); //updating the table view
-            //selecting the next item in the list for easier deletion of multiple customers so that user does not have
-            //to select - delete for each deletion.
-            if(customerTableView.getSelectionModel().isEmpty()){
-                customerTableView.getSelectionModel().selectFirst();
-            }
+        try {
+            if (Helper.viewAllCustomersToggle) {
+                boolean selectedCustomerHasAppt = false;
+                Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem(); //getting selected customer from tableview
+                /////////////Checking to see if selected customer has an appointment////////
+                for (Appointment appointments : DBAppointments.getAllAppointments()) {
+                    if (appointments.getCustId() == selectedCustomer.getId()) {
+                        selectedCustomerHasAppt = true;
+                    }
+                }
+                if (!selectedCustomerHasAppt) {
+                    DBCustomers.deleteCustomer((selectedCustomer.getId())); //deleting customer from the database
+                    customerTableView.setItems(DBCustomers.getAllCustomers()); //updating the table view
+                    Helper.displayMessage("Customer successfully removed.");
+                    //selecting the next item in the list for easier deletion of multiple customers so that user does not have
+                    //to select - delete for each deletion.
+                    if (customerTableView.getSelectionModel().isEmpty()) {
+                        customerTableView.getSelectionModel().selectFirst();
+                    }
+                } else {
+                    Helper.displayMessage("The selected customer has appointments. Cannot delete this customer until all of their " +
+                            "appointments have been deleted.");
+                }
 
-        }
-        else if(!Helper.viewAllCustomersToggle){ //if the toggle is set to view all appointments, then the delete button deletes from appointment view table
-            Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem(); //getting selected appointment from tableview
-            DBAppointments.deleteAppointment(selectedAppointment.getApptId()); //deleting appointment from database
-            apptTableView.setItems(DBAppointments.getAllAppointments()); //updating table view
-            //selecting the next item in the list for easier deletion of multiple appointments so that user does not have
-            //to select - delete for each deletion.
-            if(apptTableView.getSelectionModel().isEmpty()){
-                apptTableView.getSelectionModel().selectFirst();
+            } else if (!Helper.viewAllCustomersToggle) { //if the toggle is set to view all appointments, then the delete button deletes from appointment view table
+                Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem(); //getting selected appointment from tableview
+                DBAppointments.deleteAppointment(selectedAppointment.getApptId()); //deleting appointment from database
+                apptTableView.setItems(DBAppointments.getAllAppointments()); //updating table view
+                //selecting the next item in the list for easier deletion of multiple appointments so that user does not have
+                //to select - delete for each deletion.
+                if (apptTableView.getSelectionModel().isEmpty()) {
+                    apptTableView.getSelectionModel().selectFirst();
+                }
             }
+        }catch(NullPointerException e){
+            Helper.displayMessage("Make a selection to delete.");
         }
     }
 

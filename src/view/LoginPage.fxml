@@ -25,6 +25,11 @@
             <PasswordField fx:id="passwordTextfield" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Password" />
             <Button fx:id="loginButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLogin" prefHeight="30.0" prefWidth="200.0" text="Login" />
             <Button fx:id="resetButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onReset" prefHeight="30.0" prefWidth="200.0" text="Reset" />
+            <Label fx:id="incorrectLabel" opacity="0.0" text="Incorrect username/password" textFill="RED">
+               <font>
+                  <Font name="Arial Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </VBox>
    </right>

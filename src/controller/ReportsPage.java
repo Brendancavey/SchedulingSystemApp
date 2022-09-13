@@ -212,6 +212,7 @@ public class ReportsPage implements Initializable {
                 totalCount.setText("Total Customers: " + listOfCustomerById.size());
             }
             //////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////VIEW BY COUNTRY COMBO BOX SELECTION LIST/////////////////////
             else if (custViewByCustom.isSelected()){
                 Country selectedCountry = (Country)(optionsComboBox.getSelectionModel().getSelectedItem());
                 ObservableList<Appointment> listOfAppointments = DBAppointments.getAllAppointments();

@@ -33,25 +33,33 @@ public class CustomerPage implements Initializable {
         System.out.println("Customer page initialized!");
     }
     public void onSave(ActionEvent actionEvent) throws IOException {
-        String name = nameText.getText();
-        String address = addressText.getText();
-        String postalCode = postalCodeText.getText();
-        String phoneNumber = phoneNumberText.getText();
-        //since country is not an object imported from the SQL Server and we're not saving customer objects into a data structure in the program,
-        //country information is obtained from using select query from province id at the main menu under onModify. - starting currently from line 113.
-        //Country country = countryBox.getValue();
-        Province province = divisionBox.getValue();
-        int provinceId = province.getProvinceId();
-        if (Helper.userClickedAddCustomer) { //if user clicked on add Customer from the main menu page, then insert customer into data base
-            DBCustomers.insertCustomer(name, address, postalCode, phoneNumber, provinceId); //inserting customer into database
+        try {
+            String name = nameText.getText();
+            String address = addressText.getText();
+            String postalCode = postalCodeText.getText();
+            String phoneNumber = phoneNumberText.getText();
+            //since country is not an object imported from the SQL Server and we're not saving customer objects into a data structure in the program,
+            //country information is obtained from using select query from province id at the main menu under onModify. - starting currently from line 113.
+            //Country country = countryBox.getValue();
+            Province province = divisionBox.getValue();
+            int provinceId = province.getProvinceId();
+            if(name.isBlank()){
+                Helper.displayMessage("Make sure to enter a valid name.");
+            }
+            else {
+                if (Helper.userClickedAddCustomer) { //if user clicked on add Customer from the main menu page, then insert customer into data base
+                    DBCustomers.insertCustomer(name, address, postalCode, phoneNumber, provinceId); //inserting customer into database
+                } else { //else the user must have clicked on modify customer, therefore userClickedAddCustomer is false
+                    int customerId = Integer.valueOf(idText.getText());
+                    DBCustomers.updateCustomer(customerId, name, address, postalCode, phoneNumber, provinceId); //updating customer
+                }
+                //whatever the result of userClickedAddCustomer, set value back to false (default)
+                Helper.userClickedAddCustomer = false;
+                Helper.goToMainMenu(actionEvent);
+            }
+        }catch(NullPointerException e){
+            Helper.displayMessage("Make sure to fill all fields and selections with valid information.");
         }
-        else{ //else the user must have clicked on modify customer, therefore userClickedAddCustomer is false
-            int customerId = Integer.valueOf(idText.getText());
-            DBCustomers.updateCustomer(customerId, name, address, postalCode, phoneNumber, provinceId); //updating customer
-        }
-        //whatever the result of userClickedAddCustomer, set value back to false (default)
-        Helper.userClickedAddCustomer = false;
-        Helper.goToMainMenu(actionEvent);
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
