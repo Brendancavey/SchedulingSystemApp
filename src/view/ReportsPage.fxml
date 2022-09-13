@@ -87,7 +87,7 @@
                   <Font size="14.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="custViewByCustom" mnemonicParsing="false" onAction="#onViewByCustom" prefHeight="17.0" prefWidth="93.0" text="By Custom" toggleGroup="$custViewBy">
+            <RadioButton fx:id="custViewByCustom" mnemonicParsing="false" onAction="#onViewByCustom" prefHeight="17.0" prefWidth="93.0" text="By Country" toggleGroup="$custViewBy">
                <font>
                   <Font size="14.0" />
                </font>

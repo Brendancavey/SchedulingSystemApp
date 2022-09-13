@@ -162,9 +162,22 @@ public class ReportsPage implements Initializable {
                 ObservableList<Appointment> listByType = DBAppointments.getAppointmentsByType(selectedType); //getting list of appointments by type
                 ObservableList<Customer> listByTypeByCustId = FXCollections.observableArrayList(); //initializing customer list
                 for (Appointment appointments : listByType){
-                    //for each appointment in appointment by type, add to the customer list each customer obtained from the matching
-                    // customer ID from the appointment
-                    listByTypeByCustId.add(DBCustomers.selectCustomerById(appointments.getCustId()));
+                    boolean customerExistsInList = false; //boolean to check if customer already exists in list
+                    Customer customerToAdd = DBCustomers.selectCustomerById(appointments.getCustId());
+                    /////////////////Checking for duplicates////////////
+                    for(Customer customer : listByTypeByCustId){
+                        if (customer.getId() == customerToAdd.getId()){
+                            customerExistsInList = true;
+                        }
+                    }
+                    /////////////////////////////////////////////////////
+                    /////////////Adding customer to list///////////////////
+                    if(!customerExistsInList) {
+                        //for each appointment in appointment by type, add to the customer list each customer obtained from the matching
+                        // customer ID from the appointment
+                        listByTypeByCustId.add(customerToAdd);
+                    }
+                    ////////////////////////////////////////////////////
                 }
                 customerTableView.setItems(listByTypeByCustId); //fill table view with appropriate list
                 totalCount.setText("Total Customers: " + listByTypeByCustId.size()); //get total number of customers with filter
@@ -176,27 +189,52 @@ public class ReportsPage implements Initializable {
                 ObservableList<Appointment> listOfAppointments = DBAppointments.getAllAppointments();
                 ObservableList<Customer> listOfCustomerById = FXCollections.observableArrayList();
                 for (Appointment appointments : listOfAppointments){
-                    if(appointments.getStartDate().getMonth().equals(selectedMonth) && appointments.getStartDate().getYear() == LocalDate.now().getYear()){
-                        Customer customerToAdd = DBCustomers.selectCustomerById(appointments.getCustId());
-                        listOfCustomerById.add(customerToAdd);
+                    boolean customerExistsInList = false; //boolean to check if customer already exists in list
+                    Customer customerToAdd = DBCustomers.selectCustomerById(appointments.getCustId());
+                    /////////////////Checking for duplicates////////////
+                    for(Customer customer : listOfCustomerById){
+                        if (customer.getId() == customerToAdd.getId()){
+                            customerExistsInList = true;
+                        }
                     }
+                    /////////////////////////////////////////////////////////
+                    //////////////////Adding customer to list///////////////
+                    if(!customerExistsInList) {
+                        //if the appointment month is equal to the selected month, and appointment year matches the current year,
+                        //then add the customer to the list
+                        if (appointments.getStartDate().getMonth().equals(selectedMonth) && appointments.getStartDate().getYear() == LocalDate.now().getYear()) {
+                            listOfCustomerById.add(customerToAdd);
+                        }
+                    }
+                    ////////////////////////////////////////////////////////
                 }
                 customerTableView.setItems(listOfCustomerById);
                 totalCount.setText("Total Customers: " + listOfCustomerById.size());
             }
             //////////////////////////////////////////////////////////////////////////////////////
             else if (custViewByCustom.isSelected()){
-                System.out.println("HELLo?");
                 Country selectedCountry = (Country)(optionsComboBox.getSelectionModel().getSelectedItem());
                 ObservableList<Appointment> listOfAppointments = DBAppointments.getAllAppointments();
                 ObservableList<Customer> listOfCustomersByCountry = FXCollections.observableArrayList();
-                for (Appointment appointments : listOfAppointments){
+                for (Appointment appointments : listOfAppointments) {
+                    boolean customerExistsInList = false; //boolean to check if customer already exists within list
                     Customer customerToAdd = DBCustomers.selectCustomerById(appointments.getCustId());
                     Country customerCountry = customerToAdd.getCountry();
 
-                    if(customerCountry.getId() == (selectedCountry.getId())){
-                        listOfCustomersByCountry.add(customerToAdd);
+                    /////////////////Checking for duplicates////////////
+                    for (Customer customers : listOfCustomersByCountry){
+                        if(customers.getId() == customerToAdd.getId()){
+                            customerExistsInList = true;
+                        }
                     }
+                    ///////////////////////////////////////////////////
+                    ///////////////Adding customer to list////////////
+                    if (!customerExistsInList) {
+                        if (customerCountry.getId() == (selectedCountry.getId())) {
+                            listOfCustomersByCountry.add(customerToAdd);
+                        }
+                    }
+                    ///////////////////////////////////////////////
                 }
                 System.out.println(listOfCustomersByCountry);
                 customerTableView.setItems(listOfCustomersByCountry);
