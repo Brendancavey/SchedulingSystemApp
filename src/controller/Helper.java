@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import model.User;
 
@@ -15,10 +17,12 @@ import java.time.*;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 ///////////HELPER METHODS////////////////////
 public class Helper {
     //////////////////STATIC VARIABLES/////////////////////
+    public static boolean displayApptTimeConversionMssgOnce = false;
     public static boolean viewAllCustomersToggle = false;
     public static boolean userClickedAddCustomer = false;
     public static boolean userClickedAddAppointment = false;
@@ -103,7 +107,6 @@ public class Helper {
 
         ZonedDateTime utcZDT = ZonedDateTime.of(dateTime, utcZoneId);
         ZonedDateTime myZonedDateTime = ZonedDateTime.ofInstant(utcZDT.toInstant(), myZoneId);
-        System.out.println(myZonedDateTime);
         return myZonedDateTime;
     }
     /////////////////CONVERTING LOCAL TO EST///////////////////////////////
@@ -123,6 +126,15 @@ public class Helper {
         ZonedDateTime estZDT = ZonedDateTime.of(dateTime, estZoneId);
         ZonedDateTime myZDT = ZonedDateTime.ofInstant(estZDT.toInstant(), myZoneId);
         return myZDT;
+    }
+    //////////////////////////////////////////////////////////////////////////
+    ////////////////////ALERT MESSAGES///////////////////////////////////////
+    public static void displayMessage(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(message);
+        alert.setTitle("Information Message");
+        alert.showAndWait();
+        //Optional<ButtonType> buttonClicked = alert.showAndWait();
     }
 
 
