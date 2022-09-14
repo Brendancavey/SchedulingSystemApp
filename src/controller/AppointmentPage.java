@@ -43,6 +43,9 @@ public class AppointmentPage implements Initializable {
     LocalDate startDate; // used to get selected start date
     LocalTime startTime; // used to get selected start time
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    //start = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,6 +62,9 @@ public class AppointmentPage implements Initializable {
     public void onSave(ActionEvent actionEvent) throws IOException {
         try {
             boolean conflictExists = false;
+            boolean estConflict = false;
+            LocalDateTime estOpeningTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
+            LocalDateTime estClosingTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
             allAppointments = DBAppointments.getAllAppointments();
             //////////////////////GETTING FIELD INPUTS//////////////////////////
             String title = titleText.getText();
@@ -91,9 +97,6 @@ public class AppointmentPage implements Initializable {
                             (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aEnd)) ||                                 //start cannot be before start AND have end be after end
                             (startDateTime.isBefore(aStart)) && (endDateTime.isEqual(aEnd))                                    //start cannot be before start AND have end be equal to end
                     ) {
-                        System.out.println(String.valueOf(aCustomer) + " = " + String.valueOf(customer.getId()));
-                        System.out.println("CONFLICT WITH " + aCustomer);
-
                         conflictedTimeStart = aStart;
                         conflictedTimeEnd = aEnd;
                         conflictExists = true;
@@ -106,10 +109,20 @@ public class AppointmentPage implements Initializable {
                         Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
                 System.out.println(conflictedTimeStart + " and " + conflictedTimeEnd + " is in conflict with " + startDateTime + " and " + endDateTime);
             }
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////CHECKING FOR OPERATING HOURS IN EST TIME CONFLICT///////////////////////////////////////////////////////////
+            if(startDateTime.isBefore(estOpeningTime) || endDateTime.isAfter(estClosingTime)){
+                estConflict = true;
+            }
+            if(estConflict){
+                System.out.println("Times chosen is outside of establishment operating hours. Operating hours of establishment are: \n" +
+                        Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) + " " + Helper.getTimeZone() + " or \n" +
+                        "8AM TO 10PM EST");
+            }
             ////////////////////////////////////////////////////////////////////////
             ///////////////////ADDING/UPDATING APPOINTMENT////////////////////////////
             //if no time conflicts exist, then add/update appointment
-            if (!conflictExists) {
+            if (!conflictExists && !estConflict) {
                 ///////////////CHECKING TO SEE IF SELECTED TIME FALLS INTO NEXT DAY//////////////////
                 getDateTimeSelection(); //updating selected start/end date times
                 end = LocalDateTime.of(endDate, endTime); //no need to convert since conversion to local time was already done on date selection
