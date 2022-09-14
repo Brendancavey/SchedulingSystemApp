@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentPage">
    <children>
-      <HBox layoutX="35.0" layoutY="27.0" prefHeight="483.0" prefWidth="350.0">
+      <HBox layoutX="35.0" layoutY="27.0" prefHeight="410.0" prefWidth="350.0">
          <children>
             <VBox prefHeight="483.0" prefWidth="145.0" spacing="15.0">
                <children>
@@ -68,7 +68,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox prefHeight="483.0" prefWidth="168.0" spacing="17.0">
+            <VBox prefHeight="483.0" prefWidth="169.0" spacing="17.0">
                <children>
                   <TextField fx:id="apptIdText" disable="true" promptText="Auto-Gen" />
                   <TextField fx:id="titleText" />
@@ -76,15 +76,15 @@
                   <TextField fx:id="locationText" />
                   <TextField fx:id="typeText" />
                   <ComboBox fx:id="contactBox" prefHeight="25.0" prefWidth="167.0" promptText="Select Contact" />
-                  <ComboBox fx:id="customerBox" prefHeight="25.0" prefWidth="167.0" promptText="Select Customer" />
+                  <ComboBox fx:id="customerBox" onAction="#onCustomerSelection" prefHeight="25.0" prefWidth="167.0" promptText="Select Customer" />
                   <ComboBox fx:id="userBox" prefHeight="25.0" prefWidth="167.0" promptText="Select User" />
-                  <DatePicker fx:id="startDatePicker" onAction="#onStartDateSelection" promptText="Select Start Date" />
+                  <DatePicker fx:id="startDatePicker" disable="true" onAction="#onStartDateSelection" promptText="Select Customer First" />
                   <ComboBox fx:id="startTimeComboBox" disable="true" layoutX="10.0" layoutY="304.0" onAction="#onStartTimeSelection" prefHeight="25.0" prefWidth="167.0" promptText="Pick Start Date First" />
                </children>
             </VBox>
          </children>
       </HBox>
-      <HBox layoutX="354.0" layoutY="360.0" prefHeight="100.0" prefWidth="241.0">
+      <HBox layoutX="354.0" layoutY="360.0" prefHeight="81.0" prefWidth="241.0">
          <children>
             <VBox prefHeight="100.0" prefWidth="87.0" spacing="15.0">
                <children>
@@ -108,8 +108,13 @@
             </VBox>
          </children>
       </HBox>
-      <Button layoutX="182.0" layoutY="505.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSave" prefHeight="30.0" prefWidth="150.0" text="Save" />
+      <Button fx:id="saveButton" layoutX="182.0" layoutY="505.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSave" prefHeight="30.0" prefWidth="150.0" text="Save" />
       <Button layoutX="368.0" layoutY="504.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="150.0" text="Cancel" />
       <Label fx:id="timeZoneText" layoutX="463.0" layoutY="578.0" prefHeight="17.0" prefWidth="132.0" text="timeZone" />
+      <Label fx:id="conflictExistsLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="35.0" layoutY="443.0" opacity="0.0" prefHeight="64.0" prefWidth="555.0" text="Label" textFill="#ee1717" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
