@@ -70,29 +70,42 @@ public class AppointmentPage implements Initializable {
             User user = userBox.getValue();
             LocalDate startDate = startDatePicker.getValue();
             LocalDate endDate = endDatePicker.getValue();
-            //LocalTime startTime = startTimeComboBox.getValue().toLocalTime();
-            //LocalTime endTime = endTimeComboBox.getValue().toLocalTime();
+            //using time dictionary to get local date time object stored in dictionary since start time combo box stores string values better readability
             LocalTime startTime = Helper.timeDictionaryStart.get(startTimeComboBox.getValue()).toLocalTime();
+            //using time dictionary to get local date time object stored in dictionary since end time combo box stores string values for better readability
             LocalTime endTime = Helper.timeDictionaryEnd.get(endTimeComboBox.getValue()).toLocalTime();
             LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime); //converting start date and start time into local date time for appointment object
             LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime); //converting end date and end time into local date time for appointment object
             ////////////////////////////////////////////////////////////////////
             /////////////////CHECKING FOR TIME OVERLAP CONFLICT//////////////////
+            LocalDateTime conflictedTimeStart = null;
+            LocalDateTime conflictedTimeEnd = null;
             for (Appointment a : allAppointments) {
                 LocalDateTime aStart = a.getStartDate();
                 LocalDateTime aEnd = a.getEndDate();
                 int aCustomer = a.getCustId();
-                if ((aCustomer == customer.getId()) &&                                                  //found customer that is a match
-                        (start.isEqual(aStart)) ||                                                      //start times cannot be the same
-                        (start.isAfter(aStart) && start.isBefore(aEnd)) ||                              //start cannot start between start and end time
-                        (start.isBefore(aStart)) && (end.isAfter(aStart) && end.isBefore(aEnd)) ||      //end cannot end between start and end time
-                        (start.isBefore(aStart)) && (end.isAfter(aEnd))                                 //start cannot be before start AND have end be after end
-                ) {
-                    System.out.println("CONFLICT WITH " + aCustomer);
-                    conflictExists = true;
+                if (aCustomer == customer.getId()) {                                                                             //found customer that is a match
+                    if ((startDateTime.isEqual(aStart)) ||                                                                       //start times cannot be the same
+                            (startDateTime.isAfter(aStart) && startDateTime.isBefore(aEnd)) ||                                  //start cannot start between start and end time
+                            (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aStart) && endDateTime.isBefore(aEnd)) ||  //end cannot end between start and end time
+                            (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aEnd)) ||                                 //start cannot be before start AND have end be after end
+                            (startDateTime.isBefore(aStart)) && (endDateTime.isEqual(aEnd))                                    //start cannot be before start AND have end be equal to end
+                    ) {
+                        System.out.println(String.valueOf(aCustomer) + " = " + String.valueOf(customer.getId()));
+                        System.out.println("CONFLICT WITH " + aCustomer);
+
+                        conflictedTimeStart = aStart;
+                        conflictedTimeEnd = aEnd;
+                        conflictExists = true;
+                        break;
+                    }
                 }
             }
-
+            if(conflictExists){
+                System.out.println(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
+                        Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
+                System.out.println(conflictedTimeStart + " and " + conflictedTimeEnd + " is in conflict with " + startDateTime + " and " + endDateTime);
+            }
             ////////////////////////////////////////////////////////////////////////
             ///////////////////ADDING/UPDATING APPOINTMENT////////////////////////////
             //if no time conflicts exist, then add/update appointment
