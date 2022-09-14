@@ -95,5 +95,10 @@
          </children>
       </VBox>
       <Label fx:id="yearLabel" layoutX="488.0" layoutY="159.0" opacity="0.0" prefHeight="17.0" prefWidth="51.0" text="2022" />
+      <Label layoutX="397.0" layoutY="117.0" prefHeight="30.0" prefWidth="182.0" text="That have an appointment">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

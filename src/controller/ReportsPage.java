@@ -135,8 +135,8 @@ public class ReportsPage implements Initializable {
         fillByMonth(); //filling combo box by month
     }
     public void onViewByCustom(ActionEvent actionEvent) {
-        //customerTableView.getItems().clear();
-        //customerTableView.getItems().removeAll();
+        customerTableView.getItems().clear();
+        customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
         viewLabel.setText("Countries");

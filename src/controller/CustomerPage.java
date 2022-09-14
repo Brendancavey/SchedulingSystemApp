@@ -61,8 +61,11 @@ public class CustomerPage implements Initializable {
             Helper.displayMessage("Make sure to fill all fields and selections with valid information.");
         }
     }
-
+    /**LOGICAL ERROR: If user clicked on add customer and then decided to cancel, and then clicked on modify customer,
+     * the modified customer would be added as a new customer instead of modified. To correct this, I placed the boolean
+     * that checked if the user clicked on add customer to false anytime the user hits cancel.*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
+        Helper.userClickedAddCustomer = false;
         Helper.goToMainMenu(actionEvent);
     }
 
