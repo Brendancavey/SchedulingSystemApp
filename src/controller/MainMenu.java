@@ -78,6 +78,7 @@ public class MainMenu implements Initializable {
     /////////////////////////////////////////////////////
     /////////////OTHER//////////////////////////////////
     public Label timezoneText;
+    public static Appointment selectedAppointment;
     ////////////////////////////////////////////////////
 
 
@@ -154,8 +155,9 @@ public class MainMenu implements Initializable {
                 stage.show();
                 ///////////////////////////////////////////////////////////////////////////////
             } else {
+                Helper.userClickedModifyAppointment = true;
                 ///////////////////////PREPARING SELECTED APPOINTMENT INFORMATION//////////////
-                Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem();
+                selectedAppointment = apptTableView.getSelectionModel().getSelectedItem();
                 //////////////////////////////////////////////////////////////////////////////////////////
                 ///////////GETTING AppointmentPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE/////////////
                 FXMLLoader loader = new FXMLLoader();
@@ -163,6 +165,8 @@ public class MainMenu implements Initializable {
                 loader.load();
                 AppointmentPage appointmentPageController = loader.getController();
                 appointmentPageController.sendAppointmentInformation(selectedAppointment);
+                appointmentPageController.updateStartTimes(); //initializing start time combo box
+                appointmentPageController.updateEndTimes(); //initializing end time combo box
                 /////////////////////////SETTING SCENE TO MODIFY APPOINTMENT PAGE//////////////////////////
                 Parent root = loader.getRoot();
                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -331,6 +335,9 @@ public class MainMenu implements Initializable {
             displayByCalendarPicker.setOpacity(1); //making widget visible
             displayByCalendarPicker.setDisable(false); //making widget usable
         }
+    }
+    public static Appointment getSelectedAppointment(){
+        return selectedAppointment;
     }
     /////////////////////////////////////////////////////////////////
 }

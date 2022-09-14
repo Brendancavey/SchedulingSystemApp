@@ -138,11 +138,11 @@ public class DBAppointments {
             preparedStatement.setString(2, description);
             preparedStatement.setString(3, location);
             preparedStatement.setString(4, type);
-            preparedStatement.setTimestamp(5, Timestamp.valueOf(startDate));
-            preparedStatement.setTimestamp(6, Timestamp.valueOf(endDate));
-            preparedStatement.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now())); //setting create date
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(Helper.convertToUtc(startDate).toLocalDateTime())); //converting local date time to UTC for database storage requirements
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(Helper.convertToUtc(endDate).toLocalDateTime())); //converting local date time to UTC for database storage requirements
+            preparedStatement.setTimestamp(7, Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting create date and converting to UTC for database storage requirements
             preparedStatement.setString(8, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName());
-            preparedStatement.setTimestamp(9,  Timestamp.valueOf(LocalDateTime.now())); //setting last updated datetime
+            preparedStatement.setTimestamp(9,  Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting last updated datetime and converting to UTC for database storage requirements
             preparedStatement.setString(10, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this appointment
             preparedStatement.setInt(11, custId);
             preparedStatement.setInt(12, userId);

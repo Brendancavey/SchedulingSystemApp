@@ -27,6 +27,7 @@ public class Helper {
     public static boolean viewAllCustomersToggle = false;
     public static boolean userClickedAddCustomer = false;
     public static boolean userClickedAddAppointment = false;
+    public static boolean userClickedModifyAppointment = false;
     public static User userWhoLoggedIn = null;
     public static Locale french = new Locale("fr", "FR");
     public static Locale english = new Locale("en", "US");

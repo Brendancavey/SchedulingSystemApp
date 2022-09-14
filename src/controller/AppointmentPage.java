@@ -39,10 +39,21 @@ public class AppointmentPage implements Initializable {
     public ComboBox<String> endTimeComboBox;
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     public Button saveButton;
+    public LocalDateTime onModCatpureStartTime;
+    public LocalDateTime onModCatpureEndTime;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if(Helper.userClickedModifyAppointment == true){ //if the user selected to modify appointment, initialize.
+            startDatePicker.setDisable(false);
+            startTimeComboBox.setDisable(false);
+            endTimeComboBox.setDisable(false);
+            onModCatpureStartTime = MainMenu.getSelectedAppointment().getStartDate();//getting the selected appointment from main menu start time
+            onModCatpureEndTime = MainMenu.getSelectedAppointment().getEndDate();//getting selected appointment from menu end time
+            //updateStartTimes(); these methods are called at main menu to get startDatePicker and endDatePicker value to update times
+            //updateEndTimes();
+        }
         System.out.println("Appointment Page initialized!");
         timeZoneText.setText(Helper.getTimeZone()); //displaying timezone
         disablePreviousStartDates();//disabling all previous dates from current day
@@ -54,11 +65,11 @@ public class AppointmentPage implements Initializable {
     public void onCustomerSelection(ActionEvent actionEvent) {
         startDatePicker.setDisable(false); //make start date selection usable
         startDatePicker.setPromptText("Select Start Date");
-        checkForConflict();
+        checkForConflict(); //check for conflict with new customer selection
     }
     /** LOGICAL ERROR: Found logical error when making appointment times overlap one another with the same customer. Fixed this
      * issue by creating a control flow statement with multiple and/or statements to check for these conditions. This
-     * is found under onSelectEndTime.
+     * is found under conflictExists method.
      * RUNTIME ERROR: Found runtime error that when user saved without filling out all fields, a nullpointer expcetion
      * would appear. Fixed by wrapping in try catch block*/
     public void onSave(ActionEvent actionEvent) throws IOException {
@@ -90,6 +101,7 @@ public class AppointmentPage implements Initializable {
             }
             //whatever the result of userClickedAddAppointment, set value back to false (default)
             Helper.userClickedAddAppointment = false;
+            Helper.userClickedModifyAppointment = false;
             Helper.goToMainMenu(actionEvent);
             ////////////////////////////////////////////////////////////////////////////
         } catch (Exception e) {
@@ -98,6 +110,7 @@ public class AppointmentPage implements Initializable {
     }
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Helper.userClickedAddAppointment = false;
+        Helper.userClickedModifyAppointment = false;
         Helper.goToMainMenu(actionEvent);
     }
     /** LOGICAL ERROR: When selecting a start time, the user could still select an end time that occurs previous
@@ -107,15 +120,18 @@ public class AppointmentPage implements Initializable {
      * not from the current time. Using current time would exceed the 60 min hour window and cause a runtime error. To correct
      * this, I created a control flow statement to check if the selected time is at 30 mins or on the hour.*/
     public void onStartTimeSelection(ActionEvent actionEvent) {
-        //checkForConflict();
-        conflictExistsLabel.setOpacity(0);
-        saveButton.setDisable(false);
-        endTimeComboBox.setDisable(false); //make end time combo box picker usable
-        endTimeComboBox.setPromptText("Select End Time");
-        endTimeComboBox.getItems().clear(); //clearing end time combo box selection if any
-        endTimeComboBox.getItems().removeAll(); //removing all items from end time combo box to reflect updated start time
-        updateEndTimes(); //update end times to reflect start times without logical errors
-        System.out.println("end time dictionary: " + Helper.timeDictionaryEnd);
+        try {
+            conflictExistsLabel.setOpacity(0);
+            saveButton.setDisable(false);
+            endTimeComboBox.setDisable(false); //make end time combo box picker usable
+            endTimeComboBox.setPromptText("Select End Time");
+            endTimeComboBox.getItems().clear(); //clearing end time combo box selection if any
+            endTimeComboBox.getItems().removeAll(); //removing all items from end time combo box to reflect updated start time
+            updateEndTimes(); //update end times to reflect start times without logical errors
+            System.out.println("end time dictionary: " + Helper.timeDictionaryEnd);
+        }catch(NullPointerException e){
+            System.out.println("Exception...");
+        }
     }
     public void onEndTimeSelection(ActionEvent actionEvent) {
         checkForConflict();
@@ -131,29 +147,33 @@ public class AppointmentPage implements Initializable {
      * from the selected start date.
      * */
     public void onStartDateSelection(ActionEvent actionEvent) {
-        startTimeComboBox.setDisable(false); //make start time combo box selection usable
-        startTimeComboBox.setPromptText("Select Start Time");
-        endDatePicker.setValue(startDatePicker.getValue()); // setting end date to be the same as the start date since day long appointments are most likely unacceptable.
-        startTimeComboBox.getItems().clear(); //clear selection
-        startTimeComboBox.getItems().removeAll(); //removing all selections from start time combo box
-        Helper.timeDictionaryStart.clear(); //clearing start time dictionary to reflect new date chosen
-        Helper.timeDictionaryEnd.clear(); //clearing start time dictionary to reflect new date chosen
-        updateStartTimes(); //update start time selections
+        try {
+            startTimeComboBox.setDisable(false); //make start time combo box selection usable
+            startTimeComboBox.setPromptText("Select Start Time");
+            endDatePicker.setValue(startDatePicker.getValue()); // setting end date to be the same as the start date since day long appointments are most likely unacceptable.
+            startTimeComboBox.getItems().clear(); //clear selection
+            startTimeComboBox.getItems().removeAll(); //removing all selections from start time combo box
+            Helper.timeDictionaryStart.clear(); //clearing start time dictionary to reflect new date chosen
+            Helper.timeDictionaryEnd.clear(); //clearing start time dictionary to reflect new date chosen
+            updateStartTimes(); //update start time selections
 
-        if(!Helper.displayApptTimeConversionMssgOnce) { //display info message once due to it being annoying
-            LocalDateTime estOpeningTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
-            LocalDateTime estClosingTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime();
-            Helper.displayMessage("Appointment times shown under appointment start and end times are displayed in your time zone: " +
-                    Helper.getTimeZone() + ". The establishment is open from 8AM - 10PM EST.\n" +
-                    "Your time zone converted to EST establishment hours are: \n" +
-                    Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) +
-                    "\nPlease select options that are between these times.");
-            Helper.displayApptTimeConversionMssgOnce = true;
+            if (!Helper.displayApptTimeConversionMssgOnce) { //display info message once due to it being annoying
+                LocalDateTime estOpeningTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
+                LocalDateTime estClosingTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime();
+                Helper.displayMessage("Appointment times shown under appointment start and end times are displayed in your time zone: " +
+                        Helper.getTimeZone() + ". The establishment is open from 8AM - 10PM EST.\n" +
+                        "Your time zone converted to EST establishment hours are: \n" +
+                        Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) +
+                        "\nPlease select options that are between these times.");
+                Helper.displayApptTimeConversionMssgOnce = true;
+            }
+            if (startTimeComboBox.getItems().isEmpty()) {
+                Helper.displayMessage("The date you selected has no available appointment times. Select another date.");
+            }
+            System.out.println("start time dictionary: " + Helper.timeDictionaryStart);
+        }catch(NullPointerException e){
+            System.out.println("Exception..");
         }
-        if(startTimeComboBox.getItems().isEmpty()){
-            Helper.displayMessage("The date you selected has no available appointment times. Select another date.");
-        }
-        System.out.println("start time dictionary: " + Helper.timeDictionaryStart);
     }
     public void onEndDateSelection(ActionEvent actionEvent) {
         //disabled and auto pick based on start date selection
@@ -191,60 +211,79 @@ public class AppointmentPage implements Initializable {
         }
     }
     public void checkForConflict(){
-        saveButton.setDisable(false);
-        conflictExistsLabel.setOpacity(0);
-        boolean conflictExists = false;
-        boolean estConflict = false;
-        allAppointments = DBAppointments.getAllAppointments(); //getting all appointments
-        LocalDateTime estOpeningTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
-        LocalDateTime estClosingTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
-        Customer customer = customerBox.getValue();
-        LocalDate startDate = startDatePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
-        //using time dictionary to get local date time object stored in dictionary since start time combo box stores string values better readability
-        LocalTime startTime = Helper.timeDictionaryStart.get(startTimeComboBox.getValue()).toLocalTime();
-        //using time dictionary to get local date time object stored in dictionary since end time combo box stores string values for better readability
-        LocalTime endTime = Helper.timeDictionaryEnd.get(endTimeComboBox.getValue()).toLocalTime();
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime); //converting start date and start time into local date time for appointment object
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime); //converting end date and end time into local date time for appointment object
+        try {
+            saveButton.setDisable(false);
+            conflictExistsLabel.setOpacity(0);
+            boolean conflictExists = false;
+            boolean estConflict = false;
+            allAppointments = DBAppointments.getAllAppointments(); //getting all appointments
+            LocalDateTime estOpeningTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
+            LocalDateTime estClosingTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
+            Customer customer = customerBox.getValue();
+            LocalDate startDate = startDatePicker.getValue();
+            LocalDate endDate = endDatePicker.getValue();
+            //using time dictionary to get local date time object stored in dictionary since start time combo box stores string values better readability
+            LocalTime startTime = Helper.timeDictionaryStart.get(startTimeComboBox.getValue()).toLocalTime();
+            //using time dictionary to get local date time object stored in dictionary since end time combo box stores string values for better readability
+            LocalTime endTime = Helper.timeDictionaryEnd.get(endTimeComboBox.getValue()).toLocalTime();
+            LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime); //converting start date and start time into local date time for appointment object
+            LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime); //converting end date and end time into local date time for appointment object
 
-        /////////////////CHECKING FOR TIME OVERLAP CONFLICT//////////////////
-        LocalDateTime conflictedTimeStart = null;
-        LocalDateTime conflictedTimeEnd = null;
-        for (Appointment a : allAppointments) {
-            LocalDateTime aStart = a.getStartDate();
-            LocalDateTime aEnd = a.getEndDate();
-            int aCustomer = a.getCustId();
-            if (aCustomer == customer.getId()) {                                                                             //found customer that is a match
-                if ((startDateTime.isEqual(aStart)) ||                                                                       //start times cannot be the same
-                        (startDateTime.isAfter(aStart) && startDateTime.isBefore(aEnd)) ||                                  //start cannot start between start and end time
-                        (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aStart) && endDateTime.isBefore(aEnd)) ||  //end cannot end between start and end time
-                        (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aEnd)) ||                                 //start cannot be before start AND have end be after end
-                        (startDateTime.isBefore(aStart)) && (endDateTime.isEqual(aEnd))                                    //start cannot be before start AND have end be equal to end
-                ) {
-                    conflictedTimeStart = aStart;
-                    conflictedTimeEnd = aEnd;
-                    conflictExists = true;
+            /////////////////CHECKING FOR TIME OVERLAP CONFLICT//////////////////
+            LocalDateTime conflictedTimeStart = null;
+            LocalDateTime conflictedTimeEnd = null;
+            for (Appointment a : allAppointments) {
+                LocalDateTime aStart = a.getStartDate();
+                LocalDateTime aEnd = a.getEndDate();
+                int aCustomer = a.getCustId();
+                if (aCustomer == customer.getId()) {                                                                             //found customer that is a match
+                    if ((startDateTime.isEqual(aStart)) ||                                                                       //start times cannot be the same
+                            (startDateTime.isAfter(aStart) && startDateTime.isBefore(aEnd)) ||                                  //start cannot start between start and end time
+                            (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aStart) && endDateTime.isBefore(aEnd)) ||  //end cannot end between start and end time
+                            (startDateTime.isBefore(aStart)) && (endDateTime.isAfter(aEnd)) ||                                 //start cannot be before start AND have end be after end
+                            (startDateTime.isBefore(aStart)) && (endDateTime.isEqual(aEnd))                                    //start cannot be before start AND have end be equal to end
+                    ) {
+                        conflictedTimeStart = aStart;
+                        conflictedTimeEnd = aEnd;
+                        conflictExists = true;
+                    }
                 }
             }
-        }
-        if(conflictExists){
-            saveButton.setDisable(true);
-            conflictExistsLabel.setOpacity(1);
-            conflictExistsLabel.setText(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
-                    Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
-        }
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////CHECKING FOR OPERATING HOURS IN EST TIME CONFLICT///////////////////////////////////////////////////////////
-        if(startDateTime.isBefore(estOpeningTime) || endDateTime.isAfter(estClosingTime)){
-            estConflict = true;
-        }
-        if(estConflict){
-            saveButton.setDisable(true);
-            conflictExistsLabel.setOpacity(1);
-            conflictExistsLabel.setText("Times chosen is outside of establishment operating hours. Operating hours of establishment are: \n" +
-                    Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) + " " + Helper.getTimeZone() + " or \n" +
-                    "8AM TO 10PM EST");
+            ////////////////////////////////FIX MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            if(Helper.userClickedModifyAppointment){
+                if((!onModCatpureStartTime.isEqual(startDateTime)) && (!onModCatpureEndTime.isEqual(endDateTime))){
+                    saveButton.setDisable(true);
+                    conflictExistsLabel.setOpacity(1);
+                    conflictExistsLabel.setText(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
+                            Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
+                }
+                else{
+                    saveButton.setDisable(false);
+                    conflictExistsLabel.setOpacity(0);
+
+                }
+            }
+            else if(conflictExists){
+                saveButton.setDisable(true);
+                conflictExistsLabel.setOpacity(1);
+                conflictExistsLabel.setText(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
+                        Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
+            }
+            ///////////////FIX ABOVEEEEEEEEEEEEEEEEEEEE?/////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////CHECKING FOR OPERATING HOURS IN EST TIME CONFLICT///////////////////////////////////////////////////////////
+            if (startDateTime.isBefore(estOpeningTime) || endDateTime.isAfter(estClosingTime)) {
+                estConflict = true;
+            }
+            if (estConflict) {
+                saveButton.setDisable(true);
+                conflictExistsLabel.setOpacity(1);
+                conflictExistsLabel.setText("Times chosen is outside of establishment operating hours. Operating hours of establishment are: " +
+                        Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) + " " + Helper.getTimeZone() + " or \n" +
+                        "8AM TO 10PM EST");
+            }
+        }catch(NullPointerException e){
+            System.out.println("Exception.");
         }
     }
     public void disablePreviousStartDates() {
@@ -282,6 +321,7 @@ public class AppointmentPage implements Initializable {
         endDatePicker.setValue(appointment.getEndDate().toLocalDate());
         startTimeComboBox.setValue(Helper.toReadableTime(appointment.getStartDate().toLocalTime()));
         endTimeComboBox.setValue(Helper.toReadableTime(appointment.getEndDate().toLocalTime()));
+
     }
 
 
