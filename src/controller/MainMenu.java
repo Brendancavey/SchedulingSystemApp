@@ -167,7 +167,6 @@ public class MainMenu implements Initializable {
                 appointmentPageController.sendAppointmentInformation(selectedAppointment);
                 appointmentPageController.updateStartTimes(); //initializing start time combo box
                 appointmentPageController.updateEndTimes(); //initializing end time combo box
-               // DBAppointments.deleteAppointment(selectedAppointment.getApptId()); //deleting appointment from database so that no time conflict exists within this time
                 /////////////////////////SETTING SCENE TO MODIFY APPOINTMENT PAGE//////////////////////////
                 Parent root = loader.getRoot();
                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

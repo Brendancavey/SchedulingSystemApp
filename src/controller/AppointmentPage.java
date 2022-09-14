@@ -40,11 +40,9 @@ public class AppointmentPage implements Initializable {
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     public Button saveButton;
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(Helper.userClickedModifyAppointment == true){ //if the user selected to modify appointment, initialize.
+        if(Helper.userClickedModifyAppointment == true){ //if the user selected to modify appointment, make sure nothing is disabled
             startDatePicker.setDisable(false);
             startTimeComboBox.setDisable(false);
             endTimeComboBox.setDisable(false);
@@ -95,7 +93,6 @@ public class AppointmentPage implements Initializable {
                 DBAppointments.insertAppointment(title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId());
             } else { //else the user must have clicked on modify appointment, therefore userClickedAddAppointment is false
                 int appointmentId = Integer.valueOf(apptIdText.getText());
-                //insertCustomerBackInForModify(); //if user clicked on modify appointment and changed their mind, get the deleted appointment from main menu and add it back into database
                 DBAppointments.updateAppointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId()); //modify the appointment
             }
             //whatever the result of userClickedAddAppointment, set value back to false (default)
@@ -108,8 +105,6 @@ public class AppointmentPage implements Initializable {
         }
     }
     public void onCancel(ActionEvent actionEvent) throws IOException {
-
-        //insertCustomerBackInForModify(); //if user clicked on modify appointment and changed their mind, get the deleted appointment from main menu and add it back into database
         Helper.userClickedAddAppointment = false;
         Helper.userClickedModifyAppointment = false;
         Helper.goToMainMenu(actionEvent);
@@ -181,26 +176,6 @@ public class AppointmentPage implements Initializable {
     }
     ////////////////////////////////////////////////////////////////
     /////////////////HELPER METHODS/////////////////////////////////
-    /**When modifying an appointment, the user could not modify the times to be around its current time otherwise, it
-     * would trigger an overlap. To fix this, I captured the appointment into an appointment variable, and I deleted the appointment if the user wanted to modify that appointment,
-     * and then reinserted the appointment using the captured appointment variable when the user saved or canceled the modification.*/
-    public void insertCustomerBackInForModify() {
-        //a helper method to insert customer back into appointments if user decides to save and cancel.
-        //A method primarily created to deal with appointment conflicts when modifying.
-        if (Helper.userClickedModifyAppointment) {
-            Appointment apptFromMainMenu = MainMenu.getSelectedAppointment();
-            String title = apptFromMainMenu.getTitle();
-            String description = apptFromMainMenu.getDescription();
-            String location = apptFromMainMenu.getLocation();
-            String type = apptFromMainMenu.getType();
-            Contact contact = apptFromMainMenu.getContact();
-            Customer customer = apptFromMainMenu.getCustomer();
-            User user = apptFromMainMenu.getUser();
-            LocalDateTime startDateTime = apptFromMainMenu.getStartDate();
-            LocalDateTime endDateTime = apptFromMainMenu.getEndDate();
-            DBAppointments.insertAppointment(title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId());
-        }
-    }
     public void updateStartTimes(){
         LocalDateTime start = LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 0, 0);
         LocalDateTime end = LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 23, 30);
@@ -263,7 +238,6 @@ public class AppointmentPage implements Initializable {
                 LocalDateTime aStart = a.getStartDate();
                 LocalDateTime aEnd = a.getEndDate();
                 int aCustomer = a.getCustId();
-
                 if (aCustomer == customer.getId()) {                                                                             //found customer that is a match
                     if ((startDateTime.isEqual(aStart)) ||                                                                       //start times cannot be the same
                             (startDateTime.isAfter(aStart) && startDateTime.isBefore(aEnd)) ||                                  //start cannot start between start and end time
@@ -277,14 +251,12 @@ public class AppointmentPage implements Initializable {
                     }
                 }
             }
-            ////////////////////////////////FIX MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             if(conflictExists){
                 saveButton.setDisable(true);
                 conflictExistsLabel.setOpacity(1);
                 conflictExistsLabel.setText(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
                         Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
             }
-            ///////////////FIX ABOVEEEEEEEEEEEEEEEEEEEE?/////////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////CHECKING FOR OPERATING HOURS IN EST TIME CONFLICT///////////////////////////////////////////////////////////
             if (startDateTime.isBefore(estOpeningTime) || endDateTime.isAfter(estClosingTime)) {
@@ -336,9 +308,6 @@ public class AppointmentPage implements Initializable {
         endDatePicker.setValue(appointment.getEndDate().toLocalDate());
         startTimeComboBox.setValue(Helper.toReadableTime(appointment.getStartDate().toLocalTime()));
         endTimeComboBox.setValue(Helper.toReadableTime(appointment.getEndDate().toLocalTime()));
-
     }
-
-
     //////////////////////////////////////////////////////////////
 }
