@@ -69,8 +69,14 @@ public class CustomerPage implements Initializable {
             //Country country = countryBox.getValue();
             Province province = divisionBox.getValue();
             int provinceId = province.getProvinceId();
-            if(name.isBlank()){
-                Helper.displayMessage("Make sure to enter a valid name.");
+            if(name.isBlank() || address.isBlank() || postalCode.isBlank() || phoneNumber.isBlank()){
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    Helper.displayMessage(rb.getString("MakeSureToEnterAValidName"));
+                }
+                else{
+                    Helper.displayMessage("Make sure no fields are left empty.");
+                }
             }
             else {
                 if (Helper.userClickedAddCustomer) { //if user clicked on add Customer from the main menu page, then insert customer into data base
@@ -84,7 +90,13 @@ public class CustomerPage implements Initializable {
                 Helper.goToMainMenu(actionEvent);
             }
         }catch(NullPointerException e){
-            Helper.displayMessage("Make sure to fill all fields and selections with valid information.");
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                Helper.displayMessage(rb.getString("FillAllFieldsWithValidInformation"));
+            }
+            else{
+                Helper.displayMessage("Make sure to fill all fields and selections with valid information.");
+            }
         }
     }
     /**LOGICAL ERROR: If user clicked on add customer and then decided to cancel, and then clicked on modify customer,

@@ -214,7 +214,13 @@ public class MainMenu implements Initializable {
                 stage.show();
             }
         }catch(NullPointerException e){
-            Helper.displayMessage("Make a selection to modify.");
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            if(Locale.getDefault().getLanguage().equals("fr")) {
+                Helper.displayMessage(rb.getString("MakeASelectionToModify"));
+            }
+            else{
+                Helper.displayMessage("Make a selection to modify.");
+            }
         }
     }
 
@@ -239,8 +245,14 @@ public class MainMenu implements Initializable {
                         customerTableView.getSelectionModel().selectFirst();
                     }
                 } else {
-                    Helper.displayMessage("The selected customer has appointments. Cannot delete this customer until all of their " +
-                            "appointments have been deleted.");
+                    ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                    if(Locale.getDefault().getLanguage().equals("fr")) {
+                        Helper.displayMessage(rb.getString("CannotDeleteUnlessNoAppointment"));
+                    }
+                    else{
+                        Helper.displayMessage("The selected customer has appointments. Cannot delete this customer until all of their " +
+                                "appointments have been deleted.");
+                    }
                 }
 
             } else if (!Helper.viewAllCustomersToggle) { //if the toggle is set to view all appointments, then the delete button deletes from appointment view table
@@ -254,7 +266,13 @@ public class MainMenu implements Initializable {
                 }
             }
         }catch(NullPointerException e){
-            Helper.displayMessage("Make a selection to delete.");
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            if(Locale.getDefault().getLanguage().equals("fr")) {
+                Helper.displayMessage(rb.getString("MakeASelectionToDelete"));
+            }
+            else{
+                Helper.displayMessage("Make a selection to delete.");
+            }
         }
     }
 

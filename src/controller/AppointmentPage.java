@@ -121,18 +121,29 @@ public class AppointmentPage implements Initializable {
             LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime); //converting start date and start time into local date time for appointment object
             LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime); //converting end date and end time into local date time for appointment object
             ////////////////////////////////////////////////////////////////////
-            ///////////////////ADDING/UPDATING APPOINTMENT////////////////////////////
-            if (Helper.userClickedAddAppointment) { //if user clicked on add appointment from the main menu page, then insert appointment into data base
-                DBAppointments.insertAppointment(title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId());
-            } else { //else the user must have clicked on modify appointment, therefore userClickedAddAppointment is false
-                int appointmentId = Integer.valueOf(apptIdText.getText());
-                DBAppointments.updateAppointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId()); //modify the appointment
+            if(title.isBlank() || description.isBlank() || location.isBlank() || type.isBlank()){
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    Helper.displayMessage(rb.getString("MakeSureToEnterAValidName"));
+                }
+                else{
+                    Helper.displayMessage("Make sure no fields are left empty.");
+                }
             }
-            //whatever the result of userClickedAddAppointment, set value back to false (default)
-            Helper.userClickedAddAppointment = false;
-            Helper.userClickedModifyAppointment = false;
-            Helper.goToMainMenu(actionEvent);
-            ////////////////////////////////////////////////////////////////////////////
+            else {
+                ///////////////////ADDING/UPDATING APPOINTMENT////////////////////////////
+                if (Helper.userClickedAddAppointment) { //if user clicked on add appointment from the main menu page, then insert appointment into data base
+                    DBAppointments.insertAppointment(title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId());
+                } else { //else the user must have clicked on modify appointment, therefore userClickedAddAppointment is false
+                    int appointmentId = Integer.valueOf(apptIdText.getText());
+                    DBAppointments.updateAppointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customer.getId(), user.getUserId(), contact.getContactId()); //modify the appointment
+                }
+                //whatever the result of userClickedAddAppointment, set value back to false (default)
+                Helper.userClickedAddAppointment = false;
+                Helper.userClickedModifyAppointment = false;
+                Helper.goToMainMenu(actionEvent);
+                ////////////////////////////////////////////////////////////////////////////
+            }
         } catch (Exception e) {
             ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
             if (Locale.getDefault().getLanguage().equals("fr")) {
