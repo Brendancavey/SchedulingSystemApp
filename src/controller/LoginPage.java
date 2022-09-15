@@ -70,9 +70,9 @@ public class LoginPage implements Initializable {
         ObservableList<User> usersList = DBUsers.getAllUsers();
         boolean loginSuccessful = false;
         //iterate through entire users list to see if user exist
-        for(User users : usersList){
+        for (User users : usersList) {
             //if the name and password text field matches what is contained in the user object, then login successful
-            if (usernameTextfield.getText().equals(users.getUserName()) && passwordTextfield.getText().equals(users.getPassword())){
+            if (usernameTextfield.getText().equals(users.getUserName()) && passwordTextfield.getText().equals(users.getPassword())) {
                 System.out.println("Login successful");
                 loginSuccessful = true;
                 incorrectLabel.setOpacity(0);
@@ -94,16 +94,13 @@ public class LoginPage implements Initializable {
                 if (listOfAppts.isEmpty()) {
                     if (Locale.getDefault().getLanguage().equals("fr")) {
                         Helper.displayMessage(rb.getString("NoUpcomingAppointments"));
-                    }
-                    else {
+                    } else {
                         Helper.displayMessage("No upcoming appointments");
                     }
-                }
-                else {
+                } else {
                     if (Locale.getDefault().getLanguage().equals("fr")) {
                         Helper.displayMessage(rb.getString("AppointmentsComingUpWithin15Minutes") + "\n" + listOfAppts);
-                    }
-                    else {
+                    } else {
                         Helper.displayMessage("You have these appointments coming up within 15 minutes! \n" + listOfAppts);
                     }
                 }
@@ -111,15 +108,20 @@ public class LoginPage implements Initializable {
                 break;
             }
         }
-        if(loginSuccessful == false){
-            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-            if (Locale.getDefault().getLanguage().equals("fr")) {
-                incorrectLabel.setText(rb.getString("IncorrectUserNameOrPassword"));
-            }
-            else{
-                incorrectLabel.setText("Incorrect username/password");
-            }
+        if (loginSuccessful == false) {
+            try {
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    incorrectLabel.setText(rb.getString("IncorrectUserNameOrPassword"));
+                } else {
+                    incorrectLabel.setText("Incorrect username/password");
+                }
                 incorrectLabel.setOpacity(1); //display message to user to indicate login user/pass incorrect
+            } catch (MissingResourceException e) {
+                incorrectLabel.setText("Incorrect username/password");
+                incorrectLabel.setOpacity(1); //display message to user to indicate login user/pass incorrect
+            }
         }
     }
 
@@ -132,20 +134,6 @@ public class LoginPage implements Initializable {
             Helper.language = Helper.english;
             Locale.setDefault(Helper.english);
         }
-        /*try {
-            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-            if (Locale.getDefault().getLanguage().equals("fr")) {
-                titleLabel.setText(rb.getString("Appointment Scheduler"));
-                loginLabel.setText(rb.getString("Sign On"));
-                languageLabel.setText(rb.getString("Language"));
-                titleLabel.setText(rb.getString("Time Zone"));
-                loginButton.setText(rb.getString("Login"));
-                resetButton.setText(rb.getString("Reset"));
-                System.out.println(rb.getString("hello") + " " + rb.getString("world"));
-            }
-        }catch(MissingResourceException e){
-            System.out.println("Locale does not match any resource bundle properties within resourceBundles folder.");
-        }*/
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
         if (Locale.getDefault().getLanguage().equals("fr")) {
             titleLabel.setText(rb.getString("AppointmentScheduler"));

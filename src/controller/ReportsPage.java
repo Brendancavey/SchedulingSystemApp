@@ -44,19 +44,41 @@ public class ReportsPage implements Initializable {
     public TableColumn custPostal;
     public TableColumn custPhone;
     public TableColumn custProvince;
+    public Label reportsPageTitle;
+    public Button backButton;
+    public Label totalCustomersExtraLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-        /*if (Locale.getDefault().getLanguage().equals("fr")) {
-            titleLabel.setText(rb.getString("AppointmentScheduler"));
-            loginLabel.setText(rb.getString("SignOn"));
-            languageLabel.setText(rb.getString("Language"));
-            timeZoneLabel.setText(rb.getString("TimeZone"));
-            loginButton.setText(rb.getString("Login"));
-            resetButton.setText(rb.getString("Reset"));
-        }*/
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            reportsPageTitle.setText(rb.getString("ReportsPage"));
+            totalCount.setText(rb.getString("TotalAppointments"));
+            optionsComboBox.setPromptText(rb.getString("Options"));
+            viewContactSchedule.setText(rb.getString("ContactSchedule"));
+            viewTotalCustomers.setText(rb.getString("TotalCustomers"));
+            totalCustomersExtraLabel.setText(rb.getString("ThatHaveAnAppointment"));
+            backButton.setText(rb.getString("Back"));
+            totalCount.setText(rb.getString("TotalAppointments"));
+            custViewByType.setText(rb.getString("ByType"));
+            custViewByMonth.setText(rb.getString("ByMonth"));
+            custViewByCustom.setText(rb.getString("ByCountry"));
+            conApptId.setText(rb.getString("ApptId"));
+            conCustId.setText(rb.getString("CustomerId"));
+            conTitle.setText(rb.getString("Title"));
+            conDesc.setText(rb.getString("Description"));
+            conType.setText(rb.getString("Type"));
+            conStart.setText(rb.getString("Start"));
+            conEnd.setText(rb.getString("End"));
+            custCustId.setText(rb.getString("CustomerId"));
+            custName.setText(rb.getString("Name"));
+            custAddress.setText(rb.getString("Address"));
+            custPostal.setText(rb.getString("PostalCode"));
+            custPhone.setText(rb.getString("PhoneNumber"));
+            custProvince.setText(rb.getString("Province"));
+
+        }
         ////////////////////////////////////////////////////////////
         //////////INITIALIZING CONTACT TABLE VIEW//////////////////
         conApptId.setCellValueFactory(new PropertyValueFactory<>("apptId"));
@@ -93,8 +115,15 @@ public class ReportsPage implements Initializable {
         customerTableView.setOpacity(0);
         contactScheduleTableView.setOpacity(1);
         contactScheduleTableView.setDisable(false);
-        viewLabel.setText("Contact");
-        totalCount.setText("Total Apppointments: ");
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            totalCount.setText(rb.getString("TotalAppointments"));
+            viewLabel.setText(rb.getString("Contact"));
+        }
+        else{
+            totalCount.setText("Total Appointments: ");
+            viewLabel.setText("Contact");
+        }
         for (Contact contacts : DBContacts.getAllContacts()){
             optionsComboBox.getItems().add(contacts);
         }
@@ -112,20 +141,44 @@ public class ReportsPage implements Initializable {
         contactScheduleTableView.setOpacity(0);
         contactScheduleTableView.setDisable(true);
 
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+
         if(custViewByType.isSelected()) {
-            viewLabel.setText("Type");
+
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                viewLabel.setText(rb.getString("Type"));
+            }
+            else {
+                viewLabel.setText("Type");
+            }
             fillByType(); //filling combo box by type
         }
         else if(custViewByMonth.isSelected()){
-            viewLabel.setText("Month");
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                viewLabel.setText(rb.getString("Month"));
+            }
+            else {
+                viewLabel.setText("Month");
+            }
             yearLabel.setOpacity(1);
             fillByMonth(); //filling combo box by month
         }
         else{
-            viewLabel.setText("Custom");
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                viewLabel.setText(rb.getString("Country"));
+            }
+            else {
+                viewLabel.setText("Countries");
+            }
             fillByCountry(); //filling combo box by country
         }
-        totalCount.setText("Total Customers: ");
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            totalCount.setText(rb.getString("TotalCustomers"));
+        }
+        else{
+            totalCount.setText("Total Customers: ");
+        }
+
     }
     /////////////////////VIEW BY RADIO BUTTONS///////////////////////
     public void onViewByType(ActionEvent actionEvent) {
@@ -133,7 +186,13 @@ public class ReportsPage implements Initializable {
         customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
-        viewLabel.setText("Type");
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            viewLabel.setText(rb.getString("Type"));
+        }
+        else {
+            viewLabel.setText("Type");
+        }
         yearLabel.setOpacity(0);
         fillByType(); //filling combo box by type
     }
@@ -142,7 +201,13 @@ public class ReportsPage implements Initializable {
         customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
-        viewLabel.setText("Month");
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            viewLabel.setText(rb.getString("Month"));
+        }
+        else {
+            viewLabel.setText("Month");
+        }
         yearLabel.setOpacity(1);
         fillByMonth(); //filling combo box by month
     }
@@ -151,7 +216,13 @@ public class ReportsPage implements Initializable {
         customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
-        viewLabel.setText("Countries");
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            viewLabel.setText(rb.getString("Country"));
+        }
+        else {
+            viewLabel.setText("Countries");
+        }
         yearLabel.setOpacity(0);
         fillByCountry();//filling combo box by country
         //////////////////////////////////////////////////////////////
@@ -164,7 +235,13 @@ public class ReportsPage implements Initializable {
             Contact selectedContact = (Contact)optionsComboBox.getSelectionModel().getSelectedItem();
             ObservableList<Appointment> list = DBAppointments.getAppointmentsByContactId(selectedContact.getContactId()); //getting list of appointments that match contact id
             contactScheduleTableView.setItems(list); //fill table view with appropriate list
-            totalCount.setText("Total Appointments: " + list.size()); //get total number of appointments with filter
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                totalCount.setText(rb.getString("TotalAppointments") + ": " + list.size());
+            }
+            else{
+                totalCount.setText("Total Appointments: " + list.size()); //get total number of appointments with filter
+            }
         }
         ///////////////////////////////////////////////////////////////////////
         else{/////////////////////////VIEW TOTAL CUSTOMERS SELECTED////////////////////////////////////////////////
@@ -192,7 +269,13 @@ public class ReportsPage implements Initializable {
                     ////////////////////////////////////////////////////
                 }
                 customerTableView.setItems(listByTypeByCustId); //fill table view with appropriate list
-                totalCount.setText("Total Customers: " + listByTypeByCustId.size()); //get total number of customers with filter
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    totalCount.setText(rb.getString("TotalCustomers") + ": " + listByTypeByCustId.size()); //get total number of customers with filter
+                }
+                else{
+                    totalCount.setText("Total Customers: " + listByTypeByCustId.size()); //get total number of customers with filter
+                }
             }
             //////////////////////////////////////////////////////////////////////////////////////
             //////////////////////VIEW BY MONTH COMBO BOX SELECTION//////////////////////////////////////////////////
@@ -221,7 +304,13 @@ public class ReportsPage implements Initializable {
                     ////////////////////////////////////////////////////////
                 }
                 customerTableView.setItems(listOfCustomerById);
-                totalCount.setText("Total Customers: " + listOfCustomerById.size());
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    totalCount.setText(rb.getString("TotalCustomers") + ": " + listOfCustomerById.size()); //get total number of customers with filter
+                }
+                else{
+                    totalCount.setText("Total Customers: " + listOfCustomerById.size()); //get total number of customers with filter
+                }
             }
             //////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////VIEW BY COUNTRY COMBO BOX SELECTION LIST/////////////////////
@@ -251,7 +340,13 @@ public class ReportsPage implements Initializable {
                 }
                 System.out.println(listOfCustomersByCountry);
                 customerTableView.setItems(listOfCustomersByCountry);
-                totalCount.setText("Total Customers: " + listOfCustomersByCountry.size());
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    totalCount.setText(rb.getString("TotalCustomers") + ": " + listOfCustomersByCountry.size()); //get total number of customers with filter
+                }
+                else{
+                    totalCount.setText("Total Customers: " + listOfCustomersByCountry.size()); //get total number of customers with filter
+                }
             }
         }
     }

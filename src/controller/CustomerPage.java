@@ -5,7 +5,9 @@ import DAO.DBCustomers;
 import DAO.DBProvinces;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Country;
 import model.Customer;
@@ -25,19 +27,31 @@ public class CustomerPage implements Initializable {
     public TextField phoneNumberText;
     public ComboBox<Country> countryBox;
     public ComboBox<Province> divisionBox;
+    public Label custIdLabel;
+    public Label nameLabel;
+    public Label addressLabel;
+    public Label postalCodeLabel;
+    public Label phoneNumberLabel;
+    public Label countryLabel;
+    public Label divisionLabel;
+    public Button saveButton;
+    public Button cancelButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-        /*if (Locale.getDefault().getLanguage().equals("fr")) {
-            titleLabel.setText(rb.getString("AppointmentScheduler"));
-            loginLabel.setText(rb.getString("SignOn"));
-            languageLabel.setText(rb.getString("Language"));
-            timeZoneLabel.setText(rb.getString("TimeZone"));
-            loginButton.setText(rb.getString("Login"));
-            resetButton.setText(rb.getString("Reset"));
-        }*/
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            custIdLabel.setText(rb.getString("CustomerId"));
+            nameLabel.setText(rb.getString("Name"));
+            addressLabel.setText(rb.getString("Address"));
+            postalCodeLabel.setText(rb.getString("PostalCode"));
+            phoneNumberLabel.setText(rb.getString("PhoneNumber"));
+            countryLabel.setText(rb.getString("Country"));
+            divisionLabel.setText(rb.getString("Division"));
+            saveButton.setText(rb.getString("Save"));
+            cancelButton.setText(rb.getString("Cancel"));
+        }
         ////////////////////////////////////////////////////////////
         //setting countryBox to show all countries
         countryBox.setItems(DBCountries.getAllCountries());

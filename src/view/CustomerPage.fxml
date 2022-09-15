@@ -15,32 +15,32 @@
          <children>
             <VBox prefHeight="483.0" prefWidth="145.0" spacing="15.0">
                <children>
-                  <Label text="Customer ID">
+                  <Label fx:id="custIdLabel" text="Customer ID">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Customer Name">
+                  <Label fx:id="nameLabel" text="Customer Name">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Address">
+                  <Label fx:id="addressLabel" text="Address">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Postal Code">
+                  <Label fx:id="postalCodeLabel" text="Postal Code">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Phone Number">
+                  <Label fx:id="phoneNumberLabel" text="Phone Number">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Country">
+                  <Label fx:id="countryLabel" text="Country">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -63,7 +63,7 @@
          <children>
             <VBox prefHeight="100.0" prefWidth="87.0" spacing="15.0">
                <children>
-                  <Label text="Division">
+                  <Label fx:id="divisionLabel" text="Division">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -77,7 +77,7 @@
             </VBox>
          </children>
       </HBox>
-      <Button layoutX="172.0" layoutY="358.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSave" prefHeight="30.0" prefWidth="150.0" text="Save" />
-      <Button layoutX="353.0" layoutY="358.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="150.0" text="Cancel" />
+      <Button fx:id="saveButton" layoutX="172.0" layoutY="358.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSave" prefHeight="30.0" prefWidth="150.0" text="Save" />
+      <Button fx:id="cancelButton" layoutX="353.0" layoutY="358.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="150.0" text="Cancel" />
    </children>
 </AnchorPane>
