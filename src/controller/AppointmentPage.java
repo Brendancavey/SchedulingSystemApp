@@ -19,6 +19,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AppointmentPage implements Initializable {
@@ -42,6 +43,17 @@ public class AppointmentPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //////////////////CHECKING FOR FRENCH TRANSLATION/////////
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        /*if (Locale.getDefault().getLanguage().equals("fr")) {
+            titleLabel.setText(rb.getString("AppointmentScheduler"));
+            loginLabel.setText(rb.getString("SignOn"));
+            languageLabel.setText(rb.getString("Language"));
+            timeZoneLabel.setText(rb.getString("TimeZone"));
+            loginButton.setText(rb.getString("Login"));
+            resetButton.setText(rb.getString("Reset"));
+        }*/
+        ////////////////////////////////////////////////////////////
         if(Helper.userClickedModifyAppointment == true){ //if the user selected to modify appointment, make sure nothing is disabled
             startDatePicker.setDisable(false);
             startTimeComboBox.setDisable(false);

@@ -47,7 +47,7 @@
    <bottom>
       <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" spacing="15.0" BorderPane.alignment="BOTTOM_RIGHT">
          <children>
-            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="64.0" prefWidth="105.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="64.0" prefWidth="234.0" spacing="10.0">
                <children>
                   <Label fx:id="languageLabel" prefHeight="29.0" prefWidth="90.0" text="Language" textAlignment="RIGHT">
                      <font>
