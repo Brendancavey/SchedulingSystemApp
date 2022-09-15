@@ -40,19 +40,40 @@ public class AppointmentPage implements Initializable {
     public ComboBox<String> endTimeComboBox;
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     public Button saveButton;
+    public Label apptIdLabel;
+    public Label titleLabel;
+    public Label descriptionLabel;
+    public Label locationLabel;
+    public Label typeLabel;
+    public Label contactLabel;
+    public Label customerLabel;
+    public Label userLabel;
+    public Label startDateLabel;
+    public Label startTimeLabel;
+    public Label endDateLabel;
+    public Label endTimeLabel;
+    public Button cancelButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-        /*if (Locale.getDefault().getLanguage().equals("fr")) {
-            titleLabel.setText(rb.getString("AppointmentScheduler"));
-            loginLabel.setText(rb.getString("SignOn"));
-            languageLabel.setText(rb.getString("Language"));
-            timeZoneLabel.setText(rb.getString("TimeZone"));
-            loginButton.setText(rb.getString("Login"));
-            resetButton.setText(rb.getString("Reset"));
-        }*/
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            apptIdLabel.setText(rb.getString("ApptId"));
+            titleLabel.setText(rb.getString("Title"));
+            descriptionLabel.setText(rb.getString("Description"));
+            locationLabel.setText(rb.getString("Location"));
+            typeLabel.setText(rb.getString("Type"));
+            contactLabel.setText(rb.getString("Contact"));
+            customerLabel.setText(rb.getString("Customer"));
+            startDateLabel.setText(rb.getString("StartDate"));
+            endDateLabel.setText(rb.getString("EndDate"));
+            startTimeLabel.setText(rb.getString("StartTime"));
+            endTimeLabel.setText(rb.getString("EndTime"));
+            userLabel.setText(rb.getString("User"));
+            saveButton.setText(rb.getString("Save"));
+            cancelButton.setText(rb.getString("Cancel"));
+        }
         ////////////////////////////////////////////////////////////
         if(Helper.userClickedModifyAppointment == true){ //if the user selected to modify appointment, make sure nothing is disabled
             startDatePicker.setDisable(false);
@@ -113,7 +134,13 @@ public class AppointmentPage implements Initializable {
             Helper.goToMainMenu(actionEvent);
             ////////////////////////////////////////////////////////////////////////////
         } catch (Exception e) {
-            Helper.displayMessage("Fill all fields with valid information.");
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                Helper.displayMessage(rb.getString("FillAllFieldsWithValidInformation"));
+            }
+            else{
+                Helper.displayMessage("Fill all fields with valid information.");
+            }
         }
     }
     public void onCancel(ActionEvent actionEvent) throws IOException {
@@ -168,11 +195,18 @@ public class AppointmentPage implements Initializable {
             if (!Helper.displayApptTimeConversionMssgOnce) { //display info message once due to it being annoying
                 LocalDateTime estOpeningTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 8, 0)).toLocalDateTime(); //converting from local to est for establishment operating hour requirements in est
                 LocalDateTime estClosingTime = Helper.convertToEst(LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 22, 0)).toLocalDateTime();
-                Helper.displayMessage("Appointment times shown under appointment start and end times are displayed in your time zone: " +
-                        Helper.getTimeZone() + ". The establishment is open from 8AM - 10PM EST.\n" +
-                        "Your time zone converted to EST establishment hours are: \n" +
-                        Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) +
-                        "\nPlease select options that are between these times.");
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    Helper.displayMessage(rb.getString("AppointmentTimesDisplayedInYourTimeZone.PleasePickBetween") + "\n" + Helper.toReadableTime(estOpeningTime.toLocalTime()) +
+                            " - " + Helper.toReadableTime(estClosingTime.toLocalTime()) + " " + rb.getString("ForEstablishmentHours"));
+                }
+                else {
+                    Helper.displayMessage("Appointment times shown under appointment start and end times are displayed in your time zone: " +
+                            Helper.getTimeZone() + ". The establishment is open from 8AM - 10PM EST.\n" +
+                            "Your time zone converted to EST establishment hours are: \n" +
+                            Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) +
+                            "\nPlease select options that are between these times.");
+                }
                 Helper.displayApptTimeConversionMssgOnce = true;
             }
             if (startTimeComboBox.getItems().isEmpty()) {
@@ -263,11 +297,16 @@ public class AppointmentPage implements Initializable {
                     }
                 }
             }
-            if(conflictExists){
+            if(conflictExists) {
                 saveButton.setDisable(true);
                 conflictExistsLabel.setOpacity(1);
-                conflictExistsLabel.setText(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
-                        Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    conflictExistsLabel.setText(rb.getString("AppointmentOverlap"));
+                } else {
+                    conflictExistsLabel.setText(customer + " already has an appointment at " + Helper.toReadableTime((conflictedTimeStart.toLocalTime())) + " to " +
+                            Helper.toReadableTime(conflictedTimeEnd.toLocalTime()) + ".\nCannot make an appointment at " + Helper.toReadableTime(startTime) + " to " + Helper.toReadableTime(endTime));
+                }
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////CHECKING FOR OPERATING HOURS IN EST TIME CONFLICT///////////////////////////////////////////////////////////
@@ -277,9 +316,14 @@ public class AppointmentPage implements Initializable {
             if (estConflict) {
                 saveButton.setDisable(true);
                 conflictExistsLabel.setOpacity(1);
-                conflictExistsLabel.setText("Times chosen is outside of establishment operating hours. Operating hours of establishment are: " +
-                        Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) + " " + Helper.getTimeZone() + " or \n" +
-                        "8AM TO 10PM EST");
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if (Locale.getDefault().getLanguage().equals("fr")) {
+                    conflictExistsLabel.setText(rb.getString("OutsideEstablishmentHours"));
+                } else {
+                    conflictExistsLabel.setText("Times chosen is outside of establishment operating hours. Operating hours of establishment are: " +
+                            Helper.toReadableTime(estOpeningTime.toLocalTime()) + " to " + Helper.toReadableTime(estClosingTime.toLocalTime()) + " " + Helper.getTimeZone() + " or \n" +
+                            "8AM TO 10PM EST");
+                }
             }
         }catch(NullPointerException e){
             System.out.println("Exception.");

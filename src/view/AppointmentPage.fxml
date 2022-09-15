@@ -16,52 +16,52 @@
          <children>
             <VBox prefHeight="483.0" prefWidth="145.0" spacing="15.0">
                <children>
-                  <Label text="Appointment ID">
+                  <Label fx:id="apptIdLabel" text="Appointment ID">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Title">
+                  <Label fx:id="titleLabel" text="Title">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Description">
+                  <Label fx:id="descriptionLabel" text="Description">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Location">
+                  <Label fx:id="locationLabel" text="Location">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Type">
+                  <Label fx:id="typeLabel" text="Type">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Contact">
+                  <Label fx:id="contactLabel" text="Contact">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Customer">
+                  <Label fx:id="customerLabel" text="Customer">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="User">
+                  <Label fx:id="userLabel" text="User">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Start Date">
+                  <Label fx:id="startDateLabel" text="Start Date">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Start Time">
+                  <Label fx:id="startTimeLabel" text="Start Time">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -88,12 +88,12 @@
          <children>
             <VBox prefHeight="100.0" prefWidth="87.0" spacing="15.0">
                <children>
-                  <Label text="End Date">
+                  <Label fx:id="endDateLabel" text="End Date">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="End Time">
+                  <Label fx:id="endTimeLabel" text="End Time">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -109,7 +109,7 @@
          </children>
       </HBox>
       <Button fx:id="saveButton" layoutX="182.0" layoutY="505.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSave" prefHeight="30.0" prefWidth="150.0" text="Save" />
-      <Button layoutX="368.0" layoutY="504.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="150.0" text="Cancel" />
+      <Button fx:id="cancelButton" layoutX="368.0" layoutY="504.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="150.0" text="Cancel" />
       <Label fx:id="timeZoneText" layoutX="463.0" layoutY="578.0" prefHeight="17.0" prefWidth="132.0" text="timeZone" />
       <Label fx:id="conflictExistsLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="35.0" layoutY="443.0" opacity="0.0" prefHeight="64.0" prefWidth="555.0" text="Label" textFill="#ee1717" wrapText="true">
          <font>

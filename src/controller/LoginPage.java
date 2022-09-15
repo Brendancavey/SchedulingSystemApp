@@ -112,7 +112,14 @@ public class LoginPage implements Initializable {
             }
         }
         if(loginSuccessful == false){
-            incorrectLabel.setOpacity(1); //display message to user to indicate login user/pass incorrect
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                incorrectLabel.setText(rb.getString("IncorrectUserNameOrPassword"));
+            }
+            else{
+                incorrectLabel.setText("Incorrect username/password");
+            }
+                incorrectLabel.setOpacity(1); //display message to user to indicate login user/pass incorrect
         }
     }
 
