@@ -79,14 +79,14 @@
         <columns>
           <TableColumn fx:id="custId" prefWidth="77.0" text="Customer ID" />
           <TableColumn fx:id="custName" prefWidth="111.0" text="Name" />
-            <TableColumn fx:id="custAddress" prefWidth="102.0" text="Address" />
-            <TableColumn fx:id="custPostalCode" text="Postal Code" />
-            <TableColumn fx:id="custPhoneNumber" prefWidth="95.0" text="Phone Number" />
-            <TableColumn fx:id="custCreateDate" prefWidth="89.0" text="Created Date" />
-            <TableColumn fx:id="custCreateBy" prefWidth="119.0" text="Created By" />
-            <TableColumn fx:id="custLastUpdate" minWidth="3.0" prefWidth="96.0" text="Last Update" />
-            <TableColumn fx:id="custLastUpdateBy" prefWidth="96.0" text="Last Updated By" />
-            <TableColumn fx:id="custProvince" prefWidth="89.0" text="Province" />
+            <TableColumn fx:id="custAddress" prefWidth="138.0" text="Address" />
+            <TableColumn fx:id="custPostalCode" prefWidth="108.0" text="Postal Code" />
+            <TableColumn fx:id="custPhoneNumber" prefWidth="150.0" text="Phone Number" />
+            <TableColumn fx:id="custCreateDate" prefWidth="89.0" text="Created Date" visible="false" />
+            <TableColumn fx:id="custCreateBy" prefWidth="119.0" text="Created By" visible="false" />
+            <TableColumn fx:id="custLastUpdate" minWidth="3.0" prefWidth="96.0" text="Last Update" visible="false" />
+            <TableColumn fx:id="custLastUpdateBy" prefWidth="96.0" text="Last Updated By" visible="false" />
+            <TableColumn fx:id="custProvince" prefWidth="224.0" text="Province" />
         </columns>
       </TableView>
       <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="957.0">

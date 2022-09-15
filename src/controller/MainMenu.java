@@ -238,7 +238,13 @@ public class MainMenu implements Initializable {
                 if (!selectedCustomerHasAppt) {
                     DBCustomers.deleteCustomer((selectedCustomer.getId())); //deleting customer from the database
                     customerTableView.setItems(DBCustomers.getAllCustomers()); //updating the table view
-                    Helper.displayMessage("Customer successfully removed.");
+                    ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                    if(Locale.getDefault().getLanguage().equals("fr")) {
+                        Helper.displayMessage(rb.getString("CustomerSuccessfullyDeleted"));
+                    }
+                    else{
+                        Helper.displayMessage("Customer successfully removed.");
+                    }
                     //selecting the next item in the list for easier deletion of multiple customers so that user does not have
                     //to select - delete for each deletion.
                     if (customerTableView.getSelectionModel().isEmpty()) {
@@ -258,6 +264,13 @@ public class MainMenu implements Initializable {
             } else if (!Helper.viewAllCustomersToggle) { //if the toggle is set to view all appointments, then the delete button deletes from appointment view table
                 Appointment selectedAppointment = apptTableView.getSelectionModel().getSelectedItem(); //getting selected appointment from tableview
                 DBAppointments.deleteAppointment(selectedAppointment.getApptId()); //deleting appointment from database
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+                if(Locale.getDefault().getLanguage().equals("fr")) {
+                    Helper.displayMessage(rb.getString("AppointmentSuccessfullyDeleted"));
+                }
+                else{
+                    Helper.displayMessage("Appointment successfully deleted.");
+                }
                 apptTableView.setItems(DBAppointments.getAllAppointments()); //updating table view
                 //selecting the next item in the list for easier deletion of multiple appointments so that user does not have
                 //to select - delete for each deletion.

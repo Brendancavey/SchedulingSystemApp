@@ -10,8 +10,11 @@ import javafx.scene.control.*;
 import model.Appointment;
 import model.User;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,7 +40,17 @@ public class LoginPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Login page initialized!");
+        //////////////////CHECKING FOR LANGUAGE//////////////////////////////////
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            titleLabel.setText(rb.getString("AppointmentScheduler"));
+            loginLabel.setText(rb.getString("SignOn"));
+            languageLabel.setText(rb.getString("Language"));
+            timeZoneLabel.setText(rb.getString("TimeZone"));
+            loginButton.setText(rb.getString("Login"));
+            resetButton.setText(rb.getString("Reset"));
+            System.out.println(rb.getString("hello") + " " + rb.getString("world"));
+        }
 
         ///////////TIMEZONE////////////////////////
         timezoneText.setText(Helper.getTimeZone());
@@ -110,8 +123,8 @@ public class LoginPage implements Initializable {
         }
         if (loginSuccessful == false) {
             try {
+                /////////////////////Outputting message for incorrect information/////
                 ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-
                 if (Locale.getDefault().getLanguage().equals("fr")) {
                     incorrectLabel.setText(rb.getString("IncorrectUserNameOrPassword"));
                 } else {
@@ -123,6 +136,14 @@ public class LoginPage implements Initializable {
                 incorrectLabel.setOpacity(1); //display message to user to indicate login user/pass incorrect
             }
         }
+        /////////////////OUTPUTTING TO FILE LOGIN ATTEMPT///////////////////
+        String success;
+        if(loginSuccessful){success = "Success";}else{success = "Fail";}
+        FileWriter fw = new FileWriter(("login_activity.txt"), true);
+        PrintWriter pw = new PrintWriter(fw);
+        pw.println("Log-in attempt at " + LocalDate.now() + " | " + Helper.toReadableTime(LocalTime.now()) + " | " + Helper.getTimeZone() + " | Log-in attempt: " + success);
+        pw.close();
+        /////////////////////////////////////////////////////////////////
     }
 
     public void onLanguageSelection(ActionEvent actionEvent) {

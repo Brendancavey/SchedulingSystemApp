@@ -61,7 +61,7 @@ public class CustomerPage implements Initializable {
     public void onSave(ActionEvent actionEvent) throws IOException {
         try {
             String name = nameText.getText();
-            String address = addressText.getText();
+            String address = addressText.getText() + ", " + divisionBox.getValue();
             String postalCode = postalCodeText.getText();
             String phoneNumber = phoneNumberText.getText();
             //since country is not an object imported from the SQL Server and we're not saving customer objects into a data structure in the program,
