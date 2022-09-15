@@ -34,6 +34,7 @@ public class LoginPage implements Initializable {
     public Label languageLabel;
     public Label timeZoneLabel;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Login page initialized!");
@@ -89,11 +90,22 @@ public class LoginPage implements Initializable {
                         listOfAppts.add(String.valueOf("ID: " + appointment.getApptId()) + " | " + appointment.getStartDateReadableFormat() + "\n");
                     }
                 }
+                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
                 if (listOfAppts.isEmpty()) {
-                    Helper.displayMessage("No upcoming appointments");
+                    if (Locale.getDefault().getLanguage().equals("fr")) {
+                        Helper.displayMessage(rb.getString("NoUpcomingAppointments"));
+                    }
+                    else {
+                        Helper.displayMessage("No upcoming appointments");
+                    }
                 }
                 else {
-                    Helper.displayMessage("You have these appointments coming up within 15 minutes! \n" + listOfAppts);
+                    if (Locale.getDefault().getLanguage().equals("fr")) {
+                        Helper.displayMessage(rb.getString("AppointmentsComingUpWithin15Minutes") + "\n" + listOfAppts);
+                    }
+                    else {
+                        Helper.displayMessage("You have these appointments coming up within 15 minutes! \n" + listOfAppts);
+                    }
                 }
                 ////////////////////////////////////////////////////////////////////
                 break;

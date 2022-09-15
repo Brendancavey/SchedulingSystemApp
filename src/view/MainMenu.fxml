@@ -17,12 +17,12 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="111.0" prefWidth="1000.0" spacing="20.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="156.0" text="Appointment Schedule" wrapText="true">
+            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="156.0" text="Appointment Schedule" wrapText="true">
                <font>
                   <Font name="Calibri" size="26.0" />
                </font>
             </Label>
-            <RadioButton fx:id="viewCustomers" mnemonicParsing="false" onAction="#onViewAllCustomers" prefHeight="25.0" prefWidth="183.0" text="View Customers">
+            <RadioButton fx:id="viewCustomers" mnemonicParsing="false" onAction="#onViewAllCustomers" prefHeight="25.0" prefWidth="191.0" text="View Customers">
                <font>
                   <Font size="16.0" />
                </font>
@@ -30,14 +30,14 @@
                   <ToggleGroup fx:id="view" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="viewAppointments" layoutX="406.0" layoutY="53.0" mnemonicParsing="false" onAction="#onViewAppointments" prefHeight="25.0" prefWidth="206.0" selected="true" text="View Appointments" toggleGroup="$view">
+            <RadioButton fx:id="viewAppointments" layoutX="406.0" layoutY="53.0" mnemonicParsing="false" onAction="#onViewAppointments" prefHeight="25.0" prefWidth="198.0" selected="true" text="View Appointments" toggleGroup="$view">
                <font>
                   <Font size="16.0" />
                </font>
             </RadioButton>
-            <VBox fx:id="viewByApptBox" prefHeight="111.0" prefWidth="150.0" spacing="10.0">
+            <VBox fx:id="viewByApptBox" prefHeight="111.0" prefWidth="209.0" spacing="10.0">
                <children>
-                  <RadioButton fx:id="viewApptAll" mnemonicParsing="false" onAction="#onViewAll" prefHeight="25.0" prefWidth="116.0" selected="true" text="View All">
+                  <RadioButton fx:id="viewApptAll" mnemonicParsing="false" onAction="#onViewAll" prefHeight="25.0" prefWidth="157.0" selected="true" text="View All">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -45,12 +45,12 @@
                         <ToggleGroup fx:id="viewBy" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="viewApptMonth" mnemonicParsing="false" onAction="#onViewByMonth" text="View by Month" toggleGroup="$viewBy">
+                  <RadioButton fx:id="viewApptMonth" mnemonicParsing="false" onAction="#onViewByMonth" prefHeight="25.0" prefWidth="192.0" text="View by Month" toggleGroup="$viewBy">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton fx:id="viewApptWeek" mnemonicParsing="false" onAction="#onViewByWeek" prefHeight="25.0" prefWidth="174.0" text="View By Week" toggleGroup="$viewBy">
+                  <RadioButton fx:id="viewApptWeek" mnemonicParsing="false" onAction="#onViewByWeek" prefHeight="25.0" prefWidth="194.0" text="View By Week" toggleGroup="$viewBy">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -103,7 +103,7 @@
             <TableColumn fx:id="userIdCol" minWidth="5.0" prefWidth="53.0" text="User ID" />
         </columns>
       </TableView>
-      <Label layoutX="690.0" layoutY="469.0" text="Your Time Zone:" />
+      <Label fx:id="timeZoneLabel" layoutX="615.0" layoutY="469.0" prefHeight="17.0" prefWidth="157.0" text="Your Time Zone:" />
       <Label fx:id="timezoneText" layoutX="785.0" layoutY="469.0" prefHeight="17.0" prefWidth="206.0" text="America" />
    </children>
 </AnchorPane>

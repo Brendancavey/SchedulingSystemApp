@@ -15,10 +15,7 @@ import model.User;
 import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 ///////////HELPER METHODS////////////////////
 public class Helper {
@@ -137,7 +134,13 @@ public class Helper {
     public static void displayMessage(String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
-        alert.setTitle("Information Message");
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            alert.setTitle(rb.getString("InformationMessage"));
+        }
+        else {
+            alert.setTitle("Information Message");
+        }
         alert.showAndWait();
         //Optional<ButtonType> buttonClicked = alert.showAndWait();
     }

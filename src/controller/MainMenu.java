@@ -79,6 +79,8 @@ public class MainMenu implements Initializable {
     /////////////OTHER//////////////////////////////////
     public Label timezoneText;
     public static Appointment selectedAppointment;
+    public Label titleLabel;
+    public Label timeZoneLabel;
     ////////////////////////////////////////////////////
 
 
@@ -87,12 +89,39 @@ public class MainMenu implements Initializable {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
         if(Locale.getDefault().getLanguage().equals("fr")) {
-            titleLabel.setText(rb.getString("AppointmentScheduler"));
-            loginLabel.setText(rb.getString("SignOn"));
-            languageLabel.setText(rb.getString("Language"));
-            timeZoneLabel.setText(rb.getString("TimeZone"));
-            loginButton.setText(rb.getString("Login"));
-            resetButton.setText(rb.getString("Reset"));
+            titleLabel.setText(rb.getString("AppointmentSchedule"));
+            addButton.setText(rb.getString("AddAppointment"));
+            modifyButton.setText(rb.getString("ModifyAppointment"));
+            deleteButton.setText(rb.getString("DeleteAppointment"));
+            timeZoneLabel.setText(rb.getString("YourTimeZone"));
+            reportsButton.setText(rb.getString("Reports"));
+            logoutButton.setText(rb.getString("Logout"));
+            viewAppointments.setText(rb.getString("ViewAppointments"));
+            viewCustomers.setText(rb.getString("ViewCustomers"));
+            viewApptAll.setText(rb.getString("ViewAll"));
+            viewApptMonth.setText(rb.getString("ViewByMonth"));
+            viewApptWeek.setText(rb.getString("ViewByWeek"));
+            apptIdCol.setText(rb.getString("ApptId"));
+            titleCol.setText(rb.getString("Title"));
+            descriptionCol.setText(rb.getString("Description"));
+            locationCol.setText(rb.getString("Location"));
+            contactCol.setText(rb.getString("Contact"));
+            typeCol.setText(rb.getString("Type"));
+            startDateCol.setText(rb.getString("Start"));
+            endDateCol.setText(rb.getString("End"));
+            custIdCol.setText(rb.getString("CustomerId"));
+            userIdCol.setText(rb.getString("UserId"));
+            custId.setText(rb.getString("CustomerId"));
+            custName.setText(rb.getString("Name"));
+            custAddress.setText(rb.getString("Address"));
+            custPostalCode.setText(rb.getString("PostalCode"));
+            custPhoneNumber.setText(rb.getString("PhoneNumber"));
+            custCreateDate.setText(rb.getString("CreatedDate"));
+            custCreateBy.setText(rb.getString("CreatedBy"));
+            custLastUpdate.setText(rb.getString("LastUpdate"));
+            custLastUpdateBy.setText(rb.getString("LastUpdatedBy"));
+            custProvince.setText(rb.getString("Province"));
+
         }
         ////////////////CHECKING FOR TOGGLE VIEW///////////////
         if (Helper.viewAllCustomersToggle){
@@ -314,10 +343,19 @@ public class MainMenu implements Initializable {
     public void toggleWidgets(){
         //to reduce redundancy, made a helper toggle method to turn widgets on and off depending on
         //radio button selection within control flow statements.
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+
         if(viewCustomers.isSelected()){
-            addButton.setText("Add Customer");
-            modifyButton.setText("Modify Customer");
-            deleteButton.setText("Delete Customer");
+            if(Locale.getDefault().getLanguage().equals("fr")) {
+                addButton.setText(rb.getString("AddCustomer"));
+                modifyButton.setText(rb.getString("ModifyCustomer"));
+                deleteButton.setText(rb.getString("DeleteCustomer"));
+            }
+            else {
+                addButton.setText("Add Customer");
+                modifyButton.setText("Modify Customer");
+                deleteButton.setText("Delete Customer");
+            }
             customerTableView.setOpacity(1); //making customer table visible
             customerTableView.setDisable(false); //making customer table usable
             apptTableView.setDisable(true); //making appointment table unusable
@@ -326,9 +364,16 @@ public class MainMenu implements Initializable {
             Helper.viewAllCustomersToggle = true;
         }
         else if(viewAppointments.isSelected()){
-            addButton.setText("Add Appointment");
-            modifyButton.setText("Modify Appointment");
-            deleteButton.setText("Delete Appointment");
+            if(Locale.getDefault().getLanguage().equals("fr")) {
+                addButton.setText(rb.getString("AddAppointment"));
+                modifyButton.setText(rb.getString("ModifyAppointment"));
+                deleteButton.setText(rb.getString("DeleteAppointment"));
+            }
+            else {
+                addButton.setText("Add Appointment");
+                modifyButton.setText("Modify Appointment");
+                deleteButton.setText("Delete Appointment");
+            }
             customerTableView.setOpacity(0); //making customer table invisible
             customerTableView.setDisable(true); //making customer table unusable
             apptTableView.setDisable(false); //making appointment table usable
