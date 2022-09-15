@@ -86,14 +86,14 @@ public class MainMenu implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-        /*if (Locale.getDefault().getLanguage().equals("fr")) {
+        if(Locale.getDefault().getLanguage().equals("fr")) {
             titleLabel.setText(rb.getString("AppointmentScheduler"));
             loginLabel.setText(rb.getString("SignOn"));
             languageLabel.setText(rb.getString("Language"));
             timeZoneLabel.setText(rb.getString("TimeZone"));
             loginButton.setText(rb.getString("Login"));
             resetButton.setText(rb.getString("Reset"));
-        }*/
+        }
         ////////////////CHECKING FOR TOGGLE VIEW///////////////
         if (Helper.viewAllCustomersToggle){
             viewCustomers.fire();
