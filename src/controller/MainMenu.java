@@ -4,6 +4,7 @@ import DAO.DBAppointments;
 import DAO.DBCountries;
 import DAO.DBCustomers;
 import DAO.DBProvinces;
+import interfaces.Message;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -83,7 +84,13 @@ public class MainMenu implements Initializable {
     public Label timeZoneLabel;
     ////////////////////////////////////////////////////
 
-
+    /** This is the initialize method.
+     * This method gets called when first starting this scene. It checks for the
+     * locale default if it set to a supported language in the resource bundle, and changes
+     * the appropriate labels and text fields to the supported language. It also checks on a
+     * a global variable to see if the user selected to view customers or view appointments and sets
+     * the radio button to the appropriate option. It also initializes all table views with appropriate values.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
@@ -158,6 +165,12 @@ public class MainMenu implements Initializable {
         /////////////////////////////////////////////////////////////////////////////////
     }
     ///////////////////////BUTTONS//////////////////////////////////////////////
+    /** This is the onAdd method.
+     * This method checks to see if a global variable is set to view all customers or to view appointments.
+     *  Depending on which option the global variable is set to, the on add button sends the user to the appropriate page,
+     *  and toggles the appropriate booleans.
+     *  @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onAdd(ActionEvent actionEvent) throws IOException {
         if (Helper.viewAllCustomersToggle) {
             Helper.userClickedAddCustomer = true; //determining which button user clicked since customer page is the same for add and modify.
@@ -168,6 +181,13 @@ public class MainMenu implements Initializable {
             Helper.goToAddAppointment(actionEvent);
         }
     }
+    /** This is the onModify method.
+     * This method checks to see if a global variable is set to view all customers or to view appointments. This method then
+     * gets the appropriate controller and uses the sendInformation method from that controller to send the selected
+     * option (appointment/customer) information to the next scene to modify.  Depending on which option the global variable is set to,
+     * the on modify button sends the user to the appropriate page.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onModify(ActionEvent actionEvent) throws IOException {
         try {
             if (Helper.viewAllCustomersToggle) {
@@ -223,7 +243,14 @@ public class MainMenu implements Initializable {
             }
         }
     }
-
+    /** This is the onDelete method.
+     * This method checks to see if a global variable is set to view all customers or to view appointments. Depending on
+     * which option the global variable is set to, the delete button deletes the appropriate selection upon pressing the
+     * delete button. Additionally, if a customer is chosen to be deleted, a message will display to signal to the user
+     * that the customer cannot be deleted if the customer is associated with an appointment and the corresponding appointment must be
+     * deleted first.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onDelete(ActionEvent actionEvent) {
         try {
             if (Helper.viewAllCustomersToggle) {
@@ -243,6 +270,7 @@ public class MainMenu implements Initializable {
                         Helper.displayMessage(rb.getString("CustomerSuccessfullyDeleted"));
                     }
                     else{
+
                         Helper.displayMessage("Customer successfully removed.");
                     }
                     //selecting the next item in the list for easier deletion of multiple customers so that user does not have
@@ -284,42 +312,81 @@ public class MainMenu implements Initializable {
                 Helper.displayMessage(rb.getString("MakeASelectionToDelete"));
             }
             else{
+                Message m = s -> System.out.println("Hello again" + s);
+                m.displayMessage("Bear");
                 Helper.displayMessage("Make a selection to delete.");
             }
         }
     }
-
+    /** This is the onReport Method.
+     * Takes the user to the reports page.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onReport(ActionEvent actionEvent) throws IOException{
         Helper.goToReportsPage(actionEvent);
     }
-
+    /** This is the onLogout method.
+     * Takes the user to the logout page.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onLogout(ActionEvent actionEvent) throws IOException{
         Helper.goToLogin(actionEvent);
     }
     //////////////////////////////////////////////////////////////////////////
     /////////////////////////RADIO BUTTONS///////////////////////////////////
+    /** This is the onViewAllCustomers method.
+     * This method corresponds to a radio button and when pressed, calls a helper method
+     * called toggleWidgets. ToggleWidgets is a method containing appropriate control flow statements
+     * to check for various conditions. Please see toggleWidgets
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onViewAllCustomers(ActionEvent actionEvent) {
         toggleWidgets(); //control flow statement within toggle widget method
     }
+    /** This is the onViewAppointments method.
+     * This method corresponds to a radio button and when pressed, calls a helper method
+     * called toggleWidgets. ToggleWidgets is a method containing appropriate control flow statements
+     * to check for various conditions. Please see toggleWidgets
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onViewAppointments(ActionEvent actionEvent) {
         toggleWidgets(); //control flow statement within toggle widget method
     }
+    /** This is the onViewByWeek method.
+     * This method corresponds to a radio button and when pressed, calls a helper method
+     * called toggleWidgets. ToggleWidgets is a method containing appropriate control flow statements
+     * to check for various conditions. Please see toggleWidgets. Additionally, this method sets the appointment
+     * table view to only list appointments by week. See filterByWeek method.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onViewByWeek(ActionEvent actionEvent) {
         //Source used: Stackoverflow, and Oracle to find week number, temporal field object, and weekfields
         toggleWidgets(); //control flow statement within toggle widget method
         apptTableView.setItems(filterApptByWeek()); //set appt table view to the filtered list
     }
-
+    /** This is the onViewByMonth method.
+     * This method corresponds to a radio button and when pressed, calls a helper method
+     * called toggleWidgets. ToggleWidgets is a method containing appropriate control flow statements
+     * to check for various conditions. Please see toggleWidgets. Additionally, this method sets the appointment
+     * table view to only list appointments by month. See filterByMonth method.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onViewByMonth(ActionEvent actionEvent) {
         toggleWidgets(); //control flow statement within toggle widget method
         apptTableView.setItems(filterApptByMonth()); //set appt table view to the filtered list
     }
-
+    /** This is the onViewAll method.
+     * This method corresponds to a radio button and when pressed, calls a helper method
+     * called toggleWidgets. ToggleWidgets is a method containing appropriate control flow statements
+     * to check for various conditions. Please see toggleWidgets. Additionally, this method sets the appointment
+     * table view to view all appointments.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onViewAll(ActionEvent actionEvent) {
         toggleWidgets(); //control flow statement within toggle widget method
         apptTableView.setItems(DBAppointments.getAllAppointments()); //set appt table view to all appointments*/
     }
-
+    /** This is the onSelectViewByDate method.
+     * This method corresponds to a date picker and is only visible to the user when the user selects to view appointments,
+     * as mentioned in toggleWidgets method. This method uses control flow statements to check for which radio button
+     * is selected to view by and sets the appointment table view to the appropriate filter.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onSelectViewByDate(ActionEvent actionEvent) {
         if(viewApptMonth.isSelected()){ //if view by month, then filter by month
             apptTableView.setItems(filterApptByMonth()); //set appt table view to the selected date and filter by month

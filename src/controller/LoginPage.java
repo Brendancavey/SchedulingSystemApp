@@ -37,7 +37,11 @@ public class LoginPage implements Initializable {
     public Label languageLabel;
     public Label timeZoneLabel;
 
-
+    /** This is the initialize method.
+     * This method gets called when first starting this scene. It checks for the
+     * locale default if it set to a supported language in the resource bundle, and changes
+     * the appropriate labels and text fields to the supported language.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR LANGUAGE//////////////////////////////////
@@ -79,6 +83,12 @@ public class LoginPage implements Initializable {
         passwordTextfield.clear();
     }
 
+    /** This is the OnLogin method.
+     * This method checks to see if the user entered a valid username and password into the appropriate textfields.
+     * If successful, a the user is sent to the main menu and a message displays if there are any upcoming appointments.
+     * If unsuccessful, a message is displayed signaling to the user that an incorrect username or password was entered.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     */
     public void onLogin(ActionEvent actionEvent) throws IOException {
         ObservableList<User> usersList = DBUsers.getAllUsers();
         boolean loginSuccessful = false;
@@ -98,7 +108,7 @@ public class LoginPage implements Initializable {
                 for (Appointment appointment : DBAppointments.getAllAppointments()) {
                     startTime = appointment.getStartDate().toLocalTime();
                     long timeDifference = ChronoUnit.MINUTES.between(currentTime, startTime);
-                    System.out.println((timeDifference));
+                    //System.out.println((timeDifference));
                     if (timeDifference > 0 && timeDifference <= 15) {
                         listOfAppts.add(String.valueOf("ID: " + appointment.getApptId()) + " | " + appointment.getStartDateReadableFormat() + "\n");
                     }
@@ -146,6 +156,12 @@ public class LoginPage implements Initializable {
         /////////////////////////////////////////////////////////////////
     }
 
+    /** This is the OnLanguageSelection method.
+     * This method corresponds to a combo box that allows the user to select their desired language which
+     * would change the language of the program to the chosen language. For the purpose of the project, this
+     * drop down menu is disabled. For future enhancements, this method will be further worked on.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onLanguageSelection(ActionEvent actionEvent) {
         if(languageChoice.getValue().getLanguage() == "fr"){
             Helper.language = Helper.french;
@@ -166,6 +182,5 @@ public class LoginPage implements Initializable {
             System.out.println(rb.getString("hello") + " " + rb.getString("world"));
         }
     }
-    /////////////////HELPER METHODS/////////////////
 
 }
