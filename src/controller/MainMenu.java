@@ -400,9 +400,16 @@ public class MainMenu implements Initializable {
     }
     //////////////////////////////////////////////////////////////////////
     ///////////////////HELPER METHODS///////////////////////////////////
-    /** LOIGCAL ERROR: When adding to the filtered list, appointments with the same month but different year were being
+    /** This is the filterApptByMonth method.
+     * This is a helper method that gets called to reduce redundancy across multiple methods. This method
+     * gets the date and year from the display calendar picker when the user makes a selection on the appropriate calendar widget.
+     * It then iterates through the appointment lists and makes a comparison within a control flow statement to see if the appointment start date
+     * matches the selected month and year and adds it to a filtered appointment list.
+     * LOIGCAL ERROR: When adding to the filtered list, appointments with the same month but different year were being
      * added to the filtered list. To correct this, I made another comparator to the selected year to verify the month selected year matches with
-     * the appointment year and month*/
+     * the appointment year and month.
+     * @return filteredAppointmentList This method returns a list containing all filtered appointments by the selected month.
+     * */
     public ObservableList<Appointment> filterApptByMonth(){
         //this method is used twice within onSelectViewByDate, and onViewByMonth.
         //Placed into method to reduce redundancy.
@@ -419,10 +426,18 @@ public class MainMenu implements Initializable {
         }
         return filteredAppointmentList;
     }
+    /** This is the filterApptByWeek method.
+     * This is a helper method that gets called to reduce redundancy across multiple methods. This method
+     * gets the date and year from the display calendar picker when the user makes a selection on the appropriate calendar widget. This method also calculates
+     * an integer called weekNumber by using a TemporalField object to get the weekOfMonth, and using it to get the value on the selected date.
+     * It then iterates through the appointment lists and makes a comparison within a control flow statement to see if the appointment start date
+     * matches the selected weekNumber, month, and year, and adds it to a filtered appointment list.
+     * @return filteredAppointmentList This method returns a list containing all filtered appointments by the selected week of month.
+     * */
     public ObservableList<Appointment> filterApptByWeek(){
         //this method is used twice within onSelectViewByDate, and onViewByWeek. Placed into method to reduce redundancy
         TemporalField tf = WeekFields.of(Locale.getDefault()).weekOfMonth(); //getting week of month and placing into temporal field object
-        int weekNumber = displayByCalendarPicker.getValue().get(tf); //getting week number by using temporal field object as a parameter within LocalDate.now.get()
+        int weekNumber = displayByCalendarPicker.getValue().get(tf); //getting week number by using temporal field object as a parameter within displayCalendarPicker.getValue().get()
 
         int selectedDateYear = displayByCalendarPicker.getValue().getYear(); //getting selected year
         Month selectedDateMonth = displayByCalendarPicker.getValue().getMonth(); //getting selected month
@@ -438,6 +453,11 @@ public class MainMenu implements Initializable {
         }
         return filteredAppointmentList;
     }
+    /** This is the toggleWidgets method.
+     * This method helps with the readability of the code without having other programmers guess on the reasoning behind disabling/enabling,
+     * and setting opacity to make labels to be visible/invisible. This method primarily serves as a control flow statement to check
+     * which radio buttons are selected, and changing the visibility/functionality of the appropriate labels/widgets.
+     * */
     public void toggleWidgets(){
         //to reduce redundancy, made a helper toggle method to turn widgets on and off depending on
         //radio button selection within control flow statements.
@@ -489,6 +509,11 @@ public class MainMenu implements Initializable {
             displayByCalendarPicker.setDisable(false); //making widget usable
         }
     }
+    /** This is the getSelectedAppointment Method.
+     * This method is used to get the user selection appointment and is primarily used within the modify appointment
+     * scene. This method gets called to check to see if the selectedAppointment start and end times will be overlapping with
+     * the modified appointment start and end times. Since the user would like like to modify the appointment time, overlapping the previous
+     * start and end times should not be present. Please see checkForConflict() method within AppointmentPage.java for more details.*/
     public static Appointment getSelectedAppointment(){
         return selectedAppointment;
     }
