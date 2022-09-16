@@ -13,6 +13,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class DBAppointments {
+    /** This is the getAllAppointments method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method creates appointment objects from the database and adds it into a list to be returned.
+     * @return appointmentList Returns a list of all appointments from the database.*/
     public static ObservableList<Appointment> getAllAppointments(){
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
@@ -44,6 +48,12 @@ public class DBAppointments {
         }
         return appointmentList;
     }
+    /** This is the getAllAppointmentsByConactId method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to only select Contact_ID that matches the parameter.
+     * This method creates appointment objects from the database and adds it into a list to be returned.
+     * This method is primarily used when a list of appointments that correspond to a particular contact Id is needed (in the reports page view by contact schedule)
+     * @return appointmentList Returns a list of appointments from the database that matches the sql condition.*/
     public static ObservableList<Appointment> getAppointmentsByContactId(int contactId){
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
@@ -75,6 +85,12 @@ public class DBAppointments {
         }
         return appointmentList;
     }
+    /** This is the getAllAppointmentsByType method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to only select Type that matches the parameter.
+     * This method creates appointment objects from the database and adds it into a list to be returned.
+     * This method is primarily used when a list of appointments that correspond to a particular string Type is needed (in the reports page view by Type)
+     * @return appointmentList Returns a list of appointments from the database that matches the sql condition.*/
     public static ObservableList<Appointment> getAppointmentsByType(String type){
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
@@ -106,7 +122,11 @@ public class DBAppointments {
         }
         return appointmentList;
     }
-
+    /** This is the insertAppointment method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method takes in appointment parameters that correspond to the data base columns of appointment, and inserts
+     * the values to the appropriate columns of the database. This method is primarily used in the appointment page
+     * when the user wants to add an appointment to the database. */
     public static void insertAppointment(String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime endDate, int custId, int userId, int contactId){
         try{
             String sqlQuery = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -130,6 +150,11 @@ public class DBAppointments {
             throwables.printStackTrace();
         }
     }
+    /** This is the updateAppointment method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method takes in appointment parameters that correspond to the data base columns of appointment, and updates
+     * the values to the appropriate columns of the database where the appointment id parameter matches the appointment id column.
+     * This method is primarily used in the appointment page when the user wants to modify an appointment in the database. */
     public static void updateAppointment(int apptId, String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime endDate, int custId, int userId, int contactId){
         try{
             String sqlQuery = "UPDATE APPOINTMENTS SET Title = ?, Description = ?, Location = ?, Type= ?, Start= ?, End = ?, Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
@@ -154,6 +179,11 @@ public class DBAppointments {
             throwables.printStackTrace();
         }
     }
+    /** This is the deleteAppointment method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method takes the parameter appointment id and uses it within the sql query to find the matching
+     * appointment id within the database to delete. This method is primarily used in the main menu when
+     * the user wants to delete an appointment from the database. */
     public static int deleteAppointment(int apptId){
         int rowsAffected = 0;
         try {

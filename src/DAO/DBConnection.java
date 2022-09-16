@@ -14,19 +14,21 @@ public abstract class DBConnection {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
-    public static void openConnection()
-    {
+    /** This is the openConnection method.
+     * This method is primarily called in the main method to open
+     * the connection to the sql data base.*/
+    public static void openConnection() {
         try {
             Class.forName(driver); // Locate Driver
             connection = DriverManager.getConnection(jdbcUrl, userName, password); // Reference Connection object
             System.out.println("Connection successful!");
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
     }
-
+    /** This is the closeConnection method.
+     * This method is primarily called in the main method to close
+     * the connection to the sql data base. */
     public static void closeConnection() {
         try {
             connection.close();
@@ -37,6 +39,9 @@ public abstract class DBConnection {
             System.out.println("Error:" + e.getMessage());
         }
     }
+    /** This is the getConnection method.
+     * This method is primarily called when making a connection to the database
+     * to execute a sql query.*/
     public static Connection getConnection(){
         return connection;
     }
