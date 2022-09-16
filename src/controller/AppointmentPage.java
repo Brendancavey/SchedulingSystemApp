@@ -54,6 +54,14 @@ public class AppointmentPage implements Initializable {
     public Label endTimeLabel;
     public Button cancelButton;
 
+    /** This is the initialize method.
+     * This method gets called when first starting this scene. It checks for the
+     * locale default if it set to a supported language in the resource bundle, and changes
+     * the appropriate labels and text fields to the supported language. It also checks on a
+     * a global variable to see if the user selected to modify appointment, and if so make the appropriate
+     * changes to the scene. Additionally, this method initializes all of combo boxes to contain the appropriate
+     * data.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
@@ -91,16 +99,29 @@ public class AppointmentPage implements Initializable {
         customerBox.setItems(DBCustomers.getAllCustomers());
         userBox.setItems(DBUsers.getAllUsers());
     }
+    /** This is onCustomerSelection method.
+     * This method is called whenever the user makes a selection on the customer combo box. It allows
+     * for the start date picker to be usable and make appropriate changes to the prompt text when a customer
+     * selection is made if applicable. The method also checks for a time conflict by calling checkForConflict(). Please see
+     * checkForConflict() for more details.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onCustomerSelection(ActionEvent actionEvent) {
         startDatePicker.setDisable(false); //make start date selection usable
         startDatePicker.setPromptText("Select Start Date");
         checkForConflict(); //check for conflict with new customer selection
     }
-    /** LOGICAL ERROR: Found logical error when making appointment times overlap one another with the same customer. Fixed this
+    /** This is the onSave Method.
+     * This method is called when the user presses the save button. This method takes all input from the text fields and
+     * combo box selections and saves them into a variable. The method also displays fail safe messages to verify if the
+     * user did not leave any fields empty/blank. The method then checks a global variable to see which toggle was selected
+     * (add or modify), and makes changes to the database depending on the selection (insert or update the appointment).
+     * LOGICAL ERROR: Found logical error when making appointment times overlap one another with the same customer. Fixed this
      * issue by creating a control flow statement with multiple and/or statements to check for these conditions. This
-     * is found under conflictExists method.
+     * is found under checkForConflict() method.
      * RUNTIME ERROR: Found runtime error that when user saved without filling out all fields, a nullpointer expcetion
-     * would appear. Fixed by wrapping in try catch block*/
+     * would appear. Fixed by wrapping in try catch block
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onSave(ActionEvent actionEvent) throws IOException {
         try {
             allAppointments = DBAppointments.getAllAppointments();
@@ -154,17 +175,28 @@ public class AppointmentPage implements Initializable {
             }
         }
     }
+    /** This is the onCancel method.
+     * This method changes the appropriate global variables back to default,
+     * and takes the user back to the main menu.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Helper.userClickedAddAppointment = false;
         Helper.userClickedModifyAppointment = false;
         Helper.goToMainMenu(actionEvent);
     }
-    /** LOGICAL ERROR: When selecting a start time, the user could still select an end time that occurs previous
+    /** This is the onStartTimeSelection method.
+     * This method is called when the user selects a start time from the start time combo box. This method makes changes
+     * to the appropriate widgets/labels and then adds all of the appropriate end times to the end time combo box by
+     * calling updateEndTimes() method.
+     * LOGICAL ERROR: When selecting a start time, the user could still select an end time that occurs previous
      * to the start time. To correct this, I verified that all times added to the end time box occurs 30 mins after
-     * the selected start time.
+     * the selected start time. This is found under updateEndTimes() method.
      * RUNTIME ERROR: When selecting start time, the end time needed to be within 30 min intervals after the start time and
      * not from the current time. Using current time would exceed the 60 min hour window and cause a runtime error. To correct
-     * this, I created a control flow statement to check if the selected time is at 30 mins or on the hour.*/
+     * this, I created a control flow statement to check if the selected time is at 30 mins or on the hour. Found within updateEndTimes() method.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding widget.
+     * */
     public void onStartTimeSelection(ActionEvent actionEvent) {
         try {
             conflictExistsLabel.setOpacity(0);
@@ -179,6 +211,11 @@ public class AppointmentPage implements Initializable {
             System.out.println("Exception...");
         }
     }
+    /** This is the onEndTimesElection.
+     * This method verifies that user selected an end time and a start time that does not conflict
+     * with the establishment operating hours or a current existing appointment of the same customer. This
+     * is found under checkForConflict method().
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding widget.*/
     public void onEndTimeSelection(ActionEvent actionEvent) {
         checkForConflict();
     }
