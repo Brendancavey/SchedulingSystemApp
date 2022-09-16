@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBContacts {
+    /** This is the getAllContacts method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method creates Contact objects from the database and adds it into a list to be returned.
+     * @return contactList Returns a list of all contacts from the database.*/
     public static ObservableList<Contact> getAllContacts(){
         ObservableList<Contact> contactsList = FXCollections.observableArrayList();
         try{
@@ -30,7 +34,13 @@ public class DBContacts {
         }
         return contactsList;
     }
-
+    /** This is the getAllcontactsById method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to only select Contact that matches the parameter.
+     * This method creates a Contact object from the database and returns that object
+     * This method is primarily used when finding the Contact from an appointment due to the contact ID
+     * in an appointment is the foreign key to Contact.
+     * @return contact Returns a Contact object.*/
     public static Contact selectContactById(int contactId){
         Contact contact = null;
         try {
@@ -49,4 +59,6 @@ public class DBContacts {
         }
         return contact;
     }
+
+    //UPDATE, DELETE, INSERT not necessary for project requirements.
 }

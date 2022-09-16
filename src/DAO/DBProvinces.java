@@ -34,61 +34,11 @@ public class DBProvinces {
         }
         return provinceList;
     }
-
-    public static int insertCustomer(String customerName, int provinceId){
-        int rowsAffected = 0;
-        try {
-            String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Division_Id) Values(?, ?)";
-            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            preparedStatement.setString(1, customerName);
-            preparedStatement.setInt(2, provinceId);
-            rowsAffected = preparedStatement.executeUpdate();
-
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-        return rowsAffected;
-    }
-    public static int updateCustomer(int custId, String custName){
-        int rowsAffected = 0;
-        try {
-            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ? WHERE Customer_ID = ?";
-            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            preparedStatement.setString(1, custName);
-            preparedStatement.setInt(2, custId);
-            rowsAffected = preparedStatement.executeUpdate();
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-        return rowsAffected;
-    }
-    public static int deleteCustomer(int custId){
-        int rowsAffected = 0;
-        try {
-            String sqlQuery = "DELETE FROM CUSTOMERS WHERE Customer_ID = ?";
-            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            preparedStatement.setInt(1, custId);
-            rowsAffected = preparedStatement.executeUpdate();
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-        return rowsAffected;
-
-    }
-    public static void selectCustomer(){
-        try {
-            String sqlQuery = "SELECT * FROM CUSTOMERS";
-            PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                int customerId = resultSet.getInt("Customer_ID");
-                String customerName = resultSet.getString("Customer_Name");
-                System.out.println(customerId + " | " + customerName);
-            }
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-    }
+    /** This is the selectProvinceByCountryId method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to select the provinces with a country_Id that matches the parameter.
+     * This method creates province object from the database adds it into a list to return.
+     * @return provinceList Returns a list of provinces created from the database that matches the sql condition.*/
     public static ObservableList<Province> selectProvinceByCountryId(int countryId){
         ObservableList<Province> provinceList = FXCollections.observableArrayList();
         try {
@@ -108,6 +58,11 @@ public class DBProvinces {
         }
         return provinceList;
     }
+    /** This is the selectProvinceById method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to only select the province with a province_ID that matches the parameter.
+     * This method creates a province object from the database and returns it.
+     * @return province Returns a Province object created from the database that matches the sql condition.*/
     public static Province selectProvinceById(int provinceId){
         Province province = null;
         try {
@@ -126,6 +81,10 @@ public class DBProvinces {
         }
         return province;
     }
+    /** This is the selectCountryIdByProvinceId method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database,
+     * where the parameter is used a filter to only select the country where the division_id matches the parameter.
+     * return countryIdFk Returns an integer - country_id  to be used to find the matching country in a separate sql query.*/
     public static int selectCountryIdByProvinceId(int provinceId){
         int countryIdFk = 0;
         try {
@@ -142,7 +101,7 @@ public class DBProvinces {
         return countryIdFk;
     }
 
-
+    //UPDATE, DELETE, INSERT not necessary for project requirements.
     /*public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
         try{

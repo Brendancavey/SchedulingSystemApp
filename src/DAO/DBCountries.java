@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class DBCountries {
+    /** This is the getAllCountries method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method creates Country objects from the database and adds it into a list to be returned.
+     * @return appointmentList Returns a list of all countries from the database.*/
     public static ObservableList<Country> getAllCountries(){
         ObservableList<Country> countriesList = FXCollections.observableArrayList();
         try{
@@ -29,6 +33,11 @@ public class DBCountries {
         }
         return countriesList;
     }
+    /** This is the selectCountryById method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to only select the Country with a country_ID that matches the parameter.
+     * This method creates a Country object from the database and returns it.
+     * @return country Returns a Country object created from the database that matches the sql condition.*/
     public static Country selectCountryById(int countryId){
         Country country = null;
         try {
@@ -46,6 +55,7 @@ public class DBCountries {
         }
         return country;
     }
+    //CREATE, UPDATE, DELETE not necessary for project requirements
     public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
         try{

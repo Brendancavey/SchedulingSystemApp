@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class DBUsers {
+    /** This is the getAllUsers method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method creates User objects from the database and adds it into a list to be returned.
+     * @return usersList Returns a list of all users from the database.*/
     public static ObservableList<User> getAllUsers(){
         ObservableList<User> usersList = FXCollections.observableArrayList();
         try{
@@ -31,6 +35,11 @@ public class DBUsers {
         }
         return usersList;
     }
+    /** This is the selectUserById method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database where
+     * the parameter is used as a filter to only select the User that matches the parameter.
+     * This method creates a User object from the database and returns it.
+     * @return user Returns a user object from the database that matches the sql condition.*/
     public static User selectUserById(int userId){
         User user = null;
         try {
@@ -49,6 +58,7 @@ public class DBUsers {
         }
         return user;
     }
+    //UPDATE, DELETE, INSERT not necessary for project requirements.
     /*
     public static void checkDateConversion(){
         String sqlQuery = "SELECT Create_Date from countries"; //sql query
