@@ -88,12 +88,21 @@ public class Helper {
     }
     /////////////////////////////////////////////////////////////////////////
     ////////////////////DISPLAYING TIMEZONE////////////////////////////////
+    /** This is getTimeZone method.
+     * This method returns the system default time zone is primarily
+     * used for better readability.
+     * @return timeZone Returns the timezone in String datatype.*/
     public static String getTimeZone(){
         String timeZone = String.valueOf(ZoneId.systemDefault());
         return timeZone;
     }
     /////////////////////////////////////////////////////////////////////////
     //////////////////CONVERTING LOCAL TIME TO UTC///////////////////////////
+    /** This is the convertToUtc method.
+     * This method takes in a local date time and convert it to
+     * UTC time. This method is primarily used to store local date time
+     * in the SQL database in UTC.
+     * @return utcZDT Returns utc zoned date time*/
     public static ZonedDateTime convertToUtc(LocalDateTime dateTime){
         ZoneId utcZoneId = ZoneId.of("UTC");
         ZoneId myZoneId = ZoneId.systemDefault();
@@ -103,6 +112,12 @@ public class Helper {
         return utcZDT;
     }
     ///////////////////CONVERTING UTC TO LOCAL TIME//////////////////////
+    /** This is the convertFromUtcToLocal method.
+     * This method takes in a UTC date time and converts it to local date time
+     * to be displayed for the user in their local date time. This method is primarily used
+     * when taking datetime objects from the database, and they need to be displayed in
+     * the user's local date time.
+     * @return myZonedDateTime Returns the users zoned date time*/
     public static ZonedDateTime convertFromUtcToLocal(LocalDateTime dateTime){
         ZoneId myZoneId = ZoneId.systemDefault();
         ZoneId utcZoneId = ZoneId.of("UTC");
@@ -112,6 +127,12 @@ public class Helper {
         return myZonedDateTime;
     }
     /////////////////CONVERTING LOCAL TO EST///////////////////////////////
+    /** This is the convertToEst method.
+     * This method takes in a local date time and converts it to EST. This
+     * method is primarily used to compare local date time hours to EST since
+     * the establishment hours are in EST.
+     * @return estZDT Returns EST zoned date time.
+     *  */
     public static ZonedDateTime convertToEst(LocalDateTime dateTime){
         ZoneId estZoneId = ZoneId.of("US/Eastern"); //eastern time zone
         ZoneId myZoneId = ZoneId.systemDefault();
@@ -131,6 +152,9 @@ public class Helper {
     }
     //////////////////////////////////////////////////////////////////////////
     ////////////////////ALERT MESSAGES///////////////////////////////////////
+    /** This is the displayMessage method.
+     * This is a helper method to reduce redundancy across multiple classes and methods.
+     * This method takes in a string and displays that string in the form of an alert pop up window.*/
     public static void displayMessage(String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
@@ -146,6 +170,11 @@ public class Helper {
     }
     //////////////////////////////////////////////////////////////////////
     //////////////////////CONVERT LOCAL TIME INTO READABLE FORMAT////////
+    /** This is the toReadableTime method.
+     * This is a helper method to reduce redundancy across multiple classes and methods.
+     * This method takes in a local time object and converts it into a  formatted string that is easier
+     * to read for the user.
+     * @return formattedTime Returns a local time string that has been formatted for easier readability. */
     public static String toReadableTime(LocalTime time){
         String formattedTime = time.format(DateTimeFormatter.ofPattern("h:mm a"));
         //DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd h:mm a");
