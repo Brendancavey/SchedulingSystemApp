@@ -48,6 +48,13 @@ public class ReportsPage implements Initializable {
     public Button backButton;
     public Label totalCustomersExtraLabel;
 
+    /** This is the initialize method.
+     * This method gets called when first starting this scene. It checks for the
+     * locale default if it set to a supported language in the resource bundle, and changes
+     * the appropriate labels and text fields to the supported language. This method also
+     * initializes the table views with appropriate data and initializes the options combo box to
+     * the default selected view by type, and fills the combo box with the appropriate information.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
@@ -104,6 +111,13 @@ public class ReportsPage implements Initializable {
         /////////////////////////////////////////////////////////////////////////////
         yearLabel.setText(String.valueOf(LocalDate.now().getYear())); //setting year label to current year
     }
+    /** This is the onViewContactSchedule method.
+     * This method gets called when selecting on the contact schedule radio button. It
+     * makes changes to the appropriate widgets/labels to display the appropriate information. Then,
+     * the method iterates through all of the contacts from the contacts data base and adds them to the options
+     * combo box.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onViewContactSchedule(ActionEvent actionEvent) {
         contactScheduleTableView.getItems().clear();
         contactScheduleTableView.getItems().removeAll();
@@ -128,9 +142,16 @@ public class ReportsPage implements Initializable {
             optionsComboBox.getItems().add(contacts);
         }
     }
-    /** LOGICAL ERROR: The combo box containing view by type displayed multiple copies of the same type. To
-     * fix this, I verified to not add to the combo box if it already exists within the combo box selection.*/
+    /** This is the onViewTotalCustomers method.
+     *  This method gets called when selecting on the total customers radio button. It
+     *   makes changes to the appropriate widgets/labels to display the appropriate information. Then,
+     *  the method calls the appropriate method ("fillBy") to fill the options combo box corresponding to the
+     *  viewBy radio button (by type, month, or country) selection.
+     * LOGICAL ERROR: The combo box containing view by type displayed multiple copies of the same type. To
+     * fix this, I verified to not add to the combo box if it already exists within the combo box selection.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onViewTotalCustomers(ActionEvent actionEvent) {
+        //////////////SETTING WIDGETS TO APPROPRIATE VALUES/////////
         customerTableView.getItems().clear();
         customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
@@ -140,9 +161,11 @@ public class ReportsPage implements Initializable {
         customerTableView.setOpacity(1);
         contactScheduleTableView.setOpacity(0);
         contactScheduleTableView.setDisable(true);
+        ///////////////////////////////////////////
 
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
 
+        //////////FILL COMO BOX DEPENDING ON THE SELECTION OF THE VIEW-BY RADIO BUTTONS////////////
         if(custViewByType.isSelected()) {
 
             if (Locale.getDefault().getLanguage().equals("fr")) {
@@ -178,9 +201,16 @@ public class ReportsPage implements Initializable {
         else{
             totalCount.setText("Total Customers: ");
         }
+        /////////////////////////////////////////////////////////////////////////////
 
     }
     /////////////////////VIEW BY RADIO BUTTONS///////////////////////
+    /** This is the onViewByType method.
+     * This method gets called when selecting the by Type radio button.
+     * It removes and clears the options combo box and table view, then fills the options combo box with
+     * the appropriate information
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onViewByType(ActionEvent actionEvent) {
         customerTableView.getItems().clear();
         customerTableView.getItems().removeAll();
@@ -196,6 +226,12 @@ public class ReportsPage implements Initializable {
         yearLabel.setOpacity(0);
         fillByType(); //filling combo box by type
     }
+    /** This is the onViewByMonth method.
+     * This method gets called when selecting the by Month radio button.
+     * It removes and clears the options combo box and table view, then fills the options combo box with
+     * the appropriate information
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onViewByMonth(ActionEvent actionEvent) {
         customerTableView.getItems().clear();
         customerTableView.getItems().removeAll();
@@ -211,6 +247,12 @@ public class ReportsPage implements Initializable {
         yearLabel.setOpacity(1);
         fillByMonth(); //filling combo box by month
     }
+    /** This is the onViewByCustom method.
+     * This method gets called when selecting the by Country radio button.
+     * It removes and clears the options combo box and table view, then fills the options combo box with
+     * the appropriate information
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onViewByCustom(ActionEvent actionEvent) {
         customerTableView.getItems().clear();
         customerTableView.getItems().removeAll();
@@ -229,6 +271,12 @@ public class ReportsPage implements Initializable {
 
     }
     ////////////////////////COMBO BOX SELECTIONS//////////////////////////////////////////
+    /** This is the onOptionsSelection method.
+     * This method is called whenever the user makes a selection from the options combo box. This method
+     * contains control flow statements to check which radio buttons the user selected and makes the appropriate changes to the scene
+     * depending on the selection - such as displaying the correct table view, what is filled in the table view, and label changes.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onOptionsSelection(ActionEvent actionEvent) {
         ////////////////////VIEW CONTACT SCHEDULE SELECTED///////////////////////////////
         if(viewContactSchedule.isSelected()){
@@ -350,13 +398,20 @@ public class ReportsPage implements Initializable {
             }
         }
     }
+    /** This is the onCancel method.
+     * This method is called when selecting the back button. This method takes
+     * the user back to the main menu page.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Helper.goToMainMenu(actionEvent);
     }
     ///////HELPER METHODS////////////
-    public void setUpScreen(){
-        //reduces redundancy across multiple widgets
-    }
+    /** This is the fillByType method.
+     * This is a helper method to reduce redundancy across multiple methods.
+     * This method fills the options combo box with the appropriate information by iterating through
+     * all appointments, and getting the appropriate information from the appointment and adding it to the combo box.
+     * */
     public void fillByType(){
         for(Appointment appointments : DBAppointments.getAllAppointments()){
             if(!optionsComboBox.getItems().contains(appointments.getType())) {
@@ -364,11 +419,21 @@ public class ReportsPage implements Initializable {
             }
         }
     }
+    /** This is the fillByMonth method.
+     * This is a helper method to reduce redundancy across multiple methods.
+     * This method fills the options combo box with the appropriate information by iterating through
+     * all months of the year and adding it to the options combo box.
+     * */
     public void fillByMonth(){
         for (Month months : Month.values()){
             optionsComboBox.getItems().add(months);
         }
     }
+    /** This is the fillByType method.
+     * This is a helper method to reduce redundancy across multiple methods.
+     * This method fills the options combo box with the appropriate information by iterating through
+     * all countries, and adding it to the options combo box.
+     * */
     public void fillByCountry(){
         for (Country countries : DBCountries.getAllCountries()){
             if(!optionsComboBox.getItems().contains(countries)){
