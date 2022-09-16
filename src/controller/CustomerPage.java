@@ -37,6 +37,12 @@ public class CustomerPage implements Initializable {
     public Button saveButton;
     public Button cancelButton;
 
+    /** This is the initialize method.
+     * This method gets called when first starting this scene. It checks for the
+     * locale default if it set to a supported language in the resource bundle, and changes
+     * the appropriate labels and text fields to the supported language. This method also initializes
+     * the country combo box with all countries.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
@@ -58,6 +64,13 @@ public class CustomerPage implements Initializable {
 
         System.out.println("Customer page initialized!");
     }
+    /** This is the onSave method.
+     * This method is called when the user presses the save button. This method takes all input from the text fields and
+     * combo box selections and saves them into a variable. The method also displays fail safe messages to verify if the
+     * user did not leave any fields empty/blank. The method then checks a global variable to see which toggle was selected
+     * (add or modify), and makes changes to the database depending on the selection (insert or update the customer).
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onSave(ActionEvent actionEvent) throws IOException {
         try {
             String name = nameText.getText();
@@ -99,9 +112,13 @@ public class CustomerPage implements Initializable {
             }
         }
     }
-    /**LOGICAL ERROR: If user clicked on add customer and then decided to cancel, and then clicked on modify customer,
+    /** This is the onCancel method.
+     * This method changes the appropriate global variables back to default,
+     * and takes the user back to the main menu.
+     * LOGICAL ERROR: If user clicked on add customer and then decided to cancel, and then clicked on modify customer,
      * the modified customer would be added as a new customer instead of modified. To correct this, I placed the boolean
-     * that checked if the user clicked on add customer to false anytime the user hits cancel.*/
+     * that checked if the user clicked on add customer to false anytime the user hits cancel.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Helper.userClickedAddCustomer = false;
         Helper.goToMainMenu(actionEvent);
@@ -110,9 +127,15 @@ public class CustomerPage implements Initializable {
     public void onProvinceSelection(ActionEvent actionEvent) {
         //divisionBox.setItems(DBProvinces.getAllProvinces());
     }
-    /** LOGICAL ERROR: When selecting a country, all provinces were still showing in the province drop down menu. To
+    /** This is the onCountrySelection method.
+     * This method gets called when a country is selected from the country combo box. This method checks the id
+     * of the selected country and sets the division box with appropriate provinces that correspond to the selected country
+     * with the matching id. This method does this by calling on selectProvinceByCountryId() method located in DBProvinces.java
+     * LOGICAL ERROR: When selecting a country, all provinces were still showing in the province drop down menu. To
      * correct this, I made a control flow statement to check for which provinces belonged to the selected country,
-     * and set the drop down menu to only display those provinces.*/
+     * and set the drop down menu to only display those provinces.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
+     * */
     public void onCountrySelection(ActionEvent actionEvent) {
         //on country selection, make sure to selectFirst. Since the control flow statement
         //comes after selectFirst, then selectingFirst is empty. Using clear() was not working
@@ -130,6 +153,11 @@ public class CustomerPage implements Initializable {
     }
     ///////////////////////////////////////////////////////////////
     ////////////////////HELPER METHODS FOR CUSTOMER PAGE///////////
+    /** This is the sendAppointmentInformation method.
+     * This method is primarily used within the main menu page and is called when the user clicks on
+     * modify customer. This method sends the selected customer to customer page scene
+     * and sets the appropriate text fields and combo box selections to the corresponding values of the selected
+     * customer. */
     public void sendCustomerInformation(Customer customer){
         idText.setText(String.valueOf(customer.getId()));
         nameText.setText(customer.getName());

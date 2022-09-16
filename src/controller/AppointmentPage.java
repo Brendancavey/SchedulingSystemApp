@@ -334,7 +334,7 @@ public class AppointmentPage implements Initializable {
             Customer customer = customerBox.getValue();
             LocalDate startDate = startDatePicker.getValue();
             LocalDate endDate = endDatePicker.getValue();
-            //using time dictionary to get local date time object stored in dictionary since start time combo box stores string values better readability
+            //using time dictionary to get local date time object stored in dictionary since start time combo box stores string values for better readability
             LocalTime startTime = Helper.timeDictionaryStart.get(startTimeComboBox.getValue()).toLocalTime();
             //using time dictionary to get local date time object stored in dictionary since end time combo box stores string values for better readability
             LocalTime endTime = Helper.timeDictionaryEnd.get(endTimeComboBox.getValue()).toLocalTime();
