@@ -219,15 +219,19 @@ public class AppointmentPage implements Initializable {
     public void onEndTimeSelection(ActionEvent actionEvent) {
         checkForConflict();
     }
-    /** LOGICAL ERROR: When initializing the start time options, start time could equal the end time. Since you
+    /** This is the onStartDateSelection.
+     * This method gets called when the user selects a start date from the start date calendar widget. This method makes
+     * changes to the appropriate widgets, and updates the start times within the start time combo box by calling the
+     * updateStartTimes() method. A message is also displayed once indicating to the user that the times selected are in
+     * their time zone, and they must make a selection that corresponds to EST time zone due to establishment hours.
+     * LOGICAL ERROR: When initializing the start time options, start time could equal the end time. Since you
      * can't make an appointment at closing of an establishment, I corrected this by making a condition where
      * the start time increments get added if the start time does not equal the end time, within 30 min intervals.
      * Furthermore, if the user selected the current day for an appointment, then start times could be chosen that were previous
-     * to the current local time. To correct this, I placed control flow statements for this condition.
-     * Additionally, start times on dates that haven't occurred should still be able to be picked at any time between opening
-     * and closing of the establishment. To correct this, I created another control flow statement to check for this condition.
-     * Also, the user could select end dates that were previous from the start date. To correct this, I disabled previous dates
-     * from the selected start date.
+     * to the current local time. To correct this, I disabled the end date selection, and auto picked the same date for the end date as the start date.
+     * Additionally, the user could select a start date that occurs in the past. To fix this, I included a method that disables
+     * all previous dates from the current date when this scene is initialized.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
      * */
     public void onStartDateSelection(ActionEvent actionEvent) {
         try {
@@ -270,6 +274,13 @@ public class AppointmentPage implements Initializable {
     }
     ////////////////////////////////////////////////////////////////
     /////////////////HELPER METHODS/////////////////////////////////
+    /** This is the updateStartTimes method.
+     * This is a helper method to reduce redundancy across multiple methods.
+     * This method gets all hours of the day and calls the toReadableTime() method located
+     * within Helper.java to convert the times into a string format that is easier to read for the user. This
+     * method then places the string into a hashmap that maps the string value as the key, and the LocalDateTime Object
+     * corresponding to that string as the value. This hashmap used primarily to make dateTime comparisons within checkForConflict() method.
+     * The method adds all of the readableTime Strings into the start time combo box.*/
     public void updateStartTimes(){
         LocalDateTime start = LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 0, 0);
         LocalDateTime end = LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 23, 30);
@@ -281,6 +292,10 @@ public class AppointmentPage implements Initializable {
             start = start.plusMinutes(30);
         }
     }
+    /** This is the updateEndTimes method.
+     * This is a helper method to reduce redundancy across multiple methods.
+     * This method checks to see which start time the user selected, and adds only times that are after the selected start time. This method performs the
+     * same actions as the updateStartTimes() method in terms of converting times into a readable format, and storing them into a hashmap for timeConflict use.*/
     public void updateEndTimes(){
        LocalDateTime start;
        LocalDateTime end = LocalDateTime.of(startDatePicker.getValue().getYear(), startDatePicker.getValue().getMonth(), startDatePicker.getValue().getDayOfMonth(), 23, 30);
@@ -300,7 +315,12 @@ public class AppointmentPage implements Initializable {
             start = start.plusMinutes(30);
         }
     }
-    /**LOGICAL ERROR: WHen attempting to modify an appointment, a conflict would occur when changing start and end times to be around the same time as the modifying times.
+    /** This is the checkForConflict method.
+     * This is a helper method to reduce redundancy across multiple methods. This method checks for a time conflict for if the
+     * user selected start and end times that occurred outside of the establishment hours (8AM-10PM EST) or the user selected start and end times
+     * that overlap with an existing appointment with the same customer. If a conflict exists, then a message is displayed indicating to the user that
+     * the appointment cannot be made/modified to the selected time/date. The save button gets disabled until an appropriate change has been made to the selected start/end times.
+     * LOGICAL ERROR: WHen attempting to modify an appointment, a conflict would occur when changing start and end times to be around the same time as the modifying times.
      * To correct this, I checked for the condition of when looping through all of the appointments to skip the appointment of the modifying appointment.*/
     public void checkForConflict(){
         try {
@@ -377,6 +397,10 @@ public class AppointmentPage implements Initializable {
             System.out.println("Exception.");
         }
     }
+    /** This is the disablePreviousStartDates method.
+     * This is a method to increase readability to the code so that programmers will be able to understand what this section of code does.
+     * This method disables all previous dates from the current date within the start date calendar widget. This is to fix a logical error
+     * where the user could make an appointment in the past. */
     public void disablePreviousStartDates() {
         //used to allow for more readable code
         //Source: stack overflow. Setting date picker so that previous dates from current day cannot be chosen for an appointment
@@ -399,6 +423,11 @@ public class AppointmentPage implements Initializable {
             }
         });
     }*/
+    /** This is the sendAppointmentInformation method.
+     * This method is primarily used within the main menu page and is called when the user clicks on
+     * modify appointment. This method sends the selected appointment to appointment page scene
+     * and sets the appropriate text fields and combo box selections to the corresponding values of the selected
+     * appointment. */
     public void sendAppointmentInformation(Appointment appointment){
         apptIdText.setText(String.valueOf(appointment.getApptId()));
         titleText.setText(appointment.getTitle());
