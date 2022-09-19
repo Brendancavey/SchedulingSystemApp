@@ -312,8 +312,14 @@ public class MainMenu implements Initializable {
                 Helper.displayMessage(rb.getString("MakeASelectionToDelete"));
             }
             else{
-                Message m = s -> System.out.println("Hello again" + s);
-                m.displayMessage("Bear");
+                //Alert k = new Alert(Alert.AlertType.WARNING);
+                //Alert k = new Alert(Alert.AlertType.NONE);
+                Message m = (alert, message) -> {
+                    alert.setAlertType(Alert.AlertType.WARNING);
+                    alert.setContentText(message);
+                    alert.show();
+                };
+                m.displayMessage(new Alert(Alert.AlertType.NONE), "hello");
                 Helper.displayMessage("Make a selection to delete.");
             }
         }

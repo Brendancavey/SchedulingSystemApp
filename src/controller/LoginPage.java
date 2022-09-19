@@ -87,6 +87,7 @@ public class LoginPage implements Initializable {
      * This method checks to see if the user entered a valid username and password into the appropriate textfields.
      * If successful, a the user is sent to the main menu and a message displays if there are any upcoming appointments.
      * If unsuccessful, a message is displayed signaling to the user that an incorrect username or password was entered.
+     * This method also outputs to a text file of any successful or unsuccessful login attempts.
      * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
      */
     public void onLogin(ActionEvent actionEvent) throws IOException {
@@ -103,13 +104,15 @@ public class LoginPage implements Initializable {
                 Helper.goToMainMenu(actionEvent);
                 /////////////CHECKING TO SEE IF ANY APPOINTMENTS ARE COMING UP//////////
                 LocalTime startTime;
+                LocalDate startDate;
                 LocalTime currentTime = LocalTime.now();
                 ArrayList<String> listOfAppts = new ArrayList<String>();
                 for (Appointment appointment : DBAppointments.getAllAppointments()) {
                     startTime = appointment.getStartDate().toLocalTime();
+                    startDate = appointment.getStartDate().toLocalDate(); //verifying that the date of appointment matches local date.now
                     long timeDifference = ChronoUnit.MINUTES.between(currentTime, startTime);
                     //System.out.println((timeDifference));
-                    if (timeDifference > 0 && timeDifference <= 15) {
+                    if (timeDifference > 0 && timeDifference <= 15 && startDate.equals(LocalDate.now())) {
                         listOfAppts.add(String.valueOf("ID: " + appointment.getApptId()) + " | " + appointment.getStartDateReadableFormat() + "\n");
                     }
                 }

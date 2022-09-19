@@ -12,6 +12,11 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class DBCustomers {
+    /** This is the getAllCustomers method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method creates Customer objects from the information obtained from the database, and
+     * adds it into a list to be returned.
+     * @return customersList Returns a list of all customers from the database*/
     public static ObservableList<Customer> getAllCustomers(){
         ObservableList<Customer> customersList = FXCollections.observableArrayList();
         try{
@@ -37,9 +42,13 @@ public class DBCustomers {
         return customersList;
     }
 
-
-    public static int insertCustomer(String customerName, String address, String postalCode, String phoneNumber, int provinceId){
-        int rowsAffected = 0;
+    /** This is the insertCustomer method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method takes in parameters to be used within the SQL query, and inserts into the
+     * sql database the corresponding information from the parameters into the appropriate
+     * database columns.  */
+    public static void insertCustomer(String customerName, String address, String postalCode, String phoneNumber, int provinceId){
+        //int rowsAffected = 0;
         try {
             String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_Id) Values(?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
@@ -48,15 +57,19 @@ public class DBCustomers {
             preparedStatement.setString(3, postalCode);
             preparedStatement.setString(4, phoneNumber);
             preparedStatement.setInt(5, provinceId);
-            rowsAffected = preparedStatement.executeUpdate();
+            //rowsAffected = preparedStatement.executeUpdate();
 
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-        return rowsAffected;
+        //return rowsAffected;
     }
-    public static int updateCustomer(int custId, String custName, String address, String postalCode, String phoneNumber, int provinceID){
-        int rowsAffected = 0;
+    /** This is the updateCustomer method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database. This
+     * method takes in parameters to be used within the Sql query, and updates the sql database that corresponds
+     * to the condition of the sql query (where customer_id matches the parameter custID). */
+    public static void updateCustomer(int custId, String custName, String address, String postalCode, String phoneNumber, int provinceID){
+        //int rowsAffected = 0;
         try {
             String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
@@ -66,23 +79,27 @@ public class DBCustomers {
             preparedStatement.setString(4, phoneNumber);
             preparedStatement.setInt(5, provinceID);
             preparedStatement.setInt(6, custId);
-            rowsAffected = preparedStatement.executeUpdate();
+            //rowsAffected = preparedStatement.executeUpdate();
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-        return rowsAffected;
+        //return rowsAffected;
     }
-    public static int deleteCustomer(int custId){
-        int rowsAffected = 0;
+    /** This is the deleteCustomer method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method takes in a parameter to be used as a condition within the sql query (where customer_id
+     * matches custId). If a match is found, then that customer is deleted from the database.*/
+    public static void deleteCustomer(int custId){
+        //int rowsAffected = 0;
         try {
             String sqlQuery = "DELETE FROM CUSTOMERS WHERE Customer_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setInt(1, custId);
-            rowsAffected = preparedStatement.executeUpdate();
+            //rowsAffected = preparedStatement.executeUpdate();
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-        return rowsAffected;
+        //return rowsAffected;
 
     }
     public static Customer selectCustomerByProvinceId(int divisionId){
@@ -104,6 +121,12 @@ public class DBCustomers {
         }
         return selectedCustomer;
     }
+    /** This is the selectCustomerById method.
+     * This method gets a connection to the database, and executes a sqlQuery on that database.
+     * This method takes in a parameter to be used within the sql query as a condition to find the matching
+     * customer_ID to the parameter. This method creates a customer object from the matching customer ID and its
+     * corresponding column information from the database to be returned.
+     * @return Returns a customer object that matches to the customer_ID. */
     public static Customer selectCustomerById(int custId){
         Customer newCustomer = null;
         try {
