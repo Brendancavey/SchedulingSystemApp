@@ -110,10 +110,27 @@ public class ReportsPage implements Initializable {
         custProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
         //////////////////////////////////////////////////////////////
         /////////INITIALIZING MONTH AND TYPE TABLE VIEW/////////////
-        typeAndMonthTableView.setItems(DBAppointments.getAllAppointments());
+        ///////////////ONLY SHOWING NON DUPLICATE LIST///////////////
+        ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
+        ObservableList<Appointment> noDuplicates = FXCollections.observableArrayList();
+        for (int i = 0; i < allAppointments.size(); i++){
+            Appointment a = allAppointments.get(i);
+            boolean foundMatch = false;
+            for (int j = i+1; j < allAppointments.size(); j++){ //iterate through list again to check to see if any appointments in the list match appointment a appointment month and type
+               Appointment b = allAppointments.get(j);
+               if (a.getAppointmentMonth().equals(b.getAppointmentMonth()) && a.getType().equals(b.getType())){
+                   foundMatch = true; //if true set boolean to true
+               }
+            }
+            if(foundMatch == false){ //only add the appointment to no duplicate list if a duplicate was not found
+                noDuplicates.add(a);
+            }
+        }
+        System.out.println(noDuplicates);
+        typeAndMonthTableView.setItems(noDuplicates);
         moAndTypeMonth.setCellValueFactory(new PropertyValueFactory<>("appointmentMonth"));
         moAndTypeType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        //moAndTypeAppts.setCellValueFactory(); //getting list of appointments by type);
+        moAndTypeAppts.setCellValueFactory(new PropertyValueFactory<>("allApptWithSameMonthAndType"));
         ///////////INITIALIZING COMBO BOX SELECTION FOR DEFAULT CONTACT SCHEDULE/////
         for (Contact contacts : DBContacts.getAllContacts()){
             optionsComboBox.getItems().add(contacts);

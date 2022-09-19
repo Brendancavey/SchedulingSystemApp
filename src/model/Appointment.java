@@ -1,5 +1,6 @@
 package model;
 
+import DAO.DBAppointments;
 import DAO.DBCustomers;
 import DAO.DBUsers;
 import controller.Helper;
@@ -138,5 +139,14 @@ public class Appointment {
     }
     public Month getAppointmentMonth(){
         return this.startDate.getMonth();
+    }
+    public int getAllApptWithSameMonthAndType(){
+        int count = 0;
+        for(Appointment appointment : DBAppointments.getAllAppointments()){
+            if(appointment.getType().equals(this.getType()) && appointment.getAppointmentMonth().equals(this.getAppointmentMonth())){
+                count ++;
+            }
+        }
+        return count;
     }
 }
