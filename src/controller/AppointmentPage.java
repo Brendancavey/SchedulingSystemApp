@@ -91,6 +91,9 @@ public class AppointmentPage implements Initializable {
             //updateStartTimes(); these methods are called at main menu to get startDatePicker and endDatePicker value to update times
             //updateEndTimes();
         }
+        //////SETTING THE USER COMBO BOX VALUE TO THE USER WHO LOGGED IN/////
+        userBox.setValue(Helper.userWhoLoggedIn);
+        //////////////////////////////////////////
         System.out.println("Appointment Page initialized!");
         timeZoneText.setText(Helper.getTimeZone()); //displaying timezone
         disablePreviousStartDates();//disabling all previous dates from current day
@@ -142,14 +145,25 @@ public class AppointmentPage implements Initializable {
             LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime); //converting start date and start time into local date time for appointment object
             LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime); //converting end date and end time into local date time for appointment object
             ////////////////////////////////////////////////////////////////////
+            /////////////////////CHECKING FOR LOGICAL ISSUES////////////////////
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
+            //Language l
             if(title.isBlank() || description.isBlank() || location.isBlank() || type.isBlank()){
-                ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
                 if (Locale.getDefault().getLanguage().equals("fr")) {
                     Helper.displayMessage(rb.getString("MakeSureToEnterAValidName"));
                 }
                 else{
                     Helper.displayMessage("Make sure no fields are left empty.");
                 }
+            }
+            else if(startDate.isBefore(LocalDate.now())){
+                if(Locale.getDefault().getLanguage().equals("fr")) {
+                    Helper.displayMessage(rb.getString("DateIsNoLongerValid"));
+                }
+                else{
+                    Helper.displayMessage("Chosen start date is no longer valid. Today is " + LocalDate.now() + ". Please select a different start date.");
+                }
+                startDatePicker.getEditor().clear(); //clearing selection
             }
             else {
                 ///////////////////ADDING/UPDATING APPOINTMENT////////////////////////////
@@ -436,7 +450,7 @@ public class AppointmentPage implements Initializable {
         typeText.setText(appointment.getType());
         contactBox.setValue(appointment.getContact());
         customerBox.setValue(appointment.getCustomer());
-        userBox.setValue(appointment.getUser());
+        //userBox.setValue(appointment.getUser()); this is determined upon who logged in
         startDatePicker.setValue(appointment.getStartDate().toLocalDate());
         endDatePicker.setValue(appointment.getEndDate().toLocalDate());
         startTimeComboBox.setValue(Helper.toReadableTime(appointment.getStartDate().toLocalTime()));

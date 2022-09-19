@@ -77,7 +77,7 @@
                   <TextField fx:id="typeText" />
                   <ComboBox fx:id="contactBox" prefHeight="25.0" prefWidth="167.0" promptText="Select Contact" />
                   <ComboBox fx:id="customerBox" onAction="#onCustomerSelection" prefHeight="25.0" prefWidth="167.0" promptText="Select Customer" />
-                  <ComboBox fx:id="userBox" prefHeight="25.0" prefWidth="167.0" promptText="Select User" />
+                  <ComboBox fx:id="userBox" disable="true" prefHeight="25.0" prefWidth="167.0" promptText="Select User" />
                   <DatePicker fx:id="startDatePicker" disable="true" onAction="#onStartDateSelection" promptText="Select Customer First" />
                   <ComboBox fx:id="startTimeComboBox" disable="true" layoutX="10.0" layoutY="304.0" onAction="#onStartTimeSelection" prefHeight="25.0" prefWidth="167.0" promptText="Pick Start Date First" />
                </children>

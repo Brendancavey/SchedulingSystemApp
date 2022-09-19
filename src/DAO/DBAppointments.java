@@ -157,7 +157,7 @@ public class DBAppointments {
      * This method is primarily used in the appointment page when the user wants to modify an appointment in the database. */
     public static void updateAppointment(int apptId, String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime endDate, int custId, int userId, int contactId){
         try{
-            String sqlQuery = "UPDATE APPOINTMENTS SET Title = ?, Description = ?, Location = ?, Type= ?, Start= ?, End = ?, Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+            String sqlQuery = "UPDATE APPOINTMENTS SET Title = ?, Description = ?, Location = ?, Type= ?, Start= ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setString(1, title);
             preparedStatement.setString(2, description);
@@ -165,14 +165,14 @@ public class DBAppointments {
             preparedStatement.setString(4, type);
             preparedStatement.setTimestamp(5, Timestamp.valueOf(Helper.convertToUtc(startDate).toLocalDateTime())); //converting local date time to UTC for database storage requirements
             preparedStatement.setTimestamp(6, Timestamp.valueOf(Helper.convertToUtc(endDate).toLocalDateTime())); //converting local date time to UTC for database storage requirements
-            preparedStatement.setTimestamp(7, Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting create date and converting to UTC for database storage requirements
-            preparedStatement.setString(8, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName());
-            preparedStatement.setTimestamp(9,  Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting last updated datetime and converting to UTC for database storage requirements
-            preparedStatement.setString(10, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this appointment
-            preparedStatement.setInt(11, custId);
-            preparedStatement.setInt(12, userId);
-            preparedStatement.setInt(13, contactId);
-            preparedStatement.setInt(14, apptId);
+            //preparedStatement.setTimestamp(7, Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting create date and converting to UTC for database storage requirements
+            //preparedStatement.setString(7, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName());
+            preparedStatement.setTimestamp(7,  Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting last updated datetime and converting to UTC for database storage requirements
+            preparedStatement.setString(8, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this appointment
+            preparedStatement.setInt(9, custId);
+            preparedStatement.setInt(10, userId);
+            preparedStatement.setInt(11, contactId);
+            preparedStatement.setInt(12, apptId);
 
             preparedStatement.executeUpdate();
         }catch(SQLException throwables){
@@ -184,17 +184,17 @@ public class DBAppointments {
      * This method takes the parameter appointment id and uses it within the sql query to find the matching
      * appointment id within the database to delete. This method is primarily used in the main menu when
      * the user wants to delete an appointment from the database. */
-    public static int deleteAppointment(int apptId){
-        int rowsAffected = 0;
+    public static void deleteAppointment(int apptId){
+        //int rowsAffected = 0;
         try {
             String sqlQuery = "DELETE FROM APPOINTMENTS WHERE Appointment_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setInt(1, apptId);
-            rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-        return rowsAffected;
+        //return rowsAffected;
 
     }
     public static ObservableList<Appointment> selectAppointmentByThisMonth(LocalDateTime dateTime){

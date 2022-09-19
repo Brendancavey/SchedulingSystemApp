@@ -83,6 +83,12 @@ public class MainMenu implements Initializable {
     public Label titleLabel;
     public Label timeZoneLabel;
     ////////////////////////////////////////////////////
+    /////////////INITIALIZING INTERFACE MESSAGE TO BE USED FOR LAMBDA/////////////
+    Message m = (alert, message) -> {
+        alert.setAlertType(Alert.AlertType.ERROR);
+        alert.setContentText(message);
+        alert.show();
+    };
 
     /** This is the initialize method.
      * This method gets called when first starting this scene. It checks for the
@@ -93,6 +99,7 @@ public class MainMenu implements Initializable {
      * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         //////////////////CHECKING FOR FRENCH TRANSLATION/////////
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
         if(Locale.getDefault().getLanguage().equals("fr")) {
@@ -186,6 +193,9 @@ public class MainMenu implements Initializable {
      * gets the appropriate controller and uses the sendInformation method from that controller to send the selected
      * option (appointment/customer) information to the next scene to modify.  Depending on which option the global variable is set to,
      * the on modify button sends the user to the appropriate page.
+     *  LAMBDA USE: A lambda is used within this method to display an error message. The use of lambda to display a window with
+     *      * an error message will be more succinct. It will not require that I declare a new Alert type object everytime I require it, and I can set the warning message
+     *      * to the alertType for each scenario. Initialization of the interface is at line 87.
      * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
      * */
     public void onModify(ActionEvent actionEvent) throws IOException {
@@ -236,10 +246,12 @@ public class MainMenu implements Initializable {
         }catch(NullPointerException e){
             ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
             if(Locale.getDefault().getLanguage().equals("fr")) {
-                Helper.displayMessage(rb.getString("MakeASelectionToModify"));
+                m.displayMessage(new Alert(Alert.AlertType.NONE), rb.getString("MakeASelectionToModify"));
+                //Helper.displayMessage(rb.getString("MakeASelectionToModify"));
             }
             else{
-                Helper.displayMessage("Make a selection to modify.");
+                m.displayMessage(new Alert(Alert.AlertType.NONE), "Make a selection to modify.");
+                //Helper.displayMessage("Make a selection to modify.");
             }
         }
     }
@@ -249,6 +261,9 @@ public class MainMenu implements Initializable {
      * delete button. Additionally, if a customer is chosen to be deleted, a message will display to signal to the user
      * that the customer cannot be deleted if the customer is associated with an appointment and the corresponding appointment must be
      * deleted first.
+     * LAMBDA USE: A lambda is used within this method to display an error message. The use of lambda to display a window with
+     * an error message will be more succinct. It will not require that I declare a new Alert type object everytime I require it, and I can set the warning message
+     * to the alertType for each scenario. Initialization of the interface is at line 87.
      * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
      * */
     public void onDelete(ActionEvent actionEvent) {
@@ -307,20 +322,15 @@ public class MainMenu implements Initializable {
                 }
             }
         }catch(NullPointerException e){
+
             ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
             if(Locale.getDefault().getLanguage().equals("fr")) {
-                Helper.displayMessage(rb.getString("MakeASelectionToDelete"));
+                m.displayMessage(new Alert(Alert.AlertType.NONE), rb.getString("MakeASelectionToDelete"));
+                //Helper.displayMessage(rb.getString("MakeASelectionToDelete"));
             }
             else{
-                //Alert k = new Alert(Alert.AlertType.WARNING);
-                //Alert k = new Alert(Alert.AlertType.NONE);
-                Message m = (alert, message) -> {
-                    alert.setAlertType(Alert.AlertType.WARNING);
-                    alert.setContentText(message);
-                    alert.show();
-                };
-                m.displayMessage(new Alert(Alert.AlertType.NONE), "hello");
-                Helper.displayMessage("Make a selection to delete.");
+                m.displayMessage(new Alert(Alert.AlertType.NONE), "Make a selection to delete.");
+                //Helper.displayMessage("Make a selection to delete.");
             }
         }
     }

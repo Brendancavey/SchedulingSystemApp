@@ -1,5 +1,6 @@
 package DAO;
 
+import controller.Helper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class DBCustomers {
     /** This is the getAllCustomers method.
@@ -50,14 +52,18 @@ public class DBCustomers {
     public static void insertCustomer(String customerName, String address, String postalCode, String phoneNumber, int provinceId){
         //int rowsAffected = 0;
         try {
-            String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_Id) Values(?, ?, ?, ?, ?)";
+            String sqlQuery = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_Id, Create_Date, Created_By, Last_Update, Last_Updated_By ) Values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setString(1, customerName);
             preparedStatement.setString(2, address);
             preparedStatement.setString(3, postalCode);
             preparedStatement.setString(4, phoneNumber);
             preparedStatement.setInt(5, provinceId);
-            //rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting create date and converting to UTC for database storage requirements);
+            preparedStatement.setString(7, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName());
+            preparedStatement.setTimestamp(8,  Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting last updated datetime and converting to UTC for database storage requirements
+            preparedStatement.setString(9, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this customer
+            preparedStatement.executeUpdate();
 
         }catch (SQLException throwables){
             throwables.printStackTrace();
@@ -71,15 +77,17 @@ public class DBCustomers {
     public static void updateCustomer(int custId, String custName, String address, String postalCode, String phoneNumber, int provinceID){
         //int rowsAffected = 0;
         try {
-            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
+            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ?, Last_Update = ?, Last_Updated_By = ?,  WHERE Customer_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setString(1, custName);
             preparedStatement.setString(2, address);
             preparedStatement.setString(3, postalCode);
             preparedStatement.setString(4, phoneNumber);
             preparedStatement.setInt(5, provinceID);
-            preparedStatement.setInt(6, custId);
-            //rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(Helper.convertToUtc(LocalDateTime.now()).toLocalDateTime())); //setting last updated datetime and converting to UTC for database storage requirements);
+            preparedStatement.setString(7, String.valueOf(Helper.userWhoLoggedIn.getUserId()) + " | " + Helper.userWhoLoggedIn.getUserName()); //setting user who last updated this customer)
+            preparedStatement.setInt(8, custId);
+           preparedStatement.executeUpdate();
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
@@ -95,7 +103,7 @@ public class DBCustomers {
             String sqlQuery = "DELETE FROM CUSTOMERS WHERE Customer_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setInt(1, custId);
-            //rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
