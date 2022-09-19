@@ -5,6 +5,7 @@ import DAO.DBUsers;
 import controller.Helper;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 public class Appointment {
@@ -134,5 +135,8 @@ public class Appointment {
     }
     public User getUser(){
         return DBUsers.selectUserById(this.userId);
+    }
+    public Month getAppointmentMonth(){
+        return this.startDate.getMonth();
     }
 }

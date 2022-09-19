@@ -47,6 +47,11 @@ public class ReportsPage implements Initializable {
     public Label reportsPageTitle;
     public Button backButton;
     public Label totalCustomersExtraLabel;
+    public RadioButton custByTypeAndMonth;
+    public TableView typeAndMonthTableView;
+    public TableColumn moAndTypeMonth;
+    public TableColumn moAndTypeType;
+    public TableColumn moAndTypeAppts;
 
     /** This is the initialize method.
      * This method gets called when first starting this scene. It checks for the
@@ -104,6 +109,11 @@ public class ReportsPage implements Initializable {
         custPhone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         custProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
         //////////////////////////////////////////////////////////////
+        /////////INITIALIZING MONTH AND TYPE TABLE VIEW/////////////
+        typeAndMonthTableView.setItems(DBAppointments.getAllAppointments());
+        moAndTypeMonth.setCellValueFactory(new PropertyValueFactory<>("appointmentMonth"));
+        moAndTypeType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        //moAndTypeAppts.setCellValueFactory(); //getting list of appointments by type);
         ///////////INITIALIZING COMBO BOX SELECTION FOR DEFAULT CONTACT SCHEDULE/////
         for (Contact contacts : DBContacts.getAllContacts()){
             optionsComboBox.getItems().add(contacts);
@@ -123,12 +133,17 @@ public class ReportsPage implements Initializable {
         contactScheduleTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
+        optionsComboBox.setOpacity(1);
+        viewLabel.setOpacity(1);
+        totalCount.setOpacity(1);
         yearLabel.setOpacity(0);
         viewByBox.setOpacity(0);
         customerTableView.setDisable(true);
         customerTableView.setOpacity(0);
         contactScheduleTableView.setOpacity(1);
         contactScheduleTableView.setDisable(false);
+        typeAndMonthTableView.setOpacity(0);
+        typeAndMonthTableView.setDisable(true);
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
         if (Locale.getDefault().getLanguage().equals("fr")) {
             totalCount.setText(rb.getString("TotalAppointments"));
@@ -156,11 +171,17 @@ public class ReportsPage implements Initializable {
         customerTableView.getItems().removeAll();
         optionsComboBox.getItems().clear();
         optionsComboBox.getItems().removeAll();
+        optionsComboBox.setOpacity(1);
+        viewLabel.setOpacity(1);
+        totalCount.setOpacity(1);
         viewByBox.setOpacity(1);
         customerTableView.setDisable(false);
         customerTableView.setOpacity(1);
         contactScheduleTableView.setOpacity(0);
         contactScheduleTableView.setDisable(true);
+        typeAndMonthTableView.setOpacity(0);
+        typeAndMonthTableView.setDisable(true);
+
         ///////////////////////////////////////////
 
         ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
@@ -440,5 +461,19 @@ public class ReportsPage implements Initializable {
                 optionsComboBox.getItems().add(countries);
             }
         }
+    }
+
+    public void onViewByTypeAndMonth(ActionEvent actionEvent) {
+        optionsComboBox.setOpacity(0);
+        viewLabel.setOpacity(0);
+        yearLabel.setOpacity(0);
+        totalCount.setOpacity(0);
+        viewByBox.setOpacity(0);
+        typeAndMonthTableView.setOpacity(1);
+        typeAndMonthTableView.setDisable(false);
+        customerTableView.setDisable(true);
+        customerTableView.setOpacity(0);
+        contactScheduleTableView.setOpacity(0);
+        contactScheduleTableView.setDisable(true);
     }
 }

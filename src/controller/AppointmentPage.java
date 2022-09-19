@@ -4,6 +4,7 @@ import DAO.DBAppointments;
 import DAO.DBContacts;
 import DAO.DBCustomers;
 import DAO.DBUsers;
+import interfaces.Language;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -92,7 +93,7 @@ public class AppointmentPage implements Initializable {
             //updateEndTimes();
         }
         //////SETTING THE USER COMBO BOX VALUE TO THE USER WHO LOGGED IN/////
-        userBox.setValue(Helper.userWhoLoggedIn);
+        userBox.setValue(Helper.userWhoLoggedIn); //normally disabled, but enabled for the sake of project requirements.
         //////////////////////////////////////////
         System.out.println("Appointment Page initialized!");
         timeZoneText.setText(Helper.getTimeZone()); //displaying timezone
@@ -147,7 +148,6 @@ public class AppointmentPage implements Initializable {
             ////////////////////////////////////////////////////////////////////
             /////////////////////CHECKING FOR LOGICAL ISSUES////////////////////
             ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
-            //Language l
             if(title.isBlank() || description.isBlank() || location.isBlank() || type.isBlank()){
                 if (Locale.getDefault().getLanguage().equals("fr")) {
                     Helper.displayMessage(rb.getString("MakeSureToEnterAValidName"));
@@ -450,7 +450,7 @@ public class AppointmentPage implements Initializable {
         typeText.setText(appointment.getType());
         contactBox.setValue(appointment.getContact());
         customerBox.setValue(appointment.getCustomer());
-        //userBox.setValue(appointment.getUser()); this is determined upon who logged in
+        userBox.setValue(appointment.getUser()); //this is determined upon who logged in. But for the sake of project requirements, it is selectable.
         startDatePicker.setValue(appointment.getStartDate().toLocalDate());
         endDatePicker.setValue(appointment.getEndDate().toLocalDate());
         startTimeComboBox.setValue(Helper.toReadableTime(appointment.getStartDate().toLocalTime()));

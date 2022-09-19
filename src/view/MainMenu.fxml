@@ -87,6 +87,7 @@
             <TableColumn fx:id="custLastUpdate" minWidth="3.0" prefWidth="96.0" text="Last Update" visible="false" />
             <TableColumn fx:id="custLastUpdateBy" prefWidth="96.0" text="Last Updated By" visible="false" />
             <TableColumn fx:id="custProvince" prefWidth="224.0" text="Province" />
+            <TableColumn fx:id="custCountry" prefWidth="145.0" text="Country" />
         </columns>
       </TableView>
       <TableView fx:id="apptTableView" layoutX="144.0" layoutY="114.0" prefHeight="349.0" prefWidth="957.0">

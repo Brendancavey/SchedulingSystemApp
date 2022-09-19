@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.ResourceBundle;
 
+@FunctionalInterface
 public interface Language {
-    void checkForLanguage(ResourceBundle rb);
+    void displayInFrench(ResourceBundle rb, String message);
 }

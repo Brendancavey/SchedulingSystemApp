@@ -19,7 +19,7 @@ public class Customer {
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
         this.province = province;
-        this.country = DBCountries.selectCountryById(DBProvinces.selectCountryIdByProvinceId(this.province.getProvinceId()));
+        this.country = DBCountries.selectCountryById(DBProvinces.selectCountryIdByProvinceId(this.province.getProvinceId())); //getting country by province id
     }
     @Override
     public String toString(){
