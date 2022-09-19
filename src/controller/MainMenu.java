@@ -4,6 +4,7 @@ import DAO.DBAppointments;
 import DAO.DBCountries;
 import DAO.DBCustomers;
 import DAO.DBProvinces;
+import interfaces.Loader;
 import interfaces.Message;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -197,7 +198,11 @@ public class MainMenu implements Initializable {
      * the on modify button sends the user to the appropriate page.
      *  LAMBDA USE: A lambda is used within this method to display an error message. The use of lambda to display a window with
      *      * an error message will be more succinct. It will not require that I declare a new Alert type object everytime I require it, and I can set the warning message
-     *      * to the alertType for each scenario. Initialization of the interface is at line 87.
+     *      * to the alertType for each scenario. Initialization of the interface is at line 89.
+     * LAMBDA USE 2: Another lambda is used within this method to load the controller of another controller scene. This allows for the interface Loader to be used for different
+     * scenarios and different scenes with different controllers. It allows for the code to be more succinct without the requirements of initializing
+     * a new fxml loader, and instead use the lambda expression that calls the loader by the specified name. In this case, customerPage, and appointmentPage - which allows for better
+     * readability of code and what the segment of code does.
      * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
      * */
     public void onModify(ActionEvent actionEvent) throws IOException {
@@ -212,7 +217,20 @@ public class MainMenu implements Initializable {
                 selectedCustomer.setCountry(DBCountries.selectCountryById(selectedCustomerCountryId)); //setting country of selected customer to the matching country id
                 ////////////////////////////////////////////////////////////////////////////////////
                 ///////////////GETTING CustomerPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE///////
-                FXMLLoader loader = new FXMLLoader();
+                Loader customerPage = (loader, resource) ->{
+                  loader.setLocation(MainMenu.class.getResource(resource));
+                  loader.load();
+                  CustomerPage customerPageController = loader.getController();
+                  customerPageController.sendCustomerInformation(selectedCustomer);
+
+                  Parent root = loader.getRoot();
+                  Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                  stage.setTitle("Modify Customer");
+                  stage.setScene(new Scene(root, 600, 450));
+                  stage.show();
+                };
+                customerPage.loadPage(new FXMLLoader(), "/view/CustomerPage.fxml");
+                /*FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainMenu.class.getResource("/view/CustomerPage.fxml"));
                 loader.load();
                 CustomerPage customerPageController = loader.getController();
@@ -223,7 +241,7 @@ public class MainMenu implements Initializable {
                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                 stage.setTitle("Modify Customer");
                 stage.setScene(new Scene(root, 600, 450));
-                stage.show();
+                stage.show();*/
                 ///////////////////////////////////////////////////////////////////////////////
             } else {
                 Helper.userClickedModifyAppointment = true;
@@ -231,7 +249,22 @@ public class MainMenu implements Initializable {
                 selectedAppointment = apptTableView.getSelectionModel().getSelectedItem();
                 //////////////////////////////////////////////////////////////////////////////////////////
                 ///////////GETTING AppointmentPage CONTROLLER TO SEND INFORMATION TO NEXT SCENE/////////////
-                FXMLLoader loader = new FXMLLoader();
+                Loader appointmentPage = (loader, resource) ->{
+                    loader.setLocation(MainMenu.class.getResource(resource));
+                    loader.load();
+                    AppointmentPage appointmentPageController = loader.getController();
+                    appointmentPageController.sendAppointmentInformation(selectedAppointment);
+                    appointmentPageController.updateStartTimes(); //initializing start time combo box
+                    appointmentPageController.updateEndTimes(); //initializing end time combo box
+
+                    Parent root = loader.getRoot();
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    stage.setTitle("Modify Appointment");
+                    stage.setScene(new Scene(root, 600, 600));
+                    stage.show();
+                };
+                appointmentPage.loadPage(new FXMLLoader(), "/view/AppointmentPage.fxml");
+                /*FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainMenu.class.getResource("/view/AppointmentPage.fxml"));
                 loader.load();
                 AppointmentPage appointmentPageController = loader.getController();
@@ -243,7 +276,7 @@ public class MainMenu implements Initializable {
                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                 stage.setTitle("Modify Appointment");
                 stage.setScene(new Scene(root, 600, 600));
-                stage.show();
+                stage.show();*/
             }
         }catch(NullPointerException e){
             ResourceBundle rb = ResourceBundle.getBundle("resourceBundles/Nat", Locale.getDefault());
@@ -265,7 +298,7 @@ public class MainMenu implements Initializable {
      * deleted first.
      * LAMBDA USE: A lambda is used within this method to display an error message. The use of lambda to display a window with
      * an error message will be more succinct. It will not require that I declare a new Alert type object everytime I require it, and I can set the warning message
-     * to the alertType for each scenario. Initialization of the interface is at line 87.
+     * to the alertType for each scenario. Initialization of the interface is at line 89.
      * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.
      * */
     public void onDelete(ActionEvent actionEvent) {
