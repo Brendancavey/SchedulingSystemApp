@@ -89,6 +89,10 @@ public class ReportsPage implements Initializable {
             custPostal.setText(rb.getString("PostalCode"));
             custPhone.setText(rb.getString("PhoneNumber"));
             custProvince.setText(rb.getString("Province"));
+            custByTypeAndMonth.setText(rb.getString("AppointmentCountByTypeAndMonth"));
+            moAndTypeMonth.setText(rb.getString("Month"));
+            moAndTypeType.setText(rb.getString("Type"));
+            moAndTypeAppts.setText(rb.getString("TotalAppointments"));
 
         }
         ////////////////////////////////////////////////////////////
@@ -241,6 +245,25 @@ public class ReportsPage implements Initializable {
         }
         /////////////////////////////////////////////////////////////////////////////
 
+    }
+    /** This is the onViewByTypeAndMonth method.
+     * This method sets the appropriate widgets and labels to be disabled and invisible/visible.
+     * This method makes the table view to view a list of appointments by Month and Type, and the
+     * total appointments within that month with the matching appointment type. This initialization is
+     * done in the initialize() method.
+     * @param actionEvent Method takes in an action event that gets triggered when the user clicks on the corresponding button.*/
+    public void onViewByTypeAndMonth(ActionEvent actionEvent) {
+        optionsComboBox.setOpacity(0);
+        viewLabel.setOpacity(0);
+        yearLabel.setOpacity(0);
+        totalCount.setOpacity(0);
+        viewByBox.setOpacity(0);
+        typeAndMonthTableView.setOpacity(1);
+        typeAndMonthTableView.setDisable(false);
+        customerTableView.setDisable(true);
+        customerTableView.setOpacity(0);
+        contactScheduleTableView.setOpacity(0);
+        contactScheduleTableView.setDisable(true);
     }
     /////////////////////VIEW BY RADIO BUTTONS///////////////////////
     /** This is the onViewByType method.
@@ -480,17 +503,5 @@ public class ReportsPage implements Initializable {
         }
     }
 
-    public void onViewByTypeAndMonth(ActionEvent actionEvent) {
-        optionsComboBox.setOpacity(0);
-        viewLabel.setOpacity(0);
-        yearLabel.setOpacity(0);
-        totalCount.setOpacity(0);
-        viewByBox.setOpacity(0);
-        typeAndMonthTableView.setOpacity(1);
-        typeAndMonthTableView.setDisable(false);
-        customerTableView.setDisable(true);
-        customerTableView.setOpacity(0);
-        contactScheduleTableView.setOpacity(0);
-        contactScheduleTableView.setDisable(true);
-    }
+
 }
