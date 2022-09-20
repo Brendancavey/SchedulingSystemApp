@@ -79,7 +79,7 @@ public class DBCustomers {
     public static void updateCustomer(int custId, String custName, String address, String postalCode, String phoneNumber, int provinceID){
         //int rowsAffected = 0;
         try {
-            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ?, Last_Update = ?, Last_Updated_By = ?,  WHERE Customer_ID = ?";
+            String sqlQuery = "UPDATE CUSTOMERS SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ?, Last_Update = ?, Last_Updated_By = ?  WHERE Customer_ID = ?";
             PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sqlQuery);
             preparedStatement.setString(1, custName);
             preparedStatement.setString(2, address);
